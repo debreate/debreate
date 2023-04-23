@@ -42,6 +42,7 @@ next
 - Importing into auto-link executables list scans for nested executables
 - Added "Provides" option to dependencies & conflicts page
 - added "MIME Type" field to menu
+- build checks for file conflicts
 
 0.7.13
 - Fixes:

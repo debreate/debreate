@@ -4,7 +4,6 @@
 required for release:
 - examine changelog changes before release
 - close progress dialogs on errors so program doesn't freeze
-- Check for files being overwritten by duplicate items in file list before build
 
 priority:
 - use libdbr.tasks for build tasks

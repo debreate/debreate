@@ -28,6 +28,9 @@ class FileType:
 
 
 ## An object that represents a file.
+#
+#  @todo
+#    FIXME: need method to get relative path
 class FileItem:
   def __init__(self, path, target=None, ignore_timestamp=False):
     self.Path = path

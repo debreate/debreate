@@ -646,12 +646,16 @@ class Page(ui.page.Page):
         fld_email,
         )
 
-      # Menu launcher page
-      pg_launcher = GetPage(pgid.MENU)
-
       # Check to make sure that all required fields have values
       required = list(fields_control)
 
+      # files page
+      pg_files = GetPage(pgid.FILES)
+      if not pg_files.isOkay():
+        return (pg_files.getError())
+
+      # Menu launcher page
+      pg_launcher = GetPage(pgid.MENU)
       if pg_launcher.IsOkay():
         task_list["launcher"] = pg_launcher.Get()
 

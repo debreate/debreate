@@ -445,8 +445,43 @@ class Page(ui.page.Page):
   #
   #  @return
   #      <b><i>True</i></b> if the file list (self.lst_files) is not empty
+  #  @deprecated
+  #    Use `wizbin.files.Page.isOkay`.
   def IsOkay(self):
+    logger.deprecated(self.IsOkay, alt=self.isOkay)
     return not self.lst_files.IsEmpty()
+
+  ## Checks for conflicts between staged files.
+  #
+  #  @todo
+  #    FIXME:
+  #    - needs to be more accurate by recursing directories
+  #    - needs to be more accurate by using relative paths instead of basename
+  def isOkay(self):
+    conflicts = {}
+    file_items = self.lst_files.GetFileItems()
+    file_count = len(file_items)
+    for idx1 in range(file_count):
+      p1 = file_items[idx1]
+      p1_source = p1.GetPath()
+      p1_target = paths.join(p1.GetTarget(), p1.GetBasename())
+      for idx2 in range(idx1+1, file_count):
+        p2 = file_items[idx2]
+        p2_target = paths.join(p2.GetTarget(), p2.GetBasename())
+        if p2_target != p1_target:
+          continue
+        if p1_target not in conflicts:
+          conflicts[p1_target] = []
+        if p1_source not in conflicts[p1_target]:
+          conflicts[p1_target].append(p1_source)
+        conflicts[p1_target].append(p2.GetPath())
+    if len(conflicts) == 0:
+      return True
+    msg = GT("The following files conflict:")
+    for key in conflicts:
+      msg += "\n" + GT("Target: {}").format(key) + "\n  - " + "\n  - ".join(conflicts[key])
+    self.setError(dbrerrno.FCONFLICT, msg)
+    return False
 
   ## Reads files & directories & preps for loading into list
   #
