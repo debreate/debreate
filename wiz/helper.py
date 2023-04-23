@@ -12,9 +12,14 @@
 
 import wx
 
+import dbr.app
+
 from dbr.language      import GT
+from libdbr.logger     import Logger
 from libdebreate.ident import pgid
 
+
+_logger = Logger(__name__)
 
 ## @todo Doxygen
 class ErrorTuple:
@@ -188,7 +193,12 @@ def GetFieldValue(page, field_id, field_type=wx.Window):
 
 
 ## Finds the MainWindow instance.
+#
+#  @deprecated
+#    Use `dbr.app.getMainWindow`.
 def GetMainWindow():
+  _logger.deprecated(GetMainWindow, alt=dbr.app.getMainWindow)
+
   return wx.GetApp().GetMainWindow()
 
 
