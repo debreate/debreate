@@ -152,8 +152,36 @@ class MainWindow(wx.Frame):
     self.Layout()
 
   ## Retrieves menu by ID
-  def GetMenu(self, menuId):
+  #
+  #  @return
+  #    `wx.Menu` instance.
+  def getMenu(self, menuId):
     return self.GetMenuBar().GetMenuById(menuId)
+
+  ## Alias of `ui.main.MainWindow.getMenu` for backward compatibility.
+  #
+  #  @deprecated
+  #    Use `ui.main.MainWindow.getMenu`.
+  def GetMenu(self, menuId):
+    logger.deprecated(self.GetMenu, alt=self.getMenu)
+
+    return self.getMenu(menuId)
+
+  ## Retrieves the main menu bar.
+  #
+  #  @return
+  #    `wx.MenuBar` instance.
+  def getMenuBar(self):
+    return super().GetMenuBar()
+
+  ## Alias of `ui.main.MainWindow.getMenuBar` for backward compatibility.
+  #
+  #  @deprecated
+  #    Use `ui.main.MainWindow.getMenuBar`.
+  def GetMenuBar(self):
+    logger.deprecated(self.GetMenuBar, alt=self.getMenuBar)
+
+    return self.getMenuBar()
 
   ## Retrieves the Wizard instance
   #
@@ -512,7 +540,7 @@ class MainWindow(wx.Frame):
     ID = self.Wizard.GetCurrentPageId()
     logger.debug(GT("Event: EVT_CHANGE_PAGE, Page ID: {}").format(ID))
 
-    menu_page = self.GetMenu(menuid.PAGE)
+    menu_page = self.getMenu(menuid.PAGE)
     if not menu_page.IsChecked(ID):
       menu_page.Check(ID, True)
 

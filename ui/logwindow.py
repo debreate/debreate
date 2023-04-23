@@ -34,7 +34,6 @@ from ui.dialog         import ShowDialog
 from ui.dialog         import ShowErrorDialog
 from ui.font           import GetMonospacedFont
 from ui.layout         import BoxSizer
-from wiz.helper        import GetMenu
 
 
 __logger = Logger(__name__)
@@ -172,7 +171,7 @@ class LogWindow(wx.Dialog):
 
   ## Guarantees that menu item is synced with window's shown status
   def OnShow(self, event=None):
-    menu_debug = GetMenu(menuid.DEBUG)
+    menu_debug = ui.app.getMainWindow().getMenu(menuid.DEBUG)
     # In case main window has been destroyed, but sub thread still active
     if ui.app.getMainWindow():
       window_shown = self.IsShown()
@@ -192,12 +191,12 @@ class LogWindow(wx.Dialog):
 
     # Make sure the main window has not been destroyed before showing log
     if main_window and main_window.IsShown():
-      if GetMenu(menuid.DEBUG).IsChecked(menuid.LOG):
+      if ui.app.getMainWindow().getMenu(menuid.DEBUG).IsChecked(menuid.LOG):
         self.ShowLog()
 
   ## Toggles the log window shown or hidden
   def OnToggleWindow(self, event=None):
-    show = GetMenu(menuid.DEBUG).IsChecked(menuid.LOG)
+    show = ui.app.getMainWindow().getMenu(menuid.DEBUG).IsChecked(menuid.LOG)
     if show:
       self.ShowLog()
       return

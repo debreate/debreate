@@ -40,7 +40,6 @@ from ui.layout         import BoxSizer
 from ui.panel          import ScrolledPanel
 from wiz.helper        import FieldEnabled
 from wiz.helper        import GetField
-from wiz.helper        import GetMenu
 
 
 _logger = Logger(__name__)
@@ -180,7 +179,7 @@ class Wizard(wx.Panel):
     self.Pages.append(page)
 
     # Add to page menu
-    page_menu = GetMenu(menuid.PAGE)
+    page_menu = main_window.getMenu(menuid.PAGE)
     page_menu.Append(wx.MenuItem(page_menu, page.GetId(), page.GetLabel(), kind=wx.ITEM_RADIO))
 
     # Bind menu event to ID
@@ -203,7 +202,7 @@ class Wizard(wx.Panel):
     page_id = self.Pages[index].GetId()
     # Show the indexed page
     self.ShowPage(page_id)
-    GetMenu(menuid.PAGE).Check(page_id, True)
+    ui.app.getMainWindow().getMenu(menuid.PAGE).Check(page_id, True)
 
   ## Deletes all pages from the wizard
   def ClearPages(self):
@@ -264,7 +263,7 @@ class Wizard(wx.Panel):
     for P in pageList:
       # Support using list of IDs instead of `ui.page.Page` instances
       if not isinstance(P, ui.page.Page):
-        P = self.GetPage(P)
+        P = self.getPage(P)
       P.Export(outDir)
 
   ## Retrieves all current `ui.page.Page` instances.
@@ -298,21 +297,39 @@ class Wizard(wx.Panel):
   #    <b><i>Integer</i></b> ID of desired page.
   #  @return
   #    `ui.page.Page` instance or <b><i>None</i></b> if ID not found.
-  def GetPage(self, pageId):
+  def getPage(self, pageId):
     for P in self.Pages:
       if P.GetId() == pageId:
         return P
     _logger.warn("Page with ID {} has not been constructed".format(pageId))
 
+  ## Alias of `wiz.wizard.Wizard.getPage` for backward compatibility.
+  #
+  #  @deprecated
+  #    Use `wiz.wizard.Wizard.getPage`.
+  def GetPage(self, pageId):
+    _logger.deprecated(self.GetPage, alt=self.getPage)
+
+    return self.getPage(pageId)
+
   ## Retrieves the full list of page IDs.
   #
   #  @return
   #    <b><i>Tuple</i></b> list of all current pages IDs.
-  def GetPagesIdList(self):
+  def getPagesIdList(self):
     page_ids = []
     for P in self.Pages:
       page_ids.append(P.GetId())
     return tuple(page_ids)
+
+  ## Alias of `wiz.wizard.Wizard.getPagesIdList` for backword compatibility.
+  #
+  #  @deprecated
+  #    Use `wiz.wizard.Wizard.getPagesIdList`.
+  def GetPagesIdList(self):
+    _logger.deprecated(self.GetPagesIdList, alt=self.getPagesIdList)
+
+    return self.getPagesIdList()
 
   ## Initializes wizard by displaying an initial page.
   #
@@ -353,7 +370,7 @@ class Wizard(wx.Panel):
   #  @param pageId
   #    <b><i>Integer</i></b> ID of the page to be removed.
   def RemovePage(self, pageId):
-    page = self.GetPage(pageId)
+    page = self.getPage(pageId)
     if page in self.Pages:
       self.Pages.pop(self.Pages.index(page))
 
@@ -363,7 +380,7 @@ class Wizard(wx.Panel):
     self.Layout()
 
     # Remove from page menu
-    GetMenu(menuid.PAGE).Remove(pageId).Destroy()
+    ui.app.getMainWindow().getMenu(menuid.PAGE).Remove(pageId).Destroy()
 
   ## Resets all but greeting page.
   #
