@@ -84,7 +84,7 @@ def FieldEnabled(field):
     return field.IsEnabled()
 
 
-## Finds the wiz.wizard.WizardPage instance where an object is located
+## Finds the ui.page.Page instance where an object is located
 #
 #  @param field
 #    \b \e wx.Window instance to find parents of
@@ -100,7 +100,7 @@ def FindPageOf(field):
 
 ## Retrieves all instances of a window type from a parent window
 def GetAllTypeFields(page, fieldType):
-  # Objects that are not WizardPage instances must be passed as 'page' argument
+  # Objects that are not `ui.page.Page` instances must be passed as 'page' argument
   if not isinstance(page, wx.Window):
     page = GetPage(page)
 
@@ -121,7 +121,7 @@ def GetAllTypeFields(page, fieldType):
 ## Retrieves a field/control from a page
 #
 #  @param page
-#    \b \e wiz.wizard.WizardPage : The page to search
+#    \b \e ui.page.Page : The page to search
 #  @param field_id
 #    \b \e int : ID of desired field/control
 #  @param field_type
@@ -207,7 +207,7 @@ def GetMenuBar():
   return GetMainWindow().GetMenuBar()
 
 
-## Retrieves the wiz.wizard.WizardPage instance that matched pageId.
+## Retrieves the `ui.page.Page` instance that matched pageId.
 def GetPage(pageId):
   page = GetWizard().GetPage(pageId)
   return page

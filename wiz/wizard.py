@@ -52,7 +52,7 @@ class Wizard(wx.Panel):
   #  @param parent
   #    Parent <b><i>wx.Window</i></b> instance
   #  @param pageList
-  #    <b><i>List</i></b> of wiz.wizard.WizardPage instances to initialize wizard with
+  #    <b><i>List</i></b> of `ui.page.Page` instances to initialize wizard with.
   #  @todo
   #    FIXME: `pageList` param unused?
   def __init__(self, parent, pageList=None):
@@ -143,12 +143,12 @@ class Wizard(wx.Panel):
   ## Add a new page to the wizard
   #
   #  @param page
-  #  Must either be a wiz.wizard.WizardPage instance or the string suffix of the page's module
+  #    Must either be a `ui.page.Page` instance or the string suffix of the page's module
   def AddPage(self, page):
     err_msg = None
     err_det = None
 
-    if not isinstance(page, (WizardPage, ui.page.Page)):
+    if not isinstance(page, ui.page.Page):
       try:
         pagemod = "wizbin.{}".format(page)
         page = mimport(pagemod).Page(self)
@@ -159,8 +159,8 @@ class Wizard(wx.Panel):
     lyt_main = self.GetSizer()
 
     # Must already be child
-    if not isinstance(page, (WizardPage, ui.page.Page)):
-      err_msg = "not WizardPage instance"
+    if not isinstance(page, ui.page.Page):
+      err_msg = "not 'ui.page.Page' instance"
     elif page not in self.GetChildren():
       err_msg = "not child of wizard"
     elif page in lyt_main.GetChildWindows():
@@ -252,72 +252,72 @@ class Wizard(wx.Panel):
       # FIXME: Should not raise error here???
       raise TypeError("Must be bool or int value")
 
-  ## Exports pages individually by calling wiz.wizard.WizardPage.Export
+  ## Exports pages individually by calling `ui.page.Page.Export`.
   #
-  #  Filename output is handled by classes inheriting WizardPage
+  #  Filename output is handled by classes inheriting `ui.page.Page`.
   #
   #  @param pageList
-  #    List of WizardPage instances, or page IDs, to be exported
+  #    List of `ui.page.Page` instances, or page IDs, to be exported.
   #  @param outDir
-  #    Path to target directory
+  #    Path to target directory.
   def ExportPages(self, pageList, outDir):
     for P in pageList:
-      # Support using list of IDs instead of WizardPage instances
-      if not isinstance(P, WizardPage):
+      # Support using list of IDs instead of `ui.page.Page` instances
+      if not isinstance(P, ui.page.Page):
         P = self.GetPage(P)
       P.Export(outDir)
 
-  ## Retrieves all current wiz.wizard.WizardPage instances
+  ## Retrieves all current `ui.page.Page` instances.
   #
   #  @return
-  #    <b><i>Tuple</i></b> list of currently available wizard pages
+  #    <b><i>Tuple</i></b> list of currently available wizard pages.
   def GetAllPages(self):
     return tuple(self.Pages)
 
-  ## Retrieves currently displayed page
+  ## Retrieves currently displayed page.
   #
   #  @return
-  #    `wiz.wizard.WizardPage` instance
+  #    `ui.page.Page` instance.
   def GetCurrentPage(self):
     for page in self.Pages:
       if page.IsShown():
         return page
 
-  ## Retrieve currently displayed page's ID
+  ## Retrieve currently displayed page's ID.
   #
   #  @return
-  #    <b><i>Integer</i></b> ID of page
+  #    <b><i>Integer</i></b> ID of page.
   def GetCurrentPageId(self):
     current_page = self.GetCurrentPage()
     if current_page:
       return current_page.GetId()
 
-  ## Retrieves a page by ID
+  ## Retrieves a page by ID.
   #
   #  @param pageId
-  #    <b><i>Integer</i></b> ID of desired page
+  #    <b><i>Integer</i></b> ID of desired page.
   #  @return
-  #    `wiz.wizard.WizardPage` instance or <b><i>None</i></b> if ID not found.
+  #    `ui.page.Page` instance or <b><i>None</i></b> if ID not found.
   def GetPage(self, pageId):
     for P in self.Pages:
       if P.GetId() == pageId:
         return P
     _logger.warn("Page with ID {} has not been constructed".format(pageId))
 
-  ## Retrieves the full list of page IDs
+  ## Retrieves the full list of page IDs.
   #
   #  @return
-  #    <b><i>Tuple</i></b> list of all current pages IDs
+  #    <b><i>Tuple</i></b> list of all current pages IDs.
   def GetPagesIdList(self):
     page_ids = []
     for P in self.Pages:
       page_ids.append(P.GetId())
     return tuple(page_ids)
 
-  ## Initializes wizard by displaying an initial page
+  ## Initializes wizard by displaying an initial page.
   #
   #  @param showPage
-  #    <b><i>Integer</i></b> index of page to be shown
+  #    <b><i>Integer</i></b> index of page to be shown.
   def Initialize(self, showPage=0):
     if self.Pages:
       self.ID_FIRST = self.Pages[0].Id
@@ -330,30 +330,28 @@ class Wizard(wx.Panel):
       PAGE.InitPage()
     self.Layout()
 
-  ## Uses children wiz.wizard.WizardPage instances to set pages
+  ## Uses children `ui.page.Page` instances to set pages.
   #
   #  @return
-  #    Value of wiz.wizard.Wizard.SetPages
+  #    Value of `wiz.wizard.Wizard.SetPages`.
   def InitPages(self):
     pages = []
     for C in self.GetChildren():
-      if isinstance(C, WizardPage):
+      if isinstance(C, ui.page.Page):
         pages.append(C)
     return self.SetPages(pages)
 
-  ## Handles event emitted by 'help' button
-  #
-  #  Shows a help dialog for currently displayed page
+  ## Shows a help dialog for currently displayed page.
   def OnHelpButton(self, event=None):
     label = self.GetCurrentPage().GetLabel()
     page_help = MarkdownDialog(self, title=GT("Help"), readonly=True)
     page_help.SetText(GT("Help information for page \"{}\"".format(label)))
     ShowDialog(page_help)
 
-  ## Removes a page from the wizard & memory
+  ## Removes a page from the wizard & memory.
   #
   #  @param pageId
-  #    <b><i>Integer</i></b> ID of the page to be removed
+  #    <b><i>Integer</i></b> ID of the page to be removed.
   def RemovePage(self, pageId):
     page = self.GetPage(pageId)
     if page in self.Pages:
@@ -367,7 +365,7 @@ class Wizard(wx.Panel):
     # Remove from page menu
     GetMenu(menuid.PAGE).Remove(pageId).Destroy()
 
-  ## Resets all but greeting page
+  ## Resets all but greeting page.
   #
   #  @return
   #    Value of `wiz.wizard.Wizard.Initialize`.
@@ -385,10 +383,10 @@ class Wizard(wx.Panel):
     for page in self.Pages:
       page.Reset()
 
-  ## Sets up the wizard for 'binary' mode
+  ## Sets up the wizard for 'binary' mode.
   #
   #  @param startPage
-  #    <b><i>Integer</i></b> index of page to be initially displayed
+  #    <b><i>Integer</i></b> index of page to be initially displayed.
   def SetModeBin(self, startPage=1):
     self.Reset()
 
@@ -415,10 +413,10 @@ class Wizard(wx.Panel):
   def SetModeSrc(self):
     self.Reset()
 
-  ## Organizes wiz.wizard.WizardPage instances for displaying as pages in wizard
+  ## Organizes `ui.page.Page` instances for displaying as pages in wizard.
   #
   #  @param pages
-  #    List of pages owned by wizard to be used
+  #    List of pages owned by wizard to be used.
   #  @deprecated
   def SetPages(self, pages):
     self.ID_FIRST = pages[0].GetId()
@@ -462,20 +460,20 @@ class Wizard(wx.Panel):
 
     self.Layout()
 
-  ## Sets the text displayed in the wizard title bar
+  ## Sets the text displayed in the wizard title bar.
   #
   #  @param title
-  #    Text to be displayed
+  #    Text to be displayed.
   def SetTitle(self, title):
     self.txt_title.SetLabel(title)
     self.Layout()
 
-  ## Sets or changes the displayed page
+  ## Sets or changes the displayed page.
   #
-  #  Posts a 'change page' event to notify the main window
+  #  Posts a 'change page' event to notify the main window.
   #
   #  @param pageId
-  #    libdebreate.ident.pgid of the page to be displayed
+  #    `libdebreate.ident.pgid` of the page to be displayed.
   def ShowPage(self, pageId):
     for p in self.Pages:
       if p.GetId() != pageId:
@@ -497,115 +495,115 @@ class Wizard(wx.Panel):
     wx.PostEvent(GetMainWindow(), ChangePageEvent(0))
 
 ## Inherited class for wizard pages
-class WizardPage(ScrolledPanel):
-  ## Constructor
-  #
-  #  @param parent
-  #    Parent <b><i>wx.Window</i></b> instance
-  #  @param pageId
-  #    Identifier to use for page
-  def __init__(self, parent, pageId):
-    ScrolledPanel.__init__(self, parent, pageId)
+# ~ class WizardPage(ScrolledPanel):
+  # ~ ## Constructor
+  # ~ #
+  # ~ #  @param parent
+  # ~ #    Parent <b><i>wx.Window</i></b> instance
+  # ~ #  @param pageId
+  # ~ #    Identifier to use for page
+  # ~ def __init__(self, parent, pageId):
+    # ~ ScrolledPanel.__init__(self, parent, pageId)
 
-    _logger.deprecated(WizardPage, alt=ui.page.Page)
+    # ~ _logger.deprecated(WizardPage, alt=ui.page.Page)
 
-    # Pages should not be shown until wizard is initialized
-    self.Hide()
+    # ~ # Pages should not be shown until wizard is initialized
+    # ~ self.Hide()
 
-    self.SetName(page_ids[self.GetId()])
+    # ~ self.SetName(page_ids[self.GetId()])
 
-    ## Label to show in title & menu
-    # NOTE: Cannot use 'self.Label' in wx.Python 2.8
-    self.PLabel = wx.EmptyString
+    # ~ ## Label to show in title & menu
+    # ~ # NOTE: Cannot use 'self.Label' in wx.Python 2.8
+    # ~ self.PLabel = wx.EmptyString
 
-    if not self.PLabel and self.Id in pgid.Labels:
-      self.PLabel = pgid.Labels[self.Id]
+    # ~ if not self.PLabel and self.Id in pgid.Labels:
+      # ~ self.PLabel = pgid.Labels[self.Id]
 
-    ## List of IDs that should not be reset
-    self.IgnoreResetIds = []
+    # ~ ## List of IDs that should not be reset
+    # ~ self.IgnoreResetIds = []
 
-    # Is added to prebuild check list
-    self.prebuild_check = True
+    # ~ # Is added to prebuild check list
+    # ~ self.prebuild_check = True
 
-  ## Retrieves the page's field's data
-  def Get(self):
-    _logger.warn(GT("Page {} does not override inherited method Get").format(self.GetName()))
+  # ~ ## Retrieves the page's field's data
+  # ~ def Get(self):
+    # ~ _logger.warn(GT("Page {} does not override inherited method Get").format(self.GetName()))
 
-  ## Retrieves the page's label
-  #
-  #  if wiz.wizard.WizardPage.Label is not set, returns the wiz.wizard.WizardPage.Name attribute
-  def GetLabel(self):
-    if self.PLabel == None:
-      return self.GetName()
-    return self.PLabel
+  # ~ ## Retrieves the page's label
+  # ~ #
+  # ~ #  if wiz.wizard.WizardPage.Label is not set, returns the wiz.wizard.WizardPage.Name attribute
+  # ~ def GetLabel(self):
+    # ~ if self.PLabel == None:
+      # ~ return self.GetName()
+    # ~ return self.PLabel
 
-  ## Sets page's label
-  def SetLabel(self, label):
-    self.PLabel = label
+  # ~ ## Sets page's label
+  # ~ def SetLabel(self, label):
+    # ~ self.PLabel = label
 
-  ## Retrieves all fields that cannot be left blank for build
-  #
-  #  @param children
-  #    <b><i>List/Tuple</i></b> of the fields to be checked
-  #  @return
-  #    <b><i>Tuple</i></b> list of fields marked as required
-  #  @todo
-  #    FIXME: Should only require page ID
-  def GetRequiredFields(self, children=None):
-    required_fields = []
-    if children == None:
-      children = self.GetChildren()
-    for C in children:
-      for RF in self.GetRequiredFields(C.GetChildren()):
-        required_fields.append(RF)
-      # FIXME: Better way to mark fields as required???
-      try:
-        if C.req:
-          required_fields.append(C)
-      except AttributeError:
-        pass
-    return tuple(required_fields)
+  # ~ ## Retrieves all fields that cannot be left blank for build
+  # ~ #
+  # ~ #  @param children
+  # ~ #    <b><i>List/Tuple</i></b> of the fields to be checked
+  # ~ #  @return
+  # ~ #    <b><i>Tuple</i></b> list of fields marked as required
+  # ~ #  @todo
+  # ~ #    FIXME: Should only require page ID
+  # ~ def GetRequiredFields(self, children=None):
+    # ~ required_fields = []
+    # ~ if children == None:
+      # ~ children = self.GetChildren()
+    # ~ for C in children:
+      # ~ for RF in self.GetRequiredFields(C.GetChildren()):
+        # ~ required_fields.append(RF)
+      # ~ # FIXME: Better way to mark fields as required???
+      # ~ try:
+        # ~ if C.req:
+          # ~ required_fields.append(C)
+      # ~ except AttributeError:
+        # ~ pass
+    # ~ return tuple(required_fields)
 
-  ## Reads & parses page data from a formatted text file
-  #
-  #  @param filename
-  #    File path to open
-  def ImportFromFile(self, filename):
-    _logger.warn(GT("Page {} does not override inherited method ImportFromFile").format(self.GetName()))
+  # ~ ## Reads & parses page data from a formatted text file
+  # ~ #
+  # ~ #  @param filename
+  # ~ #    File path to open
+  # ~ def ImportFromFile(self, filename):
+    # ~ _logger.warn(GT("Page {} does not override inherited method ImportFromFile").format(self.GetName()))
 
-  ## This method can be used to access page members that are only available
-  #  after the wizard has been completely initialized
-  #
-  #  @todo
-  #    FIXME: Rename to 'OnWizardInit'???
-  def InitPage(self):
-    _logger.debug(GT("Page {} does not override inherited method InitPage").format(self.GetName()))
-    return False
+  # ~ ## This method can be used to access page members that are only available
+  # ~ #  after the wizard has been completely initialized
+  # ~ #
+  # ~ #  @todo
+  # ~ #    FIXME: Rename to 'OnWizardInit'???
+  # ~ def InitPage(self):
+    # ~ _logger.debug(GT("Page {} does not override inherited method InitPage").format(self.GetName()))
+    # ~ return False
 
-  ## Checks the page's fields for exporting
-  #
-  #  @return
-  #    <b><i>False</i></b> if page cannot be exported
-  def IsOkay(self):
-    _logger.warn(GT("Page {} does not override inherited method IsOkay").format(self.GetName()))
-    return False
+  # ~ ## Checks the page's fields for exporting
+  # ~ #
+  # ~ #  @return
+  # ~ #    <b><i>False</i></b> if page cannot be exported
+  # ~ def IsOkay(self):
+    # ~ _logger.warn(GT("Page {} does not override inherited method IsOkay").format(self.GetName()))
+    # ~ return False
 
-  ## Resets page's fields to default settings
-  #
-  #  Set the wiz.wizard.WizardPage.IgnoreResetIds attribute for any field
-  #  that should not be reset
-  def Reset(self):
-    field_ids = (
-      chkid,
-      inputid,
-      listid,
-      selid,
-      )
+  # ~ ## Resets page's fields to default settings
+  # ~ #
+  # ~ #  Set the wiz.wizard.WizardPage.IgnoreResetIds attribute for any field
+  # ~ #  that should not be reset
+  # ~ def Reset(self):
+    # ~ field_ids = (
+      # ~ chkid,
+      # ~ inputid,
+      # ~ listid,
+      # ~ selid,
+      # ~ )
 
-    for IDTYPE in field_ids:
-      idlist = IDTYPE.IdList
-      for ID in idlist:
-        if ID not in self.IgnoreResetIds:
-          field = GetField(self, ID)
-          if isinstance(field, wx.Window):
-            field.Reset()
+    # ~ for IDTYPE in field_ids:
+      # ~ idlist = IDTYPE.IdList
+      # ~ for ID in idlist:
+        # ~ if ID not in self.IgnoreResetIds:
+          # ~ field = GetField(self, ID)
+          # ~ if isinstance(field, wx.Window):
+            # ~ field.Reset()

@@ -200,7 +200,7 @@ class Page(ui.page.Page):
   #
   #  @param filename
   #    File path to open
-  #  @see `wiz.wizard.WizardPage.ImportFromFile`
+  #  @see `ui.page.Page.importFile`
   def ImportFromFile(self, d_type, d_string):
     logger.debug(GT("Importing {}: {}".format(d_type, d_string)))
     values = d_string.split(", ")
@@ -208,7 +208,7 @@ class Page(ui.page.Page):
       self.lst_deps.InsertStringItem(0, d_type)
       self.lst_deps.SetStringItem(0, 1, V)
 
-  ## @see `wiz.wizard.WizardPage.InitPage`
+  ## @see `ui.page.Page.init`
   def InitPage(self):
     control_page = GetPage(pgid.CONTROL)
     self.btn_open.Bind(wx.EVT_BUTTON, control_page.OnBrowse)
