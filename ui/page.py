@@ -9,9 +9,12 @@
 from abc import abstractmethod
 
 from .                       import panel
+from libdbr.logger           import Logger
 from libdebreate             import ident
 from libdebreate.abstraction import AbstractClass
 
+
+_logger = Logger(__name__)
 
 ## Abstract class for wizard pages.
 class Page(panel.ScrolledPanel, AbstractClass):
@@ -59,3 +62,24 @@ class Page(panel.ScrolledPanel, AbstractClass):
   ## Alias of `ui.page.Page.getLabel` for backward compatibility.
   def GetLabel(self):
     return self.getLabel()
+
+  ## Directives for loading data from file.
+  #
+  #  @param filepath
+  #    Path to file to be loaded.
+  #  @return
+  #    Error code.
+  def importFile(self, filepath):
+    _logger.error("'{}' does not override '{}'".format(
+        self.__module__ + "." + self.__class__.__name__,
+        Page.__module__ + "." + Page.__name__ + "." + Page.importFile.__name__))
+    return 0
+
+  ## Alias of `ui.page.Page.loadFile` for backward compatibility.
+  def ImportFromFile(self, filepath):
+    return loadFile(filepath)
+
+  ## Directives for resetting page to default values.
+  @abstractmethod
+  def reset(self):
+    pass
