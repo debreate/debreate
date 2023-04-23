@@ -181,10 +181,7 @@ class Wizard(wx.Panel):
 
     # Add to page menu
     page_menu = GetMenu(menuid.PAGE)
-
-    page_menu.Append(
-      wx.MenuItem(page_menu, page.Id, page.GetLabel(),
-      kind=wx.ITEM_RADIO))
+    page_menu.Append(wx.MenuItem(page_menu, page.GetId(), page.GetLabel(), kind=wx.ITEM_RADIO))
 
     # Bind menu event to ID
     main_window.Bind(wx.EVT_MENU, main_window.OnMenuChangePage, id=page.Id)
