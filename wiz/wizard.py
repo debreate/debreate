@@ -14,6 +14,8 @@ import traceback
 
 import wx
 
+import ui.page
+
 from dbr.event         import ChangePageEvent
 from dbr.language      import GT
 from globals.system    import mimport
@@ -41,7 +43,7 @@ from wiz.helper        import GetMainWindow
 from wiz.helper        import GetMenu
 
 
-logger = Logger(__name__)
+_logger = Logger(__name__)
 
 ## Wizard class for Debreate.
 class Wizard(wx.Panel):
@@ -146,24 +148,13 @@ class Wizard(wx.Panel):
     err_msg = None
     err_det = None
 
-    if not isinstance(page, WizardPage):
+    if not isinstance(page, (WizardPage, ui.page.Page)):
       try:
         pagemod = "wizbin.{}".format(page)
         page = mimport(pagemod).Page(self)
       except ImportError:
         err_msg = "module does not exist"
         err_det = traceback.format_exc()
-
-    lyt_main = self.GetSizer()
-
-    if not err_msg:
-      # Must already be child
-      if not isinstance(page, WizardPage):
-        err_msg = "not WizardPage instance"
-      elif page not in self.GetChildren():
-        err_msg = "not child of wizard"
-      elif page in lyt_main.GetChildWindows():
-        err_msg = "page is already added to wizard"
 
     if err_msg:
       err_msg = "Cannot add page, {}".format(err_msg)
@@ -172,6 +163,16 @@ class Wizard(wx.Panel):
       else:
         ShowErrorDialog(err_msg)
       return
+
+    lyt_main = self.GetSizer()
+
+    # Must already be child
+    if not isinstance(page, (WizardPage, ui.page.Page)):
+      err_msg = "not WizardPage instance"
+    elif page not in self.GetChildren():
+      err_msg = "not child of wizard"
+    elif page in lyt_main.GetChildWindows():
+      err_msg = "page is already added to wizard"
 
     main_window = GetMainWindow()
 
@@ -304,7 +305,7 @@ class Wizard(wx.Panel):
     for P in self.Pages:
       if P.GetId() == pageId:
         return P
-    logger.warn("Page with ID {} has not been constructed".format(pageId))
+    _logger.warn("Page with ID {} has not been constructed".format(pageId))
 
   ## Retrieves the full list of page IDs
   #
@@ -509,6 +510,8 @@ class WizardPage(ScrolledPanel):
   def __init__(self, parent, pageId):
     ScrolledPanel.__init__(self, parent, pageId)
 
+    _logger.deprecated(WizardPage, alt=ui.page.Page)
+
     # Pages should not be shown until wizard is initialized
     self.Hide()
 
@@ -529,7 +532,7 @@ class WizardPage(ScrolledPanel):
 
   ## Retrieves the page's field's data
   def Get(self):
-    logger.warn(GT("Page {} does not override inherited method Get").format(self.GetName()))
+    _logger.warn(GT("Page {} does not override inherited method Get").format(self.GetName()))
 
   ## Retrieves the page's label
   #
@@ -571,7 +574,7 @@ class WizardPage(ScrolledPanel):
   #  @param filename
   #    File path to open
   def ImportFromFile(self, filename):
-    logger.warn(GT("Page {} does not override inherited method ImportFromFile").format(self.GetName()))
+    _logger.warn(GT("Page {} does not override inherited method ImportFromFile").format(self.GetName()))
 
   ## This method can be used to access page members that are only available
   #  after the wizard has been completely initialized
@@ -579,7 +582,7 @@ class WizardPage(ScrolledPanel):
   #  @todo
   #    FIXME: Rename to 'OnWizardInit'???
   def InitPage(self):
-    logger.debug(GT("Page {} does not override inherited method InitPage").format(self.GetName()))
+    _logger.debug(GT("Page {} does not override inherited method InitPage").format(self.GetName()))
     return False
 
   ## Checks the page's fields for exporting
@@ -587,7 +590,7 @@ class WizardPage(ScrolledPanel):
   #  @return
   #    <b><i>False</i></b> if page cannot be exported
   def IsOkay(self):
-    logger.warn(GT("Page {} does not override inherited method IsOkay").format(self.GetName()))
+    _logger.warn(GT("Page {} does not override inherited method IsOkay").format(self.GetName()))
     return False
 
   ## Resets page's fields to default settings
