@@ -14,6 +14,8 @@ import traceback
 
 import wx
 
+import dbr.app
+
 from dbr.event         import EVT_REFRESH_LOG
 from dbr.event         import RefreshLogEvent
 from dbr.font          import GetMonospacedFont
@@ -32,7 +34,6 @@ from ui.dialog         import GetFileOpenDialog
 from ui.dialog         import ShowDialog
 from ui.dialog         import ShowErrorDialog
 from ui.layout         import BoxSizer
-from wiz.helper        import GetMainWindow
 from wiz.helper        import GetMenu
 
 
@@ -90,7 +91,7 @@ class LogWindow(wx.Dialog):
 
     wx.EVT_CLOSE(self, self.OnClose)
     wx.EVT_SHOW(self, self.OnShow)
-    wx.EVT_SHOW(GetMainWindow(), self.OnShowMainWindow)
+    wx.EVT_SHOW(dbr.app.getMainWindow(), self.OnShowMainWindow)
 
     # *** Layout *** #
 
@@ -121,7 +122,7 @@ class LogWindow(wx.Dialog):
 
   ## Positions the log window relative to the main window
   def AlignWithMainWindow(self):
-    debreate_pos = GetMainWindow().GetPosition()
+    debreate_pos = dbr.app.getMainWindow().GetPosition()
     width = self.GetSize()[0]
     posX = debreate_pos[0] - width
     posY = debreate_pos[1]
@@ -173,7 +174,7 @@ class LogWindow(wx.Dialog):
   def OnShow(self, event=None):
     menu_debug = GetMenu(menuid.DEBUG)
     # In case main window has been destroyed, but sub thread still active
-    if GetMainWindow():
+    if dbr.app.getMainWindow():
       window_shown = self.IsShown()
       m_checked = menu_debug.IsChecked(menuid.LOG)
       if m_checked != window_shown:
@@ -187,7 +188,7 @@ class LogWindow(wx.Dialog):
   #  a separate item is not added in the system window
   #  list for the log.
   def OnShowMainWindow(self, event=None):
-    main_window = GetMainWindow()
+    main_window = dbr.app.getMainWindow()
 
     # Make sure the main window has not been destroyed before showing log
     if main_window and main_window.IsShown():

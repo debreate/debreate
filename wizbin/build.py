@@ -15,6 +15,7 @@ import traceback
 
 import wx
 
+import dbr.app
 import globals.execute
 import libdbr.bin
 import ui.page
@@ -53,7 +54,6 @@ from ui.progress        import TimedProgressDialog
 from ui.style           import layout as lyt
 from wiz.helper         import FieldEnabled
 from wiz.helper         import GetField
-from wiz.helper         import GetMainWindow
 from wiz.helper         import GetPage
 
 
@@ -240,7 +240,7 @@ class Page(ui.page.Page):
       logger.debug(task_msg)
 
       wx.GetApp().Yield()
-      build_progress = ProgressDialog(GetMainWindow(), GT("Building"), task_msg,
+      build_progress = ProgressDialog(dbr.app.getMainWindow(), GT("Building"), task_msg,
           maximum=task_count,
           style=PD_DEFAULT_STYLE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
 
@@ -719,7 +719,7 @@ class Page(ui.page.Page):
       progress = 0
 
       wx.GetApp().Yield()
-      prebuild_progress = ProgressDialog(GetMainWindow(), GT("Preparing to build"),
+      prebuild_progress = ProgressDialog(dbr.app.getMainWindow(), GT("Preparing to build"),
           maximum=prep_task_count)
 
       if wx.MAJOR_VERSION < 3:
@@ -845,7 +845,7 @@ class Page(ui.page.Page):
       return
 
     if ret_code == dbrerrno.FEMPTY:
-      err_dia = DetailedMessageDialog(GetMainWindow(), GT("Cannot Continue"), ICON_EXCLAMATION,
+      err_dia = DetailedMessageDialog(dbr.app.getMainWindow(), GT("Cannot Continue"), ICON_EXCLAMATION,
           text="{}\n{}".format(GT("One of the required fields is empty:"), build_prep))
       err_dia.ShowModal()
       err_dia.Destroy()
@@ -859,7 +859,7 @@ class Page(ui.page.Page):
 
       # FIXME: Check .deb package timestamp to confirm build success
       if ret_code == dbrerrno.SUCCESS:
-        DetailedMessageDialog(GetMainWindow(), GT("Success"), ICON_INFORMATION,
+        DetailedMessageDialog(dbr.app.getMainWindow(), GT("Success"), ICON_INFORMATION,
             text=GT("Package created successfully")).ShowModal()
 
         # Installing the package
@@ -909,14 +909,14 @@ class Page(ui.page.Page):
       def GetProgressMessage(message, count=tag_count):
         return "{} ({} {})".format(message, count, GT("tags"))
 
-      progress = TimedProgressDialog(GetMainWindow(), GT("Building Tag List"),
+      progress = TimedProgressDialog(dbr.app.getMainWindow(), GT("Building Tag List"),
           GetProgressMessage(GT("Scanning default tags")))
       progress.Start()
 
       wx.GetApp().Yield()
 
       # Create the dialog
-      overrides_dialog = CheckListDialog(GetMainWindow(), title=GT("Lintian Overrides"),
+      overrides_dialog = CheckListDialog(dbr.app.getMainWindow(), title=GT("Lintian Overrides"),
           allow_custom=True)
       # FIXME: Needs progress dialog
       overrides_dialog.InitCheckList(tuple(lint_tags))

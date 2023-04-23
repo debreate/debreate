@@ -12,6 +12,8 @@ import os
 
 import wx
 
+import dbr.app
+
 from dbr.language         import GT
 from dbr.workingdir       import ChangeWorkingDirectory
 from globals.bitmaps      import ICON_ERROR
@@ -30,7 +32,6 @@ from ui.button            import GetButtonSizer
 from ui.hyperlink         import Hyperlink
 from ui.layout            import BoxSizer
 from ui.style             import layout as lyt
-from wiz.helper           import GetMainWindow
 
 
 logger = Logger(__name__)
@@ -61,7 +62,7 @@ class BaseDialog(wx.Dialog):
   def __init__(self, parent=None, ID=wx.ID_ANY, title=GT("Title"), pos=wx.DefaultPosition,
         size=wx.DefaultSize, style=wx.DEFAULT_DIALOG_STYLE, name=wx.DialogNameStr):
     if parent == None:
-      parent = GetMainWindow()
+      parent = dbr.app.getMainWindow()
 
     wx.Dialog.__init__(self, parent, ID, title, pos, size, style|wx.RESIZE_BORDER, name)
 
@@ -468,7 +469,7 @@ class ErrorDialog(DetailedMessageDialog):
 ## @todo Doxygen
 class SuperUserDialog(wx.Dialog):
   def __init__(self, ID=wx.ID_ANY):
-    wx.Dialog.__init__(self, GetMainWindow(), ID)
+    wx.Dialog.__init__(self, dbr.app.getMainWindow(), ID)
     # User selector
     self.users = ComboBox(self)
 
@@ -493,7 +494,7 @@ def GetDialogWildcards(ID):
 ## @todo Doxygen
 def GetDirDialog(parent, title):
   if parent == None:
-    parent = GetMainWindow()
+    parent = dbr.app.getMainWindow()
   dir_open = StandardDirDialog(parent, title)
   return dir_open
 
@@ -519,7 +520,7 @@ def GetFileOpenDialog(parent, title, wildcard=wx.FileSelectorDefaultWildcardStr,
       directory=None):
 
   if parent == None:
-    parent = GetMainWindow()
+    parent = dbr.app.getMainWindow()
 
   wildcard = _format_wildcard(wildcard)
 
@@ -542,7 +543,7 @@ def GetFileOpenDialog(parent, title, wildcard=wx.FileSelectorDefaultWildcardStr,
 #    \b \e StandardFileDialog instance
 def GetFileSaveDialog(parent, title, wildcard=wx.FileSelectorDefaultWildcardStr, extension=None):
   if parent == None:
-    parent = GetMainWindow()
+    parent = dbr.app.getMainWindow()
 
   wildcard = _format_wildcard(wildcard)
 
@@ -607,7 +608,7 @@ def ShowErrorDialog(text, details=None, parent=False, warn=False, title=GT("Erro
     logger_text = "{}:\n{}".format(logger_text, details)
 
   if parent == False:
-    parent = GetMainWindow()
+    parent = dbr.app.getMainWindow()
 
   if not parent:
     module_name = __name__
@@ -630,7 +631,7 @@ def ShowErrorDialog(text, details=None, parent=False, warn=False, title=GT("Erro
 def ShowMessageDialog(text, title=GT("Message"), details=None, module=None, parent=None,
       linewrap=0):
   if not parent:
-    parent = GetMainWindow()
+    parent = dbr.app.getMainWindow()
 
   logger_text = text
   if isinstance(text, (tuple, list)):

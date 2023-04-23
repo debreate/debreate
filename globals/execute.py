@@ -17,12 +17,12 @@ import subprocess
 from subprocess import PIPE
 from subprocess import STDOUT
 
+import dbr.app
 import libdbr.bin
 
 from dbr.language  import GT
 from libdbr        import paths
 from libdbr.logger import Logger
-from wiz.helper    import GetMainWindow
 
 
 __logger = Logger(__name__)
@@ -43,7 +43,7 @@ def elevated(cmd, *args, pword, check=False):
   sudo = paths.getExecutable("sudo")
   if not sudo:
     return errno.ENOENT, GT("Super user command (sudo) not available")
-  main_window = GetMainWindow()
+  main_window = dbr.app.getMainWindow()
   # disable input to main window while processing
   main_window.Enable(False)
   cmd_line = "echo {} | {}".format(pword, " ".join(["sudo -S", cmd] + args))

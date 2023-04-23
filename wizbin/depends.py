@@ -10,6 +10,7 @@
 
 import wx
 
+import dbr.app
 import ui.page
 
 from dbr.language      import GT
@@ -27,7 +28,6 @@ from ui.dialog         import ConfirmationDialog
 from ui.layout         import BoxSizer
 from ui.panel          import BorderedPanel
 from ui.style          import layout as lyt
-from wiz.helper        import GetMainWindow
 from wiz.helper        import GetPage
 
 
@@ -294,7 +294,7 @@ class Page(ui.page.Page):
       self.lst_deps.RemoveSelected()
     elif key_id == btnid.CLEAR:
       if self.lst_deps.GetItemCount():
-        if ConfirmationDialog(GetMainWindow(), GT("Confirm"),
+        if ConfirmationDialog(dbr.app.getMainWindow(), GT("Confirm"),
             GT("Clear all dependencies?")).ShowModal() in (wx.ID_OK, wx.OK):
           self.lst_deps.DeleteAllItems()
     if event:

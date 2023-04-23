@@ -180,8 +180,8 @@ logger.info("logging level: {}".format(logger.getLevelString()))
 
 first_run = startup.initConfig()
 
-Debreate = ui.main.MainWindow()
-debreate_app.SetMainWindow(Debreate)
+debreate_app.setMainWindow(ui.main.MainWindow())
+Debreate = debreate_app.getMainWindow()
 
 conf_values = dbr.config.getConfiguration()
 

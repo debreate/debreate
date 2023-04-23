@@ -12,6 +12,7 @@ import os
 
 import wx
 
+import dbr.app
 import ui.page
 
 from dbr.language      import GT
@@ -37,7 +38,6 @@ from ui.panel          import BorderedPanel
 from ui.style          import layout as lyt
 from wiz.helper        import FieldEnabled
 from wiz.helper        import GetField
-from wiz.helper        import GetMainWindow
 
 
 logger = Logger(__name__)
@@ -349,7 +349,7 @@ class Page(ui.page.Page):
 
   ## Creates scripts that link the executables
   def OnGenerate(self, event=None):
-    main_window = GetMainWindow()
+    main_window = dbr.app.getMainWindow()
 
     # Get the amount of links to be created
     total = self.Executables.GetCount()

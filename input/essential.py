@@ -12,10 +12,11 @@ import wx
 
 from wx.adv import OwnerDrawnComboBox
 
+import dbr.app
+
 from ui.panel   import ControlPanel
 from startup    import startup
 from wiz.helper import FieldEnabled
-from wiz.helper import GetMainWindow
 
 
 ## This is a dummy class to facilitate merging to & from unstable branch.
@@ -48,4 +49,4 @@ class EssentialFieldUnused:
     if event:
       event.Skip(True)
     if startup.initialized and FieldEnabled(self):
-      GetMainWindow().OnProjectChanged(event)
+      dbr.app.getMainWindow().OnProjectChanged(event)

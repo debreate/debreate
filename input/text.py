@@ -12,6 +12,8 @@ import time
 
 import wx
 
+import dbr.app
+
 from dbr.font        import MONOSPACED_LG
 from dbr.language    import GT
 from fields.ifield   import InputField
@@ -22,7 +24,6 @@ from ui.layout       import BoxSizer
 from ui.panel        import BorderedPanel
 from ui.panel        import ControlPanel
 from ui.style        import layout as lyt
-from wiz.helper      import GetMainWindow
 
 
 ## Text control set up for handling file drop events.
@@ -88,7 +89,7 @@ class TextArea(wx.TextCtrl, InputField):
       msg_li2 = GT("Continue?")
 
       # FIXME: Use custom dialogs (currently cannot import)
-      message = wx.MessageDialog(GetMainWindow(), "{}\n\n{}".format(msg_li1, msg_li2),
+      message = wx.MessageDialog(dbr.app.getMainWindow(), "{}\n\n{}".format(msg_li1, msg_li2),
           GT("Warning"), wx.OK|wx.CANCEL|wx.ICON_WARNING)
 
       confirmed = message.ShowModal() in (wx.OK, wx.ID_OK, wx.YES, wx.ID_YES)
@@ -106,7 +107,7 @@ class TextArea(wx.TextCtrl, InputField):
       pass
 
     #ShowErrorDialog(GT("There was an error reading file: {}").format(filename))
-    wx.MessageDialog(GetMainWindow(), GT("There was an error reading file: {}").format(filename),
+    wx.MessageDialog(dbr.app.getMainWindow(), GT("There was an error reading file: {}").format(filename),
         GT("Error"), wx.OK|wx.ICON_ERROR).ShowModal()
 
     return False

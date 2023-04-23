@@ -10,6 +10,7 @@
 
 import wx
 
+import dbr.app
 import ui.page
 
 from dbr.language      import GT
@@ -39,7 +40,6 @@ from ui.layout         import BoxSizer
 from ui.style          import layout as lyt
 from wiz.helper        import ErrorTuple
 from wiz.helper        import GetFieldValue
-from wiz.helper        import GetMainWindow
 
 
 logger = Logger(__name__)
@@ -178,7 +178,7 @@ class Page(ui.page.Page):
     new_changes = self.ti_changes.GetValue()
 
     if strings.isEmpty(new_changes):
-      DetailedMessageDialog(GetMainWindow(), GT("Warning"), ICON_WARNING,
+      DetailedMessageDialog(dbr.app.getMainWindow(), GT("Warning"), ICON_WARNING,
           GT("\"Changes\" section is empty")).ShowModal()
 
       self.ti_changes.SetInsertionPointEnd()

@@ -13,6 +13,7 @@ import shutil
 
 import wx
 
+import dbr.app
 import ui.page
 
 from dbr.language      import GT
@@ -44,7 +45,6 @@ from ui.style          import layout as lyt
 from ui.textpreview    import TextPreview
 from wiz.helper        import GetAllTypeFields
 from wiz.helper        import GetField
-from wiz.helper        import GetMainWindow
 
 
 logger = Logger(__name__)
@@ -372,7 +372,7 @@ class Page(ui.page.Page):
   def OnClearCategories(self, event=None):
     cats = GetField(self, listid.CAT)
     if cats.GetItemCount():
-      clear = ConfirmationDialog(GetMainWindow(), GT("Confirm"), GT("Clear categories?"))
+      clear = ConfirmationDialog(dbr.app.getMainWindow(), GT("Confirm"), GT("Clear categories?"))
       if clear.Confirmed():
         cats.DeleteAllItems()
 
@@ -387,7 +387,7 @@ class Page(ui.page.Page):
     # Get data to write to control file
     menu_data = self.GetLauncherInfo().encode("utf-8")
 
-    dia = wx.FileDialog(GetMainWindow(), GT("Save Launcher"), os.getcwd(),
+    dia = wx.FileDialog(dbr.app.getMainWindow(), GT("Save Launcher"), os.getcwd(),
       style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
 
     if ShowDialog(dia):
@@ -422,7 +422,7 @@ class Page(ui.page.Page):
   #    FIXME: Might be problems with reading/writing launchers (see OnExportLauncher) 'Others' field
   #    not being completely filled out.
   def OnLoadLauncher(self, event=None):
-    dia = wx.FileDialog(GetMainWindow(), GT("Open Launcher"), os.getcwd(),
+    dia = wx.FileDialog(dbr.app.getMainWindow(), GT("Open Launcher"), os.getcwd(),
         style=wx.FD_CHANGE_DIR)
 
     if ShowDialog(dia):
@@ -540,7 +540,7 @@ class Page(ui.page.Page):
 
     elif ID == wx.ID_CLEAR:
       if lst_categories.GetItemCount():
-        if ConfirmationDialog(GetMainWindow(), GT("Confirm"),
+        if ConfirmationDialog(dbr.app.getMainWindow(), GT("Confirm"),
             GT("Clear categories?")).ShowModal() in (wx.ID_OK, wx.OK):
           lst_categories.DeleteAllItems()
 

@@ -14,6 +14,7 @@ import traceback
 
 import wx
 
+import dbr.app
 import ui.page
 
 from dbr.event         import ChangePageEvent
@@ -39,7 +40,6 @@ from ui.layout         import BoxSizer
 from ui.panel          import ScrolledPanel
 from wiz.helper        import FieldEnabled
 from wiz.helper        import GetField
-from wiz.helper        import GetMainWindow
 from wiz.helper        import GetMenu
 
 
@@ -174,7 +174,7 @@ class Wizard(wx.Panel):
         ShowErrorDialog(err_msg)
       return
 
-    main_window = GetMainWindow()
+    main_window = dbr.app.getMainWindow()
 
     lyt_main.Add(page, 1, wx.EXPAND)
     self.Pages.append(page)
@@ -422,7 +422,7 @@ class Wizard(wx.Panel):
     self.ID_FIRST = pages[0].GetId()
     self.ID_LAST = pages[-1].GetId()
 
-    main_window = GetMainWindow()
+    main_window = dbr.app.getMainWindow()
 
     # Make sure all pages are hidden
     children = self.GetChildren()
@@ -492,7 +492,7 @@ class Wizard(wx.Panel):
       self.btn_next.Enable(True)
 
     self.Layout()
-    wx.PostEvent(GetMainWindow(), ChangePageEvent(0))
+    wx.PostEvent(dbr.app.getMainWindow(), ChangePageEvent(0))
 
 ## Inherited class for wizard pages
 # ~ class WizardPage(ScrolledPanel):
