@@ -39,7 +39,6 @@ from ui.dialog          import ShowDialog
 from ui.dialog          import ShowErrorDialog
 from ui.helper          import FieldEnabled
 from ui.helper          import GetField
-from ui.helper          import GetPage
 from ui.layout          import BoxSizer
 from ui.panel           import BorderedPanel
 from ui.style           import layout as lyt
@@ -295,7 +294,7 @@ class Page(ui.page.Page):
   #  @return
   #      Control file text
   def GetCtrlInfo(self):
-    pg_depends = GetPage(pgid.DEPENDS)
+    pg_depends = ui.app.getPage(pgid.DEPENDS)
 
     ctrl_list = []
     synopsis = None
@@ -449,7 +448,7 @@ class Page(ui.page.Page):
 
     file_text = readFile(filename)
 
-    page_depends = GetPage(pgid.DEPENDS)
+    page_depends = ui.app.getPage(pgid.DEPENDS)
 
     # Reset fields to default before opening
     self.Reset()

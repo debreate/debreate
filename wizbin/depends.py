@@ -25,7 +25,6 @@ from libdebreate.ident import inputid
 from libdebreate.ident import pgid
 from ui.button         import CreateButton
 from ui.dialog         import ConfirmationDialog
-from ui.helper         import GetPage
 from ui.layout         import BoxSizer
 from ui.panel          import BorderedPanel
 from ui.style          import layout as lyt
@@ -210,7 +209,7 @@ class Page(ui.page.Page):
 
   ## @see `ui.page.Page.init`
   def InitPage(self):
-    control_page = GetPage(pgid.CONTROL)
+    control_page = ui.app.getPage(pgid.CONTROL)
     self.btn_open.Bind(wx.EVT_BUTTON, control_page.OnBrowse)
     self.btn_save.Bind(wx.EVT_BUTTON, control_page.OnSave)
     self.btn_preview.Bind(wx.EVT_BUTTON, control_page.OnPreviewControl)

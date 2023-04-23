@@ -47,7 +47,6 @@ from ui.dialog          import DetailedMessageDialog
 from ui.dialog          import ShowErrorDialog
 from ui.helper          import FieldEnabled
 from ui.helper          import GetField
-from ui.helper          import GetPage
 from ui.layout          import BoxSizer
 from ui.output          import OutputLog
 from ui.panel           import BorderedPanel
@@ -216,8 +215,8 @@ class Page(ui.page.Page):
       create_changelog = "changelog" in task_list
       create_copyright = "copyright" in task_list
 
-      pg_control = GetPage(pgid.CONTROL)
-      pg_menu = GetPage(pgid.MENU)
+      pg_control = ui.app.getPage(pgid.CONTROL)
+      pg_menu = ui.app.getPage(pgid.MENU)
 
       stage_dir = "{}/{}__dbp__".format(build_path, filename)
 
@@ -272,7 +271,7 @@ class Page(ui.page.Page):
       if "files" in task_list:
         UpdateProgress(progress, GT("Copying files"))
 
-        no_follow_link = GetField(GetPage(pgid.FILES), chkid.SYMLINK).IsChecked()
+        no_follow_link = GetField(ui.app.getPage(pgid.FILES), chkid.SYMLINK).IsChecked()
 
         # TODO: move this into a file functions module
         def _copy(f_src, f_tgt, exe=False):
@@ -634,7 +633,7 @@ class Page(ui.page.Page):
       task_list = {}
 
       # Control page
-      pg_control = GetPage(pgid.CONTROL)
+      pg_control = ui.app.getPage(pgid.CONTROL)
       fld_package = GetField(pg_control, inputid.PACKAGE)
       fld_version = GetField(pg_control, inputid.VERSION)
       fld_maint = GetField(pg_control, inputid.MAINTAINER)
@@ -650,12 +649,12 @@ class Page(ui.page.Page):
       required = list(fields_control)
 
       # files page
-      pg_files = GetPage(pgid.FILES)
+      pg_files = ui.app.getPage(pgid.FILES)
       if not pg_files.isOkay():
         return (pg_files.getError())
 
       # Menu launcher page
-      pg_launcher = GetPage(pgid.MENU)
+      pg_launcher = ui.app.getPage(pgid.MENU)
       if pg_launcher.IsOkay():
         task_list["launcher"] = pg_launcher.Get()
 
@@ -733,7 +732,7 @@ class Page(ui.page.Page):
         wx.GetApp().Yield()
         prebuild_progress.Update(progress, GT("Checking {}").format(id_string))
 
-        wizard_page = GetPage(PID)
+        wizard_page = ui.app.getPage(PID)
         if wizard_page.IsOkay():
           task_list[id_string] = wizard_page.Get()
         progress += 1
@@ -977,13 +976,13 @@ class Page(ui.page.Page):
 
   ## @todo Doxygen
   def SetSummary(self, event=None):
-    pg_scripts = GetPage(pgid.SCRIPTS)
+    pg_scripts = ui.app.getPage(pgid.SCRIPTS)
 
     # Make sure the page is not destroyed so no error is thrown
     if self:
       # Set summary when "Build" page is shown
       # Get the file count
-      files_total = GetPage(pgid.FILES).GetFileCount()
+      files_total = ui.app.getPage(pgid.FILES).GetFileCount()
       f = GT("File Count")
       file_count = "{}: {}".format(f, files_total)
 

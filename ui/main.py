@@ -156,7 +156,7 @@ class MainWindow(wx.Frame):
   #  @return
   #    `wx.Menu` instance.
   def getMenu(self, menuId):
-    return self.GetMenuBar().GetMenuById(menuId)
+    return self.getMenuBar().GetMenuById(menuId)
 
   ## Alias of `ui.main.MainWindow.getMenu` for backward compatibility.
   #
@@ -599,36 +599,36 @@ class MainWindow(wx.Frame):
 
     # *** Get Control Data *** #
     control_data = data.split("<<CTRL>>\n")[1].split("\n<</CTRL>>")[0]
-    depends_data = self.Wizard.GetPage(pgid.CONTROL).Set(control_data)
-    self.Wizard.GetPage(pgid.DEPENDS).Set(depends_data)
+    depends_data = self.Wizard.getPage(pgid.CONTROL).Set(control_data)
+    self.Wizard.getPage(pgid.DEPENDS).Set(depends_data)
 
     # *** Get Files Data *** #
     files_data = data.split("<<FILES>>\n")[1].split("\n<</FILES>>")[0]
-    opened = self.Wizard.GetPage(pgid.FILES).Set(files_data)
+    opened = self.Wizard.getPage(pgid.FILES).Set(files_data)
 
     # *** Get Scripts Data *** #
     scripts_data = data.split("<<SCRIPTS>>\n")[1].split("\n<</SCRIPTS>>")[0]
-    self.Wizard.GetPage(pgid.SCRIPTS).Set(scripts_data)
+    self.Wizard.getPage(pgid.SCRIPTS).Set(scripts_data)
 
     # *** Get Changelog Data *** #
     clog_data = data.split("<<CHANGELOG>>\n")[1].split("\n<</CHANGELOG>>")[0]
-    self.Wizard.GetPage(pgid.CHANGELOG).Set(clog_data)
+    self.Wizard.getPage(pgid.CHANGELOG).Set(clog_data)
 
     # *** Get Copyright Data *** #
     try:
       cpright_data = data.split("<<COPYRIGHT>>\n")[1].split("\n<</COPYRIGHT")[0]
-      self.Wizard.GetPage(pgid.COPYRIGHT).Set(cpright_data)
+      self.Wizard.getPage(pgid.COPYRIGHT).Set(cpright_data)
 
     except IndexError:
       pass
 
     # *** Get Menu Data *** #
     m_data = data.split("<<MENU>>\n")[1].split("\n<</MENU>>")[0]
-    self.Wizard.GetPage(pgid.MENU).SetLauncherData(m_data, enabled=True)
+    self.Wizard.getPage(pgid.MENU).SetLauncherData(m_data, enabled=True)
 
     # Get Build Data
     # ~ build_data = data.split("<<BUILD>>\n")[1].split("\n<</BUILD")[0]#.split("\n")
-    # ~ self.Wizard.GetPage(pgid.BUILD).Set(build_data)
+    # ~ self.Wizard.getPage(pgid.BUILD).Set(build_data)
 
     return opened
 

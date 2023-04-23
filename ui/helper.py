@@ -99,7 +99,7 @@ def FindPageOf(field):
     return None
   win_id = parent.GetId()
   if win_id in pgid.IdList:
-    return GetPage(win_id)
+    return ui.app.getPage(win_id)
   return FindPageOf(parent)
 
 
@@ -107,7 +107,7 @@ def FindPageOf(field):
 def GetAllTypeFields(page, fieldType):
   # Objects that are not `ui.page.Page` instances must be passed as 'page' argument
   if not isinstance(page, wx.Window):
-    page = GetPage(page)
+    page = ui.app.getPage(page)
 
   field_list = []
 
@@ -137,7 +137,7 @@ def GetAllTypeFields(page, fieldType):
 #    FIXME: field_type is currently unused
 def GetField(page, field_id, field_type=wx.Window):
   if not isinstance(page, wx.Window):
-    page = GetPage(page)
+    page = ui.app.getPage(page)
 
   if isinstance(page, field_type) and page.GetId() == field_id:
     return page
@@ -169,7 +169,7 @@ def GetField(page, field_id, field_type=wx.Window):
 #    FIXME: field_type is currently unused
 def GetFieldValue(page, field_id, field_type=wx.Window):
   if isinstance(page, int):
-    page = GetWizard().GetPage(page)
+    page = ui.app.getPage(page)
 
   if not isinstance(page, wx.Window):
     # FIXME: Should have error id
