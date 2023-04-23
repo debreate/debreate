@@ -10,6 +10,8 @@
 
 import wx
 
+import ui.page
+
 from dbr.language      import GT
 from globals.tooltips  import SetPageToolTips
 from input.list        import ListCtrlESS
@@ -27,19 +29,18 @@ from ui.panel          import BorderedPanel
 from ui.style          import layout as lyt
 from wiz.helper        import GetMainWindow
 from wiz.helper        import GetPage
-from wiz.wizard        import WizardPage
 
 
 logger = Logger(__name__)
 
 ## Page defining dependencies
-class Page(WizardPage):
+class Page(ui.page.Page):
   ## Constructor
   #
   #  @param parent
   #    Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
-    WizardPage.__init__(self, parent, pgid.DEPENDS)
+    super().__init__(parent, pgid.DEPENDS)
 
     ## Override default label
     self.SetLabel(GT("Dependencies and Conflicts"))
@@ -215,6 +216,14 @@ class Page(WizardPage):
     self.btn_preview.Bind(wx.EVT_BUTTON, control_page.OnPreviewControl)
     return True
 
+  ## @override ui.page.Page.init
+  def init(self):
+    return self.InitPage()
+
+  ## @override ui.page.Page.toString
+  def toString(self):
+    return None
+
   ## Resets all fields on page to default values
   def Reset(self):
     for C in self.categories:
@@ -225,6 +234,10 @@ class Page(WizardPage):
     self.sel_operator.Reset()
     self.ti_version.Clear()
     self.lst_deps.DeleteAllItems()
+
+  ## @override ui.page.Page.reset
+  def reset(self):
+    self.Reset()
 
   ## Adds/Appends/Removes dependency to list
   def SetDepends(self, event=None):

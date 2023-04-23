@@ -17,6 +17,7 @@ import wx
 
 import globals.execute
 import libdbr.bin
+import ui.page
 
 from dbr.functions      import fileUnstripped
 from dbr.language       import GT
@@ -54,19 +55,18 @@ from wiz.helper         import FieldEnabled
 from wiz.helper         import GetField
 from wiz.helper         import GetMainWindow
 from wiz.helper         import GetPage
-from wiz.wizard         import WizardPage
 
 
 logger = Logger(__name__)
 
 ## Build page
-class Page(WizardPage):
+class Page(ui.page.Page):
   ## Constructor
   #
   #  @param parent
   #    Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
-    WizardPage.__init__(self, parent, pgid.BUILD)
+    super().__init__(parent, pgid.BUILD)
 
     # ----- Extra Options
 
@@ -165,6 +165,10 @@ class Page(WizardPage):
     self.SetAutoLayout(True)
     self.SetSizer(lyt_main)
     self.Layout()
+
+  ## @override ui.page.Page.init
+  def init(self):
+    return True
 
   ## Method that builds the actual Debian package
   #
@@ -753,7 +757,7 @@ class Page(WizardPage):
 
   ## @todo Doxygen
   def GetSaveData(self):
-    pass
+    return None
     # ~ build_list = []
 
     # ~ options = (
@@ -772,6 +776,10 @@ class Page(WizardPage):
       # ~ build_list.append("strip")
 
     # ~ return "<<BUILD>>\n{}\n<</BUILD>>".format("\n".join(build_list))
+
+  ## @override ui.page.Page.toString
+  def toString(self):
+    return self.GetSaveData()
 
   ## Installs the built .deb package onto the system
   #
@@ -994,3 +1002,7 @@ class Page(WizardPage):
         scripts_to_make = "{}: 0".format(s)
 
       self.summary.SetValue("\n".join((file_count, scripts_to_make)))
+
+  ## @override ui.page.Page.reset
+  def reset(self):
+    pass

@@ -14,6 +14,8 @@ import wx
 
 from wx.adv import OwnerDrawnComboBox
 
+import ui.page
+
 from dbr.language       import GT
 from globals.errorcodes import dbrerrno
 from globals.tooltips   import SetPageToolTips
@@ -42,19 +44,18 @@ from wiz.helper         import FieldEnabled
 from wiz.helper         import GetField
 from wiz.helper         import GetMainWindow
 from wiz.helper         import GetPage
-from wiz.wizard         import WizardPage
 
 
 logger = Logger(__name__)
 
 ## This panel displays the field input of the control file.
-class Page(WizardPage):
+class Page(ui.page.Page):
   ## Constructor
   #
   #  @param parent
   #    Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
-    WizardPage.__init__(self, parent, pgid.CONTROL)
+    super().__init__(parent, pgid.CONTROL)
 
     pnl_bg = wx.Panel(self)
 
@@ -277,6 +278,10 @@ class Page(WizardPage):
     self.SetSizer(lyt_main)
     self.Layout()
 
+  ## @override ui.page.Page.init
+  def init(self):
+    return True
+
   ## Retrieves information for control file export
   #
   #  @return
@@ -425,6 +430,10 @@ class Page(WizardPage):
     data = self.GetCtrlInfo()
     return "<<CTRL>>\n{}<</CTRL>>".format(data)
 
+  ## @override ui.page.Page.toString
+  def toString(self):
+    return self.GetSaveData()
+
   ## Reads & parses page data from a formatted text file
   #
   #  @param filename
@@ -498,6 +507,10 @@ class Page(WizardPage):
       S.SetSelection(S.Default)
 
     self.chk_essential.SetValue(self.chk_essential.Default)
+
+  ## @override ui.page.Page.reset
+  def reset(self):
+    self.Reset()
 
   ## Fills page's fields with input data
   #

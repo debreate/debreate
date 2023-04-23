@@ -12,6 +12,8 @@ import os
 
 import wx
 
+import ui.page
+
 from dbr.language      import GT
 from globals.fileitem  import FileItem
 from globals.tooltips  import SetPageToolTips
@@ -36,7 +38,6 @@ from ui.style          import layout as lyt
 from wiz.helper        import FieldEnabled
 from wiz.helper        import GetField
 from wiz.helper        import GetMainWindow
-from wiz.wizard        import WizardPage
 
 
 logger = Logger(__name__)
@@ -54,13 +55,13 @@ id_definitions = {
 }
 
 ## Scripts page
-class Page(WizardPage):
+class Page(ui.page.Page):
   ## Constructor
   #
   #  @param parent
   #    Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
-    WizardPage.__init__(self, parent, pgid.SCRIPTS)
+    super().__init__(parent, pgid.SCRIPTS)
 
     preinst = DebianScript(self, ID_INST_PRE)
     postinst = DebianScript(self, ID_INST_POST)
@@ -209,6 +210,10 @@ class Page(WizardPage):
     self.SetSizer(lyt_main)
     self.Layout()
 
+  ## @override ui.page.Page.init
+  def init(self):
+    return True
+
   ## @todo Doxygen
   def ChangeBG(self, exists):
     if exists == False:
@@ -246,6 +251,10 @@ class Page(WizardPage):
         data.append("<<{}>>\n0\n<</{}>>".format(group[2], group[2]))
 
     return "<<SCRIPTS>>\n{}\n<</SCRIPTS>>".format("\n".join(data))
+
+  ## @override ui.page.Page.toString
+  def toString(self):
+    return self.GetSaveData()
 
   ## Imports executables from files page for Auto-Link
   def ImportExes(self, event=None):
@@ -445,6 +454,10 @@ class Page(WizardPage):
 
     self.ti_autolink.Reset()
     self.Executables.Reset()
+
+  ## @override ui.page.Page.reset
+  def reset(self):
+    self.Reset()
 
   ## Changes current displayed script
   def ScriptSelect(self, event=None):

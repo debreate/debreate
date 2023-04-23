@@ -13,6 +13,8 @@ import traceback
 
 import wx
 
+import ui.page
+
 from dbr.language       import GT
 from globals.bitmaps    import ICON_ERROR
 from globals.bitmaps    import ICON_EXCLAMATION
@@ -47,7 +49,6 @@ from ui.tree            import DirectoryTreePanel
 from util               import depends
 from wiz.helper         import FieldEnabled
 from wiz.helper         import GetMainWindow
-from wiz.wizard         import WizardPage
 
 
 logger = Logger(__name__)
@@ -59,13 +60,13 @@ efficiency_threshold = 250
 warning_threshhold = 1000
 
 ## Class defining controls for the "Paths" page
-class Page(WizardPage):
+class Page(ui.page.Page):
   ## Constructor
   #
   #  @param parent
   #      Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
-    WizardPage.__init__(self, parent, pgid.FILES)
+    super().__init__(parent, pgid.FILES)
 
     # *** Left Panel *** #
 
@@ -218,6 +219,10 @@ class Page(WizardPage):
 
     SetPageToolTips(self)
 
+  ## @override ui.page.Page.init
+  def init(self):
+    return True
+
   ## Adds files to file list
   #
   #  @param dirs
@@ -287,6 +292,10 @@ class Page(WizardPage):
   def Get(self):
     # Remove section delimiters & first line which is just an integer
     return self.GetSaveData().split("\n")[2:-1]
+
+  ## @override ui.page.Page.toString
+  def toString(self):
+    return self.Get()
 
   ## Retrieves target destination set by user input
   #
@@ -662,6 +671,10 @@ class Page(WizardPage):
   #      Value of self.lst_files.Reset
   def Reset(self):
     return self.lst_files.Reset()
+
+  ## @override ui.page.Page.reset
+  def reset(self):
+    self.Reset()
 
   ## Selects all files in the list
   #

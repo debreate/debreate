@@ -12,6 +12,8 @@ import os
 
 import wx
 
+import ui.page
+
 from dbr.functions      import GetLongestLine
 from dbr.language       import GT
 from dbr.templates      import GetCustomLicenses
@@ -38,7 +40,6 @@ from ui.layout          import BoxSizer
 from ui.style           import layout as lyt
 from wiz.helper         import GetField
 from wiz.helper         import GetMainWindow
-from wiz.wizard         import WizardPage
 
 
 __logger = Logger(__name__)
@@ -50,9 +51,9 @@ copyright_header = GT("Copyright © {} <copyright holder(s)> [<email>]")
 #
 #  @param parent
 #    Parent `wx.Window` instance.
-class Page(WizardPage):
+class Page(ui.page.Page):
   def __init__(self, parent):
-    WizardPage.__init__(self, parent, pgid.COPYRIGHT)
+    super().__init__(parent, pgid.COPYRIGHT)
 
     self.custom_licenses = []
 
@@ -114,6 +115,10 @@ class Page(WizardPage):
     self.SetSizer(lyt_main)
     self.Layout()
 
+  ## @override ui.page.Page.init
+  def init(self):
+    return True
+
   ## Displays a confirmation dialog to clear the text area if it is not empty.
   #
   #  @return
@@ -160,6 +165,10 @@ class Page(WizardPage):
   def GetSaveData(self):
     data = self.Get()
     return "<<COPYRIGHT>>\n{}\n<</COPYRIGHT>>".format(data)
+
+  ## @override ui.page.Page.toString
+  def toString(self):
+    return self.GetSaveData()
 
   ## Retrieves template name.
   #
@@ -370,6 +379,10 @@ class Page(WizardPage):
     if self.sel_templates.IsEnabled():
       self.sel_templates.Reset()
       self.OnSelectLicense(self.sel_templates)
+
+  ## @override ui.page.Page.reset
+  def reset(self):
+    self.Reset()
 
   ## Sets the text of the displayed copyright.
   #

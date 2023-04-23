@@ -10,6 +10,8 @@
 
 import wx
 
+import ui.page
+
 from dbr.language      import GT
 from f_export.ftarget  import FileOTarget
 from globals.bitmaps   import ICON_WARNING
@@ -38,19 +40,18 @@ from ui.style          import layout as lyt
 from wiz.helper        import ErrorTuple
 from wiz.helper        import GetFieldValue
 from wiz.helper        import GetMainWindow
-from wiz.wizard        import WizardPage
 
 
 logger = Logger(__name__)
 
 ## Changelog page.
-class Page(WizardPage):
+class Page(ui.page.Page):
   ## Constructor
   #
   #  @param parent
   #    Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
-    WizardPage.__init__(self, parent, pgid.CHANGELOG)
+    super().__init__(parent, pgid.CHANGELOG)
 
     txt_package = wx.StaticText(self, label=GT("Package"), name="package")
     self.ti_package = TextArea(self, inputid.PACKAGE, name=txt_package.Name)
@@ -168,6 +169,10 @@ class Page(WizardPage):
     self.SetSizer(lyt_main)
     self.Layout()
 
+  ## @override ui.page.Page.init
+  def init(self):
+    return True
+
   ## Formats input text from 'changes' field for new entry in changelog
   def AddInfo(self, event=None):
     new_changes = self.ti_changes.GetValue()
@@ -237,6 +242,10 @@ class Page(WizardPage):
       target = "<<DEST>>{}<</DEST>>".format(target)
     return "\n".join(("<<CHANGELOG>>", target, self.dsp_changes.GetValue(), "<</CHANGELOG>>"))
 
+  ## @override ui.page.Page.toString
+  def toString(self):
+    return self.GetSaveData()
+
   ## Checks the page's fields for exporting
   #
   #  @return
@@ -276,3 +285,7 @@ class Page(WizardPage):
     else:
       self.pnl_target.SetPath(target)
     self.dsp_changes.SetValue("\n".join(changelog[1:]))
+
+  ## @override ui.page.Page.reset
+  def reset(self):
+    pass

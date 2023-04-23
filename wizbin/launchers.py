@@ -13,6 +13,8 @@ import shutil
 
 import wx
 
+import ui.page
+
 from dbr.language      import GT
 from globals.tooltips  import SetPageToolTips
 from input.list        import ListCtrl
@@ -43,19 +45,18 @@ from ui.textpreview    import TextPreview
 from wiz.helper        import GetAllTypeFields
 from wiz.helper        import GetField
 from wiz.helper        import GetMainWindow
-from wiz.wizard        import WizardPage
 
 
 logger = Logger(__name__)
 
 ## Page for creating a system menu launcher
-class Page(WizardPage):
+class Page(ui.page.Page):
   ## Constructor
   #
   #  @param parent
   #      Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
-    WizardPage.__init__(self, parent, pgid.MENU) #, name=GT("Menu Launcher"))
+    super().__init__(parent, pgid.MENU) #, name=GT("Menu Launcher"))
 
     ## Override default label
     self.Label = GT("Menu Launcher")
@@ -275,6 +276,10 @@ class Page(WizardPage):
     self.SetSizer(lyt_main)
     self.Layout()
 
+  ## @override ui.page.Page.init
+  def init(self):
+    return True
+
   ## Retrieves page data for export
   def Get(self):
     return self.GetLauncherInfo()
@@ -354,6 +359,10 @@ class Page(WizardPage):
       return "<<MENU>>\n1\n{}\n<</MENU>>".format(data)
     else:
       return "<<MENU>>\n0\n<</MENU>>"
+
+  ## @override ui.page.Page.toString
+  def toString(self):
+    return self.GetSaveData()
 
   ## @todo Doxygen
   def IsOkay(self):
@@ -502,6 +511,10 @@ class Page(WizardPage):
           field.Reset()
 
     self.OnToggle()
+
+  ## @override ui.page.Page.reset
+  def reset(self):
+    self.Reset()
 
   ## @todo Doxygen
   def SetCategory(self, event=None):
