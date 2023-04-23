@@ -208,18 +208,32 @@ def GetMainWindow():
 #    \b \e Integer ID of desired menu.
 #  @return
 #    The \b \e wx.Menu instance.
+#  @deprecated
+#    Use `ui.main.MainWindow.GetMenu`.
 def GetMenu(menuId):
+  _logger.deprecated(GetMenu, alt="ui.main.MainWindow.GetMenu")
+
   return ui.app.getMainWindow().GetMenu(menuId)
 
 
 ## Retrieves the ui.menu.MenuBar instance in use by the main window.
+#
+#  @deprecated
+#    Use `ui.main.MainWindow.GetMenuBar`.
 def GetMenuBar():
+  _logger.deprecated(GetMenuBar, alt="ui.main.MainWindow.GetMenuBar")
+
   return ui.app.getMainWindow().GetMenuBar()
 
 
 ## Retrieves the `ui.page.Page` instance that matched pageId.
+#
+#  @deprecated
+#    Use `wiz.wizard.Wizard.GetPage`.
 def GetPage(pageId):
-  page = GetWizard().GetPage(pageId)
+  _logger.deprecated(GetPage, alt="wiz.wizard.Wizard.GetPage")
+
+  page = ui.app.getWizard().GetPage(pageId)
   return page
 
 
@@ -227,10 +241,19 @@ def GetPage(pageId):
 #
 #  @return
 #    \b e\ tuple : List of all active wizard page IDs.
+#  @deprecated
+#    Use `wiz.wizard.Wizard.GetPagesIdList`.
 def GetPagesIdList():
-  return GetWizard().GetPagesIdList()
+  _logger.deprecated(GetPagesIdList, alt="wiz.wizard.Wizard.GetPagesIdList")
+
+  return ui.app.getWizard().GetPagesIdList()
 
 
 ## Retrieves the wiz.wizard.Wizard instance.
+#
+#  @deprecated
+#    Use `ui.app.getWizard`.
 def GetWizard():
+  _logger.deprecated(GetWizard, alt=ui.app.getWizard)
+
   return ui.app.getMainWindow().GetWizard()

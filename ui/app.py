@@ -97,3 +97,10 @@ def get():
 #    `ui.main.MainWindow` instance.
 def getMainWindow():
   return get().getMainWindow()
+
+## Helper function to get the wizard interface instance.
+#
+#  @return
+#    `wiz.wizard.Wizard` instance.
+def getWizard():
+  return get().getWizard()
