@@ -6,7 +6,7 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module dbr.help
+## @module ui.help
 
 
 import os

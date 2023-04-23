@@ -39,7 +39,6 @@ from dbr.event            import EVT_CHANGE_PAGE
 from dbr.event            import EVT_TIMER_STOP
 from dbr.functions        import GetCurrentVersion
 from dbr.functions        import UsingDevelopmentVersion
-from dbr.help             import HelpDialog
 from dbr.icon             import Icon
 from dbr.language         import GT
 from dbr.timer            import DebreateTimer
@@ -61,6 +60,7 @@ from ui.dialog            import ConfirmationDialog
 from ui.dialog            import DetailedMessageDialog
 from ui.dialog            import ShowErrorDialog
 from ui.distcache         import DistNamesCacheDialog
+from ui.help              import HelpDialog
 from ui.layout            import BoxSizer
 from ui.menu              import createMenuBar
 from ui.progress          import ProgressDialog
