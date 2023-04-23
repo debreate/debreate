@@ -95,3 +95,7 @@ class Page(panel.ScrolledPanel, AbstractClass):
   @abstractmethod
   def reset(self):
     pass
+
+  ## Alias of `ui.page.Page.reset` for backwards compatibility.
+  def Reset(self):
+    self.reset()

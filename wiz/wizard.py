@@ -378,10 +378,10 @@ class Wizard(wx.Panel):
 
   ## Resets each page's fields to default settings.
   #
-  #  Calls `wiz.wizard.WizardPage.Reset`.
+  #  Calls `ui.page.Page.reset`.
   def ResetPagesInfo(self):
     for page in self.Pages:
-      page.Reset()
+      page.reset()
 
   ## Sets up the wizard for 'binary' mode.
   #
