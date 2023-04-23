@@ -10,15 +10,9 @@
 
 import os
 
-from dbr.language      import GT
-from libdbr.fileio     import writeFile
-from libdbr.logger     import Logger
-from libdbr.misc       import generateMD5Hash
-from libdebreate.ident import chkid
-from libdebreate.ident import pgid
-from ui.dialog         import ErrorDialog
-from wiz.helper        import GetField
-from wiz.helper        import GetMainWindow
+from libdbr.fileio import writeFile
+from libdbr.logger import Logger
+from libdbr.misc   import generateMD5Hash
 
 
 logger = Logger(__name__)
