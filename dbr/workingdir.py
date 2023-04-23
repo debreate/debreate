@@ -33,7 +33,7 @@ def ChangeWorkingDirectory(target_dir):
   try:
     os.chdir(target_dir)
     cfg_user = config.get("user")
-    config_dir = cfg_user.getValue("workingdir")
+    config_dir = cfg_user.getValue("workingdir", default=os.getcwd())
 
     if config_dir != target_dir:
       cfg_user.setValue("workingdir", target_dir)
