@@ -22,10 +22,7 @@ import ui.app
 
 from dbr.language  import GT
 from libdbr        import paths
-from libdbr.logger import Logger
 
-
-__logger = Logger(__name__)
 
 ## Executes a command with elevated privileges.
 #
