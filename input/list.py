@@ -133,6 +133,9 @@ class ListCtrlBase(wx.ListView, ListCtrlAutoWidthMixin, InputField):
     selected_indexes = self.GetSelectedIndexes()
     if selected_indexes != None:
       for index in reversed(selected_indexes):
+        if index < 0:
+          # don't try to delete indexes that don't exist
+          continue
         self.DeleteItem(index)
 
   ## @todo Doxygen
