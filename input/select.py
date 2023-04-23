@@ -16,22 +16,17 @@ from dbr.font        import MONOSPACED_MD
 from fields.ifield   import InputField
 from input.essential import EssentialField
 from libdbr          import strings
-from libdbr.logger   import Logger
 
 
-## Custom wx.Choice class for compatibility with older wx versions.
-#
-#  @deprecated
+## Custom wx.Choice class.
 class Choice(wx.Choice, InputField):
   def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
       choices=[], style=0, validator=wx.DefaultValidator, name=wx.ChoiceNameStr,
       defaultValue=0, required=False, outLabel=None):
-    Logger(Choice.__name__).deprecated(Choice)
-
     wx.Choice.__init__(self, parent, win_id, pos, size, choices, style, validator, name)
     InputField.__init__(self, defaultValue, required, outLabel)
 
-  ## wx 2.8 does not define wx.Choice.Set.
+  ## Set available values.
   #
   #  @param items
   #    List of items to be set.
@@ -39,12 +34,7 @@ class Choice(wx.Choice, InputField):
     cached_value = self.GetStringSelection()
     if not isinstance(items, (tuple, list, dict,)):
       items = (items,)
-    if wx.MAJOR_VERSION > 2:
-      wx.Choice.Set(self, items)
-    else:
-      self.Clear()
-      for I in items:
-        self.Append(I)
+    wx.Choice.Set(self, items)
     if cached_value:
       self.SetStringSelection(cached_value)
 
