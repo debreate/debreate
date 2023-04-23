@@ -25,10 +25,10 @@ from libdebreate.ident import inputid
 from libdebreate.ident import pgid
 from ui.button         import CreateButton
 from ui.dialog         import ConfirmationDialog
+from ui.helper         import GetPage
 from ui.layout         import BoxSizer
 from ui.panel          import BorderedPanel
 from ui.style          import layout as lyt
-from wiz.helper        import GetPage
 
 
 logger = Logger(__name__)

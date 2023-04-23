@@ -20,7 +20,7 @@ from globals.changes   import section_delims
 from libdbr.logger     import Logger
 from libdebreate.ident import btnid
 from libdebreate.ident import pgid
-from wiz.helper        import FieldEnabled
+from ui.helper         import FieldEnabled
 
 
 logger = Logger(__name__)

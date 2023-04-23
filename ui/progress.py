@@ -16,7 +16,7 @@ from dbr.event     import EVT_TIMER_STOP
 from dbr.language  import GT
 from dbr.timer     import DebreateTimer
 from libdbr.logger import Logger
-from wiz.helper    import FieldEnabled
+from ui.helper     import FieldEnabled
 
 
 logger = Logger(__name__)

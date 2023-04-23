@@ -40,6 +40,7 @@ from ui.dialog          import GetDirDialog
 from ui.dialog          import ShowDialog
 from ui.dialog          import ShowErrorDialog
 from ui.dialog          import ShowMessageDialog
+from ui.helper          import FieldEnabled
 from ui.layout          import BoxSizer
 from ui.panel           import BorderedPanel
 from ui.progress        import PD_DEFAULT_STYLE
@@ -48,7 +49,6 @@ from ui.style           import layout as lyt
 from ui.tree            import DirectoryTree
 from ui.tree            import DirectoryTreePanel
 from util               import depends
-from wiz.helper         import FieldEnabled
 
 
 logger = Logger(__name__)

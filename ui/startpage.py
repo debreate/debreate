@@ -8,7 +8,7 @@
 
 ## The initial wizard page.
 #
-#  @module wiz.pginit
+#  @module ui.startpage
 
 import wx
 

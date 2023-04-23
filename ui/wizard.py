@@ -8,7 +8,7 @@
 
 ## The wizard interface
 #
-#  @module wiz.wizard
+#  @module ui.wizard
 
 import traceback
 
@@ -36,10 +36,10 @@ from startup           import tests
 from ui.button         import CreateButton
 from ui.dialog         import ShowDialog
 from ui.dialog         import ShowErrorDialog
+from ui.helper         import FieldEnabled
+from ui.helper         import GetField
 from ui.layout         import BoxSizer
 from ui.panel          import ScrolledPanel
-from wiz.helper        import FieldEnabled
-from wiz.helper        import GetField
 
 
 _logger = Logger(__name__)
@@ -303,10 +303,10 @@ class Wizard(wx.Panel):
         return P
     _logger.warn("Page with ID {} has not been constructed".format(pageId))
 
-  ## Alias of `wiz.wizard.Wizard.getPage` for backward compatibility.
+  ## Alias of `ui.wizard.Wizard.getPage` for backward compatibility.
   #
   #  @deprecated
-  #    Use `wiz.wizard.Wizard.getPage`.
+  #    Use `ui.wizard.Wizard.getPage`.
   def GetPage(self, pageId):
     _logger.deprecated(self.GetPage, alt=self.getPage)
 
@@ -322,10 +322,10 @@ class Wizard(wx.Panel):
       page_ids.append(P.GetId())
     return tuple(page_ids)
 
-  ## Alias of `wiz.wizard.Wizard.getPagesIdList` for backword compatibility.
+  ## Alias of `ui.wizard.Wizard.getPagesIdList` for backword compatibility.
   #
   #  @deprecated
-  #    Use `wiz.wizard.Wizard.getPagesIdList`.
+  #    Use `ui.wizard.Wizard.getPagesIdList`.
   def GetPagesIdList(self):
     _logger.deprecated(self.GetPagesIdList, alt=self.getPagesIdList)
 
@@ -350,7 +350,7 @@ class Wizard(wx.Panel):
   ## Uses children `ui.page.Page` instances to set pages.
   #
   #  @return
-  #    Value of `wiz.wizard.Wizard.SetPages`.
+  #    Value of `ui.wizard.Wizard.SetPages`.
   def InitPages(self):
     pages = []
     for C in self.GetChildren():
@@ -385,7 +385,7 @@ class Wizard(wx.Panel):
   ## Resets all but greeting page.
   #
   #  @return
-  #    Value of `wiz.wizard.Wizard.Initialize`.
+  #    Value of `ui.wizard.Wizard.Initialize`.
   def Reset(self):
     for PAGE in reversed(self.Pages):
       if PAGE.Id != pgid.GREETING:
@@ -548,7 +548,7 @@ class Wizard(wx.Panel):
 
   # ~ ## Retrieves the page's label
   # ~ #
-  # ~ #  if wiz.wizard.WizardPage.Label is not set, returns the wiz.wizard.WizardPage.Name attribute
+  # ~ #  if ui.wizard.WizardPage.Label is not set, returns the ui.wizard.WizardPage.Name attribute
   # ~ def GetLabel(self):
     # ~ if self.PLabel == None:
       # ~ return self.GetName()
@@ -607,7 +607,7 @@ class Wizard(wx.Panel):
 
   # ~ ## Resets page's fields to default settings
   # ~ #
-  # ~ #  Set the wiz.wizard.WizardPage.IgnoreResetIds attribute for any field
+  # ~ #  Set the ui.wizard.WizardPage.IgnoreResetIds attribute for any field
   # ~ #  that should not be reset
   # ~ def Reset(self):
     # ~ field_ids = (

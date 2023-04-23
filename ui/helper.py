@@ -8,7 +8,7 @@
 
 ## Support functions for accessing wizard pages & attributes.
 #
-#  @module wiz.helper
+#  @module ui.helper
 
 import wx
 
@@ -229,9 +229,9 @@ def GetMenuBar():
 ## Retrieves the `ui.page.Page` instance that matched pageId.
 #
 #  @deprecated
-#    Use `wiz.wizard.Wizard.GetPage`.
+#    Use `ui.wizard.Wizard.GetPage`.
 def GetPage(pageId):
-  _logger.deprecated(GetPage, alt="wiz.wizard.Wizard.getPage")
+  _logger.deprecated(GetPage, alt="ui.wizard.Wizard.getPage")
 
   page = ui.app.getWizard().getPage(pageId)
   return page
@@ -242,14 +242,14 @@ def GetPage(pageId):
 #  @return
 #    \b e\ tuple : List of all active wizard page IDs.
 #  @deprecated
-#    Use `wiz.wizard.Wizard.getPagesIdList`.
+#    Use `ui.wizard.Wizard.getPagesIdList`.
 def GetPagesIdList():
-  _logger.deprecated(GetPagesIdList, alt="wiz.wizard.Wizard.getPagesIdList")
+  _logger.deprecated(GetPagesIdList, alt="ui.wizard.Wizard.getPagesIdList")
 
   return ui.app.getWizard().getPagesIdList()
 
 
-## Retrieves the wiz.wizard.Wizard instance.
+## Retrieves the ui.wizard.Wizard instance.
 #
 #  @deprecated
 #    Use `ui.app.getWizard`.

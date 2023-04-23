@@ -30,12 +30,12 @@ from ui.dialog            import BaseDialog
 from ui.dialog            import ConfirmationDialog
 from ui.dialog            import ShowErrorDialog
 from ui.dialog            import ShowMessageDialog
+from ui.helper            import GetField
 from ui.layout            import BoxSizer
 from ui.panel             import BorderedPanel
 from ui.progress          import ProgressDialog
 from ui.style             import layout as lyt
 from ui.textpreview       import TextPreview
-from wiz.helper           import GetField
 
 
 logger = Logger(__name__)

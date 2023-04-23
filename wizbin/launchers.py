@@ -40,11 +40,11 @@ from ui.button         import CreateButton
 from ui.dialog         import ConfirmationDialog
 from ui.dialog         import ShowDialog
 from ui.dialog         import ShowErrorDialog
+from ui.helper         import GetAllTypeFields
+from ui.helper         import GetField
 from ui.layout         import BoxSizer
 from ui.style          import layout as lyt
 from ui.textpreview    import TextPreview
-from wiz.helper        import GetAllTypeFields
-from wiz.helper        import GetField
 
 
 logger = Logger(__name__)

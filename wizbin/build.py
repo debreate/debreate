@@ -45,6 +45,9 @@ from ui.button          import CreateButton
 from ui.checklist       import CheckListDialog
 from ui.dialog          import DetailedMessageDialog
 from ui.dialog          import ShowErrorDialog
+from ui.helper          import FieldEnabled
+from ui.helper          import GetField
+from ui.helper          import GetPage
 from ui.layout          import BoxSizer
 from ui.output          import OutputLog
 from ui.panel           import BorderedPanel
@@ -52,9 +55,6 @@ from ui.progress        import PD_DEFAULT_STYLE
 from ui.progress        import ProgressDialog
 from ui.progress        import TimedProgressDialog
 from ui.style           import layout as lyt
-from wiz.helper         import FieldEnabled
-from wiz.helper         import GetField
-from wiz.helper         import GetPage
 
 
 logger = Logger(__name__)

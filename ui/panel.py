@@ -13,9 +13,9 @@ import wx
 from wx.lib.scrolledpanel import ScrolledPanel as sp
 
 from libdebreate.ident import inputid
+from ui.helper         import GetField
 from ui.layout         import BoxSizer
 from ui.style          import PANEL_BORDER
-from wiz.helper        import GetField
 
 
 ## Global function for setting & updating scrolled window scrollbars

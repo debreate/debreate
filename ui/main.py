@@ -61,13 +61,13 @@ from ui.dialog            import DetailedMessageDialog
 from ui.dialog            import ShowErrorDialog
 from ui.distcache         import DistNamesCacheDialog
 from ui.help              import HelpDialog
+from ui.helper            import GetPage
 from ui.layout            import BoxSizer
 from ui.menu              import createMenuBar
 from ui.progress          import ProgressDialog
 from ui.quickbuild        import QuickBuild
-from wiz.helper           import GetPage
-from wiz.pginit           import Page as PageInit
-from wiz.wizard           import Wizard
+from ui.startpage         import Page as PageInit
+from ui.wizard            import Wizard
 
 
 logger = Logger(__name__)
@@ -186,11 +186,11 @@ class MainWindow(wx.Frame):
   ## Retrieves the Wizard instance
   #
   #  @return
-  #  	wiz.wizard.Wizard
+  #    `ui.wizard.Wizard` instance.
   def GetWizard(self):
     return self.Wizard
 
-  ## Sets the pages in the wiz.wizard.Wizard instance
+  ## Sets the pages in the `ui.wizard.Wizard` instance.
   def InitWizard(self):
     self.Wizard.AddPage(PageInit(self.Wizard))
     self.Wizard.SetModeBin(0)

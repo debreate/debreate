@@ -36,10 +36,10 @@ from libdebreate.ident import pgid
 from libdebreate.ident import selid
 from ui.button         import CreateButton
 from ui.dialog         import DetailedMessageDialog
+from ui.helper         import ErrorTuple
+from ui.helper         import GetFieldValue
 from ui.layout         import BoxSizer
 from ui.style          import layout as lyt
-from wiz.helper        import ErrorTuple
-from wiz.helper        import GetFieldValue
 
 
 logger = Logger(__name__)

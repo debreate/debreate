@@ -48,7 +48,7 @@ class DebreateApp(wx.App):
   ## Retrieves the wizard.
   #
   #  @return
-  #    `wiz.wizard.Wizard` instance.
+  #    `ui.wizard.Wizard` instance.
   def getWizard(self):
     if self.MainWindow:
       return self.MainWindow.GetWizard()
@@ -57,7 +57,7 @@ class DebreateApp(wx.App):
   ## Alias of `ui.app.DebreateApp.getWizard`.
   #
   #  @return
-  #    `wiz.wizard.Wizard` instance.
+  #    `ui.wizard.Wizard` instance.
   #  @deprecated
   #    Use `ui.app.DebreateApp.getWizard`.
   def GetWizard(self):
@@ -101,6 +101,6 @@ def getMainWindow():
 ## Helper function to get the wizard interface instance.
 #
 #  @return
-#    `wiz.wizard.Wizard` instance.
+#    `ui.wizard.Wizard` instance.
 def getWizard():
   return get().getWizard()

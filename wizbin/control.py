@@ -37,13 +37,13 @@ from ui.dialog          import GetFileOpenDialog
 from ui.dialog          import GetFileSaveDialog
 from ui.dialog          import ShowDialog
 from ui.dialog          import ShowErrorDialog
+from ui.helper          import FieldEnabled
+from ui.helper          import GetField
+from ui.helper          import GetPage
 from ui.layout          import BoxSizer
 from ui.panel           import BorderedPanel
 from ui.style           import layout as lyt
 from ui.textpreview     import TextPreview
-from wiz.helper         import FieldEnabled
-from wiz.helper         import GetField
-from wiz.helper         import GetPage
 
 
 logger = Logger(__name__)

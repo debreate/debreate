@@ -94,7 +94,7 @@ def createMenuBar(parent):
   menu_file = wx.Menu()
 
   menubar.Append(menu_file, GT("File"), menuid.FILE)
-  # This menu is filled from wiz.wizard.Wizard.SetPages
+  # This menu is filled from ui.wizard.Wizard.SetPages
   menubar.Append(wx.Menu(), GT("Page"), menuid.PAGE)
 
   # *** File Menu *** #

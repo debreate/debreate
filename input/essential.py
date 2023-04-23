@@ -14,9 +14,9 @@ from wx.adv import OwnerDrawnComboBox
 
 import ui.app
 
-from ui.panel   import ControlPanel
 from startup    import startup
-from wiz.helper import FieldEnabled
+from ui.helper  import FieldEnabled
+from ui.panel   import ControlPanel
 
 
 ## This is a dummy class to facilitate merging to & from unstable branch.

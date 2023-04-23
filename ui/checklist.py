@@ -16,11 +16,11 @@ from libdbr.logger     import Logger
 from libdebreate.ident import btnid
 from libdebreate.ident import pnlid
 from ui.button         import CreateButton
+from ui.helper         import GetField
 from ui.layout         import BoxSizer
 from ui.panel          import BorderedPanel
 from ui.panel          import ScrolledPanel
 from ui.style          import layout as lyt
-from wiz.helper        import GetField
 
 
 __logger = Logger(__name__)
