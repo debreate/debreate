@@ -12,31 +12,31 @@ import os
 
 import wx
 
-from dbr.language     import GT
-from globals.fileitem import FileItem
-from globals.ident    import btnid
-from globals.ident    import inputid
-from globals.ident    import pgid
-from globals.tooltips import SetPageToolTips
-from input.filelist   import BasicFileList
-from input.markdown   import MarkdownDialog
-from input.pathctrl   import PathCtrl
-from input.text       import TextAreaPanelESS
-from input.toggle     import CheckBox
-from libdbr           import strings
-from libdbr.fileio    import readFile
-from libdbr.logger    import Logger
-from ui.button        import CreateButton
-from ui.dialog        import ConfirmationDialog
-from ui.dialog        import DetailedMessageDialog
-from ui.dialog        import ShowDialog
-from ui.layout        import BoxSizer
-from ui.panel         import BorderedPanel
-from ui.style         import layout as lyt
-from wiz.helper       import FieldEnabled
-from wiz.helper       import GetField
-from wiz.helper       import GetMainWindow
-from wiz.wizard       import WizardPage
+from dbr.language      import GT
+from globals.fileitem  import FileItem
+from globals.tooltips  import SetPageToolTips
+from input.filelist    import BasicFileList
+from input.markdown    import MarkdownDialog
+from input.pathctrl    import PathCtrl
+from input.text        import TextAreaPanelESS
+from input.toggle      import CheckBox
+from libdbr            import strings
+from libdbr.fileio     import readFile
+from libdbr.logger     import Logger
+from libdebreate.ident import btnid
+from libdebreate.ident import inputid
+from libdebreate.ident import pgid
+from ui.button         import CreateButton
+from ui.dialog         import ConfirmationDialog
+from ui.dialog         import DetailedMessageDialog
+from ui.dialog         import ShowDialog
+from ui.layout         import BoxSizer
+from ui.panel          import BorderedPanel
+from ui.style          import layout as lyt
+from wiz.helper        import FieldEnabled
+from wiz.helper        import GetField
+from wiz.helper        import GetMainWindow
+from wiz.wizard        import WizardPage
 
 
 logger = Logger(__name__)

@@ -16,9 +16,6 @@ from wx.adv import OwnerDrawnComboBox
 
 from dbr.language       import GT
 from globals.errorcodes import dbrerrno
-from globals.ident      import btnid
-from globals.ident      import inputid
-from globals.ident      import pgid
 from globals.tooltips   import SetPageToolTips
 from input.select       import ChoiceESS
 from input.select       import ComboBoxESS
@@ -29,6 +26,9 @@ from libdbr             import strings
 from libdbr.fileio      import readFile
 from libdbr.fileio      import writeFile
 from libdbr.logger      import Logger
+from libdebreate.ident  import btnid
+from libdebreate.ident  import inputid
+from libdebreate.ident  import pgid
 from ui.button          import CreateButton
 from ui.dialog          import GetFileOpenDialog
 from ui.dialog          import GetFileSaveDialog

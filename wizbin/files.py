@@ -17,10 +17,6 @@ from dbr.language       import GT
 from globals.bitmaps    import ICON_ERROR
 from globals.bitmaps    import ICON_EXCLAMATION
 from globals.errorcodes import dbrerrno
-from globals.ident      import btnid
-from globals.ident      import chkid
-from globals.ident      import inputid
-from globals.ident      import pgid
 from globals.tooltips   import SetPageToolTips
 from input.filelist     import FileListESS
 from input.filelist     import columns
@@ -30,6 +26,10 @@ from libdbr             import paths
 from libdbr             import strings
 from libdbr.fileio      import readFile
 from libdbr.logger      import Logger
+from libdebreate.ident  import btnid
+from libdebreate.ident  import chkid
+from libdebreate.ident  import inputid
+from libdebreate.ident  import pgid
 from ui.button          import CreateButton
 from ui.dialog          import ConfirmationDialog
 from ui.dialog          import DetailedMessageDialog

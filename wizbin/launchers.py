@@ -13,37 +13,37 @@ import shutil
 
 import wx
 
-from dbr.language     import GT
-from globals.ident    import btnid
-from globals.ident    import chkid
-from globals.ident    import inputid
-from globals.ident    import listid
-from globals.ident    import pgid
-from globals.ident    import txtid
-from globals.tooltips import SetPageToolTips
-from input.list       import ListCtrl
-from input.select     import ComboBox
-from input.select     import ComboBoxESS
-from input.text       import TextArea
-from input.text       import TextAreaESS
-from input.text       import TextAreaPanel
-from input.toggle     import CheckBox
-from input.toggle     import CheckBoxESS
-from libdbr           import strings
-from libdbr.fileio    import readFile
-from libdbr.fileio    import writeFile
-from libdbr.logger    import Logger
-from ui.button        import CreateButton
-from ui.dialog        import ConfirmationDialog
-from ui.dialog        import ShowDialog
-from ui.dialog        import ShowErrorDialog
-from ui.layout        import BoxSizer
-from ui.style         import layout as lyt
-from ui.textpreview   import TextPreview
-from wiz.helper       import GetAllTypeFields
-from wiz.helper       import GetField
-from wiz.helper       import GetMainWindow
-from wiz.wizard       import WizardPage
+from dbr.language      import GT
+from globals.tooltips  import SetPageToolTips
+from input.list        import ListCtrl
+from input.select      import ComboBox
+from input.select      import ComboBoxESS
+from input.text        import TextArea
+from input.text        import TextAreaESS
+from input.text        import TextAreaPanel
+from input.toggle      import CheckBox
+from input.toggle      import CheckBoxESS
+from libdbr            import strings
+from libdbr.fileio     import readFile
+from libdbr.fileio     import writeFile
+from libdbr.logger     import Logger
+from libdebreate.ident import btnid
+from libdebreate.ident import chkid
+from libdebreate.ident import inputid
+from libdebreate.ident import listid
+from libdebreate.ident import pgid
+from libdebreate.ident import txtid
+from ui.button         import CreateButton
+from ui.dialog         import ConfirmationDialog
+from ui.dialog         import ShowDialog
+from ui.dialog         import ShowErrorDialog
+from ui.layout         import BoxSizer
+from ui.style          import layout as lyt
+from ui.textpreview    import TextPreview
+from wiz.helper        import GetAllTypeFields
+from wiz.helper        import GetField
+from wiz.helper        import GetMainWindow
+from wiz.wizard        import WizardPage
 
 
 logger = Logger(__name__)

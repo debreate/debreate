@@ -12,17 +12,18 @@ import wx
 
 import dbr.config
 
-from dbr.config      import ConfCode
-from dbr.config      import GetDefaultConfigValue
-from dbr.language    import GT
-from globals.bitmaps import ICON_CLOCK
-from globals.bitmaps import ICON_GLOBE
-from globals.bitmaps import ICON_LOGO
-from globals.ident   import menuid, refid
-from libdbr          import config
-from libdbr          import paths
-from libdbr.logger   import Logger
-from startup         import tests
+from dbr.config        import ConfCode
+from dbr.config        import GetDefaultConfigValue
+from dbr.language      import GT
+from globals.bitmaps   import ICON_CLOCK
+from globals.bitmaps   import ICON_GLOBE
+from globals.bitmaps   import ICON_LOGO
+from libdbr            import config
+from libdbr            import paths
+from libdbr.logger     import Logger
+from libdebreate.ident import menuid
+from libdebreate.ident import refid
+from startup           import tests
 
 
 logger = Logger(__name__)

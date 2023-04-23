@@ -20,7 +20,6 @@ from dbr.functions     import GetContainerItemCount
 from dbr.language      import GT
 from globals.constants import INSTALLED
 from globals.dateinfo  import GetYear
-from globals.ident     import btnid
 from globals.system    import PY_VER_STRING
 from globals.system    import WX_VER_STRING
 from input.list        import ListCtrl
@@ -31,6 +30,7 @@ from libdbr            import paths
 from libdbr            import sysinfo
 from libdbr.logger     import Logger
 from libdebreate       import appinfo
+from libdebreate.ident import btnid
 from ui.button         import CreateButton
 from ui.dialog         import ShowErrorDialog
 from ui.hyperlink      import Hyperlink

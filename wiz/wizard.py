@@ -14,31 +14,31 @@ import traceback
 
 import wx
 
-from dbr.event        import ChangePageEvent
-from dbr.language     import GT
-from globals.ident    import btnid
-from globals.ident    import chkid
-from globals.ident    import inputid
-from globals.ident    import listid
-from globals.ident    import menuid
-from globals.ident    import page_ids
-from globals.ident    import pgid
-from globals.ident    import selid
-from globals.system   import mimport
-from globals.tooltips import TT_wiz_next
-from globals.tooltips import TT_wiz_prev
-from input.markdown   import MarkdownDialog
-from libdbr.logger    import Logger
-from startup          import tests
-from ui.button        import CreateButton
-from ui.dialog        import ShowDialog
-from ui.dialog        import ShowErrorDialog
-from ui.layout        import BoxSizer
-from ui.panel         import ScrolledPanel
-from wiz.helper       import FieldEnabled
-from wiz.helper       import GetField
-from wiz.helper       import GetMainWindow
-from wiz.helper       import GetMenu
+from dbr.event         import ChangePageEvent
+from dbr.language      import GT
+from globals.system    import mimport
+from globals.tooltips  import TT_wiz_next
+from globals.tooltips  import TT_wiz_prev
+from input.markdown    import MarkdownDialog
+from libdbr.logger     import Logger
+from libdebreate.ident import btnid
+from libdebreate.ident import chkid
+from libdebreate.ident import inputid
+from libdebreate.ident import listid
+from libdebreate.ident import menuid
+from libdebreate.ident import page_ids
+from libdebreate.ident import pgid
+from libdebreate.ident import selid
+from startup           import tests
+from ui.button         import CreateButton
+from ui.dialog         import ShowDialog
+from ui.dialog         import ShowErrorDialog
+from ui.layout         import BoxSizer
+from ui.panel          import ScrolledPanel
+from wiz.helper        import FieldEnabled
+from wiz.helper        import GetField
+from wiz.helper        import GetMainWindow
+from wiz.helper        import GetMenu
 
 
 logger = Logger(__name__)
@@ -477,7 +477,7 @@ class Wizard(wx.Panel):
   #  Posts a 'change page' event to notify the main window
   #
   #  @param pageId
-  #    globals.ident.pgid of the page to be displayed
+  #    libdebreate.ident.pgid of the page to be displayed
   def ShowPage(self, pageId):
     for p in self.Pages:
       if p.GetId() != pageId:

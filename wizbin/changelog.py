@@ -10,35 +10,35 @@
 
 import wx
 
-from dbr.language     import GT
-from f_export.ftarget import FileOTarget
-from globals.bitmaps  import ICON_WARNING
-from globals.changes  import FormatChangelog
-from globals.ident    import btnid
-from globals.ident    import chkid
-from globals.ident    import inputid
-from globals.ident    import pgid
-from globals.ident    import selid
-from globals.system   import GetOSDistNames
-from globals.tooltips import SetPageToolTips
-from input.pathctrl   import PathCtrlESS
-from input.select     import Choice
-from input.select     import ComboBox
-from input.text       import TextArea
-from input.text       import TextAreaPanel
-from input.text       import TextAreaPanelESS
-from input.toggle     import CheckBox
-from input.toggle     import CheckBoxESS
-from libdbr           import strings
-from libdbr.logger    import Logger
-from ui.button        import CreateButton
-from ui.dialog        import DetailedMessageDialog
-from ui.layout        import BoxSizer
-from ui.style         import layout as lyt
-from wiz.helper       import ErrorTuple
-from wiz.helper       import GetFieldValue
-from wiz.helper       import GetMainWindow
-from wiz.wizard       import WizardPage
+from dbr.language      import GT
+from f_export.ftarget  import FileOTarget
+from globals.bitmaps   import ICON_WARNING
+from globals.changes   import FormatChangelog
+from globals.system    import GetOSDistNames
+from globals.tooltips  import SetPageToolTips
+from input.pathctrl    import PathCtrlESS
+from input.select      import Choice
+from input.select      import ComboBox
+from input.text        import TextArea
+from input.text        import TextAreaPanel
+from input.text        import TextAreaPanelESS
+from input.toggle      import CheckBox
+from input.toggle      import CheckBoxESS
+from libdbr            import strings
+from libdbr.logger     import Logger
+from libdebreate.ident import btnid
+from libdebreate.ident import chkid
+from libdebreate.ident import inputid
+from libdebreate.ident import pgid
+from libdebreate.ident import selid
+from ui.button         import CreateButton
+from ui.dialog         import DetailedMessageDialog
+from ui.layout         import BoxSizer
+from ui.style          import layout as lyt
+from wiz.helper        import ErrorTuple
+from wiz.helper        import GetFieldValue
+from wiz.helper        import GetMainWindow
+from wiz.wizard        import WizardPage
 
 
 logger = Logger(__name__)

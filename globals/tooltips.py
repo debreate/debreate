@@ -14,13 +14,13 @@ import wx
 
 import globals.execute
 
-from dbr.language    import GT
-from dbr.templates   import local_templates_path
-from globals.changes import section_delims
-from globals.ident   import btnid
-from globals.ident   import pgid
-from libdbr.logger   import Logger
-from wiz.helper      import FieldEnabled
+from dbr.language      import GT
+from dbr.templates     import local_templates_path
+from globals.changes   import section_delims
+from libdbr.logger     import Logger
+from libdebreate.ident import btnid
+from libdebreate.ident import pgid
+from wiz.helper        import FieldEnabled
 
 
 logger = Logger(__name__)

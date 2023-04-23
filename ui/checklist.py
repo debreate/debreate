@@ -10,17 +10,17 @@
 
 import wx
 
-from dbr.language  import GT
-from globals.ident import btnid
-from globals.ident import pnlid
-from libdbr        import strings
-from libdbr.logger import Logger
-from ui.button     import CreateButton
-from ui.layout     import BoxSizer
-from ui.panel      import BorderedPanel
-from ui.panel      import ScrolledPanel
-from ui.style      import layout as lyt
-from wiz.helper    import GetField
+from dbr.language      import GT
+from libdbr            import strings
+from libdbr.logger     import Logger
+from libdebreate.ident import btnid
+from libdebreate.ident import pnlid
+from ui.button         import CreateButton
+from ui.layout         import BoxSizer
+from ui.panel          import BorderedPanel
+from ui.panel          import ScrolledPanel
+from ui.style          import layout as lyt
+from wiz.helper        import GetField
 
 
 __logger = Logger(__name__)

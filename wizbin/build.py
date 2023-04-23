@@ -24,10 +24,6 @@ from dbr.md5            import WriteMD5
 from globals.bitmaps    import ICON_EXCLAMATION
 from globals.bitmaps    import ICON_INFORMATION
 from globals.errorcodes import dbrerrno
-from globals.ident      import btnid
-from globals.ident      import chkid
-from globals.ident      import inputid
-from globals.ident      import pgid
 from globals.strings    import RemoveEmptyLines
 from globals.system     import PY_VER_MAJ
 from globals.tooltips   import SetPageToolTips
@@ -38,6 +34,10 @@ from libdbr             import strings
 from libdbr.fileio      import readFile
 from libdbr.fileio      import writeFile
 from libdbr.logger      import Logger
+from libdebreate.ident  import btnid
+from libdebreate.ident  import chkid
+from libdebreate.ident  import inputid
+from libdebreate.ident  import pgid
 from startup            import tests
 from ui.button          import CreateButton
 from ui.checklist       import CheckListDialog

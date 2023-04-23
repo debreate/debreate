@@ -44,8 +44,6 @@ from dbr.icon             import Icon
 from dbr.language         import GT
 from dbr.timer            import DebreateTimer
 from globals.bitmaps      import LOGO
-from globals.ident        import menuid
-from globals.ident        import pgid
 from globals.moduleaccess import ModuleAccessCtrl
 from globals.project      import PROJECT_ext
 from globals.project      import PROJECT_txt
@@ -56,6 +54,8 @@ from libdbr               import paths
 from libdbr               import strings
 from libdbr.logger        import Logger
 from libdebreate          import appinfo
+from libdebreate.ident    import menuid
+from libdebreate.ident    import pgid
 from startup              import tests
 from ui.about             import AboutDialog
 from ui.dialog            import ConfirmationDialog

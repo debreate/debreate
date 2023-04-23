@@ -10,24 +10,24 @@
 
 import wx
 
-from dbr.language     import GT
-from globals.ident    import btnid
-from globals.ident    import inputid
-from globals.ident    import pgid
-from globals.tooltips import SetPageToolTips
-from input.list       import ListCtrlESS
-from input.select     import Choice
-from input.text       import TextArea
-from libdbr           import strings
-from libdbr.logger    import Logger
-from ui.button        import CreateButton
-from ui.dialog        import ConfirmationDialog
-from ui.layout        import BoxSizer
-from ui.panel         import BorderedPanel
-from ui.style         import layout as lyt
-from wiz.helper       import GetMainWindow
-from wiz.helper       import GetPage
-from wiz.wizard       import WizardPage
+from dbr.language      import GT
+from globals.tooltips  import SetPageToolTips
+from input.list        import ListCtrlESS
+from input.select      import Choice
+from input.text        import TextArea
+from libdbr            import strings
+from libdbr.logger     import Logger
+from libdebreate.ident import btnid
+from libdebreate.ident import inputid
+from libdebreate.ident import pgid
+from ui.button         import CreateButton
+from ui.dialog         import ConfirmationDialog
+from ui.layout         import BoxSizer
+from ui.panel          import BorderedPanel
+from ui.style          import layout as lyt
+from wiz.helper        import GetMainWindow
+from wiz.helper        import GetPage
+from wiz.wizard        import WizardPage
 
 
 logger = Logger(__name__)

@@ -21,9 +21,6 @@ from dbr.templates      import GetSysLicenses
 from dbr.templates      import sys_licenses_path
 from globals.dateinfo   import GetYear
 from globals.errorcodes import dbrerrno
-from globals.ident      import btnid
-from globals.ident      import pgid
-from globals.ident      import selid
 from globals.tooltips   import SetPageToolTips
 from input.select       import Choice
 from input.text         import TextAreaPanelESS
@@ -31,6 +28,9 @@ from libdbr             import fileio
 from libdbr             import paths
 from libdbr             import strings
 from libdbr.logger      import Logger
+from libdebreate.ident  import btnid
+from libdebreate.ident  import pgid
+from libdebreate.ident  import selid
 from ui.button          import CreateButton
 from ui.dialog          import ConfirmationDialog
 from ui.dialog          import ShowErrorDialog

@@ -15,23 +15,23 @@ import wx
 
 import libdbr.bin
 
-from dbr.colors      import COLOR_executable
-from dbr.colors      import COLOR_link
-from dbr.colors      import COLOR_warn
-from dbr.functions   import MouseInsideWindow
-from dbr.image       import GetCursor
-from dbr.imagelist   import sm_DirectoryImageList as ImageList
-from dbr.language    import GT
-from globals.devices import GetMountedStorageDevices
-from globals.ident   import menuid
-from libdbr          import fileinfo
-from libdbr          import paths
-from libdbr.logger   import Logger
-from ui.dialog       import ConfirmationDialog
-from ui.dialog       import ShowErrorDialog
-from ui.layout       import BoxSizer
-from ui.panel        import BorderedPanel
-from wiz.helper      import GetMainWindow
+from dbr.colors        import COLOR_executable
+from dbr.colors        import COLOR_link
+from dbr.colors        import COLOR_warn
+from dbr.functions     import MouseInsideWindow
+from dbr.image         import GetCursor
+from dbr.imagelist     import sm_DirectoryImageList as ImageList
+from dbr.language      import GT
+from globals.devices   import GetMountedStorageDevices
+from libdbr            import fileinfo
+from libdbr            import paths
+from libdbr.logger     import Logger
+from libdebreate.ident import menuid
+from ui.dialog         import ConfirmationDialog
+from ui.dialog         import ShowErrorDialog
+from ui.layout         import BoxSizer
+from ui.panel          import BorderedPanel
+from wiz.helper        import GetMainWindow
 
 
 logger = Logger(__name__)

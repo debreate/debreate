@@ -18,11 +18,11 @@ from dbr.functions        import BuildDebPackage
 from dbr.language         import GT
 from dbr.timer            import DebreateTimer
 from globals.errorcodes   import dbrerrno
-from globals.ident        import btnid
 from globals.moduleaccess import ModuleAccessCtrl
 from globals.threads      import Thread
 from libdbr.fileio        import readFile
 from libdbr.logger        import Logger
+from libdebreate.ident    import btnid
 from ui.button            import CreateButton
 from ui.dialog            import GetDirDialog
 from ui.dialog            import GetFileSaveDialog

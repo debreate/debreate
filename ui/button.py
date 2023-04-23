@@ -14,15 +14,15 @@ import os
 
 import wx
 
-from dbr.containers  import Contains
-from fields.cmdfield import CommandField
-from globals.ident   import btnid
-from globals.paths   import getBitmapsDir
-from globals.strings import IsString
-from libdbr          import strings
-from libdbr.logger   import Logger
-from ui.layout       import BoxSizer
-from ui.style        import layout as lyt
+from dbr.containers    import Contains
+from fields.cmdfield   import CommandField
+from globals.paths     import getBitmapsDir
+from globals.strings   import IsString
+from libdbr            import strings
+from libdbr.logger     import Logger
+from libdebreate.ident import btnid
+from ui.layout         import BoxSizer
+from ui.style          import layout as lyt
 
 
 __logger = Logger(__name__)

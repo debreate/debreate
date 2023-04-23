@@ -8,7 +8,7 @@
 
 ## Miscellaneous IDs.
 #
-#  @module globals.ident
+#  @module libdebreate.ident
 
 import wx
 

@@ -14,26 +14,26 @@ import traceback
 
 import wx
 
-from dbr.event        import EVT_REFRESH_LOG
-from dbr.event        import RefreshLogEvent
-from dbr.font         import GetMonospacedFont
-from dbr.language     import GT
-from globals          import bitmaps
-from globals          import paths
-from globals.fileitem import FileItem
-from globals.ident    import btnid
-from globals.ident    import menuid
-from globals.threads  import Thread
-from input.text       import TextAreaPanel
-from libdbr           import strings
-from libdbr.logger    import Logger
-from ui.button        import CreateButton
-from ui.dialog        import GetFileOpenDialog
-from ui.dialog        import ShowDialog
-from ui.dialog        import ShowErrorDialog
-from ui.layout        import BoxSizer
-from wiz.helper       import GetMainWindow
-from wiz.helper       import GetMenu
+from dbr.event         import EVT_REFRESH_LOG
+from dbr.event         import RefreshLogEvent
+from dbr.font          import GetMonospacedFont
+from dbr.language      import GT
+from globals           import bitmaps
+from globals           import paths
+from globals.fileitem  import FileItem
+from globals.threads   import Thread
+from input.text        import TextAreaPanel
+from libdbr            import strings
+from libdbr.logger     import Logger
+from libdebreate.ident import btnid
+from libdebreate.ident import menuid
+from ui.button         import CreateButton
+from ui.dialog         import GetFileOpenDialog
+from ui.dialog         import ShowDialog
+from ui.dialog         import ShowErrorDialog
+from ui.layout         import BoxSizer
+from wiz.helper        import GetMainWindow
+from wiz.helper        import GetMenu
 
 
 __logger = Logger(__name__)

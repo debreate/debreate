@@ -9,13 +9,14 @@
 ## @module input.markdown
 
 import wx
+
 from wx.richtext import RE_MULTILINE
 from wx.richtext import RE_READONLY
 from wx.richtext import RichTextCtrl
 
-from globals.ident import btnid
-from ui.button     import CreateButton
-from ui.layout     import BoxSizer
+from libdebreate.ident import btnid
+from ui.button         import CreateButton
+from ui.layout         import BoxSizer
 
 
 ## Class to parse & display Markdown text.
