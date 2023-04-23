@@ -75,9 +75,9 @@ class Page(panel.ScrolledPanel, AbstractClass):
         Page.__module__ + "." + Page.__name__ + "." + Page.importFile.__name__))
     return 0
 
-  ## Alias of `ui.page.Page.loadFile` for backward compatibility.
+  ## Alias of `ui.page.Page.importFile` for backward compatibility.
   def ImportFromFile(self, filepath):
-    return loadFile(filepath)
+    return self.importFile(filepath)
 
   ## Directives for resetting page to default values.
   @abstractmethod
