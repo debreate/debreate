@@ -6,7 +6,7 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module dbr.font
+## @module ui.font
 
 import wx
 

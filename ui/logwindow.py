@@ -18,7 +18,6 @@ import ui.app
 
 from dbr.event         import EVT_REFRESH_LOG
 from dbr.event         import RefreshLogEvent
-from dbr.font          import GetMonospacedFont
 from dbr.language      import GT
 from globals           import bitmaps
 from globals           import paths
@@ -33,6 +32,7 @@ from ui.button         import CreateButton
 from ui.dialog         import GetFileOpenDialog
 from ui.dialog         import ShowDialog
 from ui.dialog         import ShowErrorDialog
+from ui.font           import GetMonospacedFont
 from ui.layout         import BoxSizer
 from wiz.helper        import GetMenu
 

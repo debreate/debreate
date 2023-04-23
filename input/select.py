@@ -12,10 +12,10 @@ import wx
 
 from wx.adv import OwnerDrawnComboBox
 
-from dbr.font        import MONOSPACED_MD
 from fields.ifield   import InputField
 from input.essential import EssentialField
 from libdbr          import strings
+from ui.font         import MONOSPACED_MD
 
 
 ## Custom wx.Choice class.

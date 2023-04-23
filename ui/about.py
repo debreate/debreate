@@ -15,7 +15,6 @@ import wx
 
 import libdbr
 
-from dbr.font          import MONOSPACED_MD
 from dbr.functions     import GetContainerItemCount
 from dbr.language      import GT
 from globals.dateinfo  import GetYear
@@ -32,6 +31,7 @@ from libdebreate       import appinfo
 from libdebreate.ident import btnid
 from ui.button         import CreateButton
 from ui.dialog         import ShowErrorDialog
+from ui.font           import MONOSPACED_MD
 from ui.hyperlink      import Hyperlink
 from ui.layout         import BoxSizer
 from ui.style          import layout as lyt

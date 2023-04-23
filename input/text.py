@@ -14,7 +14,7 @@ import wx
 
 import ui.app
 
-from dbr.font        import MONOSPACED_LG
+from ui.font        import MONOSPACED_LG
 from dbr.language    import GT
 from fields.ifield   import InputField
 from input.essential import EssentialField
