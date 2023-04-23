@@ -199,7 +199,7 @@ def GetFieldValue(page, field_id, field_type=wx.Window):
 def GetMainWindow():
   _logger.deprecated(GetMainWindow, alt=ui.app.getMainWindow)
 
-  return wx.GetApp().GetMainWindow()
+  return ui.app.getMainWindow()
 
 
 ## Retrieves a menu from the main window's menu bar by ID.
@@ -209,12 +209,12 @@ def GetMainWindow():
 #  @return
 #    The \b \e wx.Menu instance.
 def GetMenu(menuId):
-  return GetMainWindow().GetMenu(menuId)
+  return ui.app.getMainWindow().GetMenu(menuId)
 
 
 ## Retrieves the ui.menu.MenuBar instance in use by the main window.
 def GetMenuBar():
-  return GetMainWindow().GetMenuBar()
+  return ui.app.getMainWindow().GetMenuBar()
 
 
 ## Retrieves the `ui.page.Page` instance that matched pageId.
@@ -233,4 +233,4 @@ def GetPagesIdList():
 
 ## Retrieves the wiz.wizard.Wizard instance.
 def GetWizard():
-  return GetMainWindow().GetWizard()
+  return ui.app.getMainWindow().GetWizard()
