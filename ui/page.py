@@ -121,6 +121,17 @@ class Page(panel.ScrolledPanel, AbstractClass):
   def reset(self):
     pass
 
-  ## Alias of `ui.page.Page.reset` for backwards compatibility.
+  ## Alias of `ui.page.Page.reset` for backward compatibility.
   def Reset(self):
     self.reset()
+
+  ## Inheriting classes should override for sanity checks & setting error message.
+  def isOkay(self):
+    _logger.warn("'{}' does not override '{}'".format(
+        self.__module__ + "." + self.__class__.__name__,
+        Page.__module__ + "." + Page.__name__ + "." + Page.isOkay.__name__))
+    return True
+
+  ## Alias of `ui.page.Page.isOkay` for backward compatibility
+  def IsOkay(self):
+    return self.isOkay()
