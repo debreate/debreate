@@ -156,14 +156,6 @@ class Wizard(wx.Panel):
         err_msg = "module does not exist"
         err_det = traceback.format_exc()
 
-    if err_msg:
-      err_msg = "Cannot add page, {}".format(err_msg)
-      if err_det:
-        ShowErrorDialog(err_msg, err_det)
-      else:
-        ShowErrorDialog(err_msg)
-      return
-
     lyt_main = self.GetSizer()
 
     # Must already be child
@@ -173,6 +165,14 @@ class Wizard(wx.Panel):
       err_msg = "not child of wizard"
     elif page in lyt_main.GetChildWindows():
       err_msg = "page is already added to wizard"
+
+    if err_msg:
+      err_msg = "Cannot add page, {}".format(err_msg)
+      if err_det:
+        ShowErrorDialog(err_msg, err_det)
+      else:
+        ShowErrorDialog(err_msg)
+      return
 
     main_window = GetMainWindow()
 
