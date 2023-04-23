@@ -18,7 +18,6 @@ from dbr.functions        import BuildDebPackage
 from dbr.language         import GT
 from dbr.timer            import DebreateTimer
 from globals.errorcodes   import dbrerrno
-from globals.moduleaccess import ModuleAccessCtrl
 from globals.threads      import Thread
 from libdbr.fileio        import readFile
 from libdbr.logger        import Logger
@@ -38,12 +37,10 @@ logger = Logger(__name__)
 GAUGE_MAX = 100
 
 ## A dialog that takes a pre-formatted directory tree & creates a .deb package
-class QuickBuild(wx.Dialog, ModuleAccessCtrl):
+class QuickBuild(wx.Dialog):
   def __init__(self, parent):
     wx.Dialog.__init__(self, parent, title=GT("Quick Build"), pos=wx.DefaultPosition,
         size=wx.Size(400,260))
-    ModuleAccessCtrl.__init__(self, __name__)
-
     self.title = self.GetTitle()
 
     label_stage = wx.StaticText(self, label=GT("Staged directory tree"))

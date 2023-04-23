@@ -44,7 +44,6 @@ from dbr.icon             import Icon
 from dbr.language         import GT
 from dbr.timer            import DebreateTimer
 from globals.bitmaps      import LOGO
-from globals.moduleaccess import ModuleAccessCtrl
 from globals.project      import PROJECT_ext
 from globals.project      import PROJECT_txt
 from globals.threads      import Thread
@@ -76,7 +75,7 @@ logger = Logger(__name__)
 default_title = GT("Debreate - Debian Package Builder")
 
 ## The main window interface.
-class MainWindow(wx.Frame, ModuleAccessCtrl):
+class MainWindow(wx.Frame):
   ## Constructor
   #
   #  @param pos
@@ -85,8 +84,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
   #  <b><i>Integer tuple</i></b> or <b><i>wx.Size</i></b> instance indicating the dimensions of the window
   def __init__(self):#, pos, size):
     wx.Frame.__init__(self, None, wx.ID_ANY)
-    ModuleAccessCtrl.__init__(self, __name__)
-
     self.error = {}
 
     self.timer = DebreateTimer(self)

@@ -18,7 +18,6 @@ from globals.bitmaps      import ICON_ERROR
 from globals.bitmaps      import ICON_EXCLAMATION
 from globals.bitmaps      import ICON_INFORMATION
 from globals.bitmaps      import ICON_QUESTION
-from globals.moduleaccess import ModuleAccessCtrl
 from globals.project      import project_wildcards
 from globals.project      import supported_suffixes
 from input.select         import ComboBox
@@ -613,13 +612,9 @@ def ShowErrorDialog(text, details=None, parent=False, warn=False, title=GT("Erro
   if not parent:
     module_name = __name__
 
-  elif isinstance(parent, ModuleAccessCtrl):
-    module_name = parent.GetModuleName()
-
   else:
     module_name = parent.GetName()
 
-  # ~ PrintLogMessage(module_name, logger_text)
   PrintLogMessage(logger_text)
 
   error_dialog = ErrorDialog(parent, title, text, linewrap=linewrap)
@@ -629,13 +624,13 @@ def ShowErrorDialog(text, details=None, parent=False, warn=False, title=GT("Erro
   error_dialog.ShowModal()
 
 ## A function that displays a modal message dialog on the main window
+#
+#  @deprecated
+#    `module` parameter is deprecated.
 def ShowMessageDialog(text, title=GT("Message"), details=None, module=None, parent=None,
       linewrap=0):
   if not parent:
     parent = GetMainWindow()
-
-  if not module and isinstance(parent, ModuleAccessCtrl):
-    module = parent.GetModuleName()
 
   logger_text = text
   if isinstance(text, (tuple, list)):

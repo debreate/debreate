@@ -18,7 +18,6 @@ from wx.adv import OwnerDrawnComboBox
 from dbr.event            import EVT_TIMER_STOP
 from dbr.language         import GT
 from dbr.timer            import DebreateTimer
-from globals.moduleaccess import ModuleAccessCtrl
 from globals.system       import FILE_distnames
 from globals.system       import GetOSDistNames
 from globals.system       import UpdateDistNamesCache
@@ -42,12 +41,10 @@ from wiz.helper           import GetField
 logger = Logger(__name__)
 
 ## Dialog displaying controls for updating distribution names cache file
-class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
+class DistNamesCacheDialog(BaseDialog):
   def __init__(self):
     BaseDialog.__init__(self, title=GT("Update Dist Names Cache"),
         style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
-    ModuleAccessCtrl.__init__(self, __name__)
-
     self.SetMinSize(wx.Size(300, 150))
 
     txt_types = wx.StaticText(self, label=GT("Include the following:"))
