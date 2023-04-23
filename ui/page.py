@@ -63,6 +63,10 @@ class Page(panel.ScrolledPanel, AbstractClass):
   def GetLabel(self):
     return self.getLabel()
 
+  ## Alias of `ui.page.Page.getLabel` for backward compatibility.
+  def GetName(self):
+    return self.getLabel()
+
   ## Directives for loading data from file.
   #
   #  @param filepath
@@ -78,6 +82,14 @@ class Page(panel.ScrolledPanel, AbstractClass):
   ## Alias of `ui.page.Page.importFile` for backward compatibility.
   def ImportFromFile(self, filepath):
     return self.importFile(filepath)
+
+  ## Backwards compatibility.
+  def Export(self):
+    msg = "'{}' does not override '{}'".format(
+        self.__module__ + "." + self.__class__.__name__,
+        Page.__module__ + "." + Page.__name__ + "." + Page.Export.__name__)
+    _logger.error(msg)
+    raise TypeError(msg)
 
   ## Directives for resetting page to default values.
   @abstractmethod
