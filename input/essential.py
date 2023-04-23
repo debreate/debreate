@@ -12,7 +12,7 @@ import wx
 
 from wx.adv import OwnerDrawnComboBox
 
-import dbr.app
+import ui.app
 
 from ui.panel   import ControlPanel
 from startup    import startup
@@ -49,4 +49,4 @@ class EssentialFieldUnused:
     if event:
       event.Skip(True)
     if startup.initialized and FieldEnabled(self):
-      dbr.app.getMainWindow().OnProjectChanged(event)
+      ui.app.getMainWindow().OnProjectChanged(event)

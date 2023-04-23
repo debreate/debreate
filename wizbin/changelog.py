@@ -10,7 +10,7 @@
 
 import wx
 
-import dbr.app
+import ui.app
 import ui.page
 
 from dbr.language      import GT
@@ -178,7 +178,7 @@ class Page(ui.page.Page):
     new_changes = self.ti_changes.GetValue()
 
     if strings.isEmpty(new_changes):
-      DetailedMessageDialog(dbr.app.getMainWindow(), GT("Warning"), ICON_WARNING,
+      DetailedMessageDialog(ui.app.getMainWindow(), GT("Warning"), ICON_WARNING,
           GT("\"Changes\" section is empty")).ShowModal()
 
       self.ti_changes.SetInsertionPointEnd()

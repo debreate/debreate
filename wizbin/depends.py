@@ -10,7 +10,7 @@
 
 import wx
 
-import dbr.app
+import ui.app
 import ui.page
 
 from dbr.language      import GT
@@ -294,7 +294,7 @@ class Page(ui.page.Page):
       self.lst_deps.RemoveSelected()
     elif key_id == btnid.CLEAR:
       if self.lst_deps.GetItemCount():
-        if ConfirmationDialog(dbr.app.getMainWindow(), GT("Confirm"),
+        if ConfirmationDialog(ui.app.getMainWindow(), GT("Confirm"),
             GT("Clear all dependencies?")).ShowModal() in (wx.ID_OK, wx.OK):
           self.lst_deps.DeleteAllItems()
     if event:

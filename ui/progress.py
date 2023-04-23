@@ -10,7 +10,7 @@
 
 import wx
 
-import dbr.app
+import ui.app
 
 from dbr.event     import EVT_TIMER_STOP
 from dbr.language  import GT
@@ -92,7 +92,7 @@ class ProgressDialog(wx.ProgressDialog):
   def Destroy(self, *args, **kwargs):
     # Re-enable parent/main window if previously disabled
     # ???: May not be necessary
-    main_window = dbr.app.getMainWindow()
+    main_window = ui.app.getMainWindow()
 
     if not FieldEnabled(main_window):
       logger.debug("Re-enabling main window")

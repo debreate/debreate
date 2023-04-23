@@ -149,7 +149,7 @@ if not wx:
 
 util.checkWx()
 
-from dbr.app import DebreateApp
+from ui.app import DebreateApp
 
 # initialize app before importing local modules
 debreate_app = DebreateApp()

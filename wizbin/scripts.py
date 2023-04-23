@@ -12,7 +12,7 @@ import os
 
 import wx
 
-import dbr.app
+import ui.app
 import ui.page
 
 from dbr.language      import GT
@@ -349,7 +349,7 @@ class Page(ui.page.Page):
 
   ## Creates scripts that link the executables
   def OnGenerate(self, event=None):
-    main_window = dbr.app.getMainWindow()
+    main_window = ui.app.getMainWindow()
 
     # Get the amount of links to be created
     total = self.Executables.GetCount()

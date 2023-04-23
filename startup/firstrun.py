@@ -12,7 +12,7 @@
 
 import wx
 
-import dbr.app
+import ui.app
 
 from dbr.language  import GT
 from globals       import bitmaps
@@ -28,7 +28,7 @@ __logger = Logger(__name__)
 def launch():
   __logger.debug("launching first run dialog ...")
 
-  fr = __buildDialog(dbr.app.getMainWindow())
+  fr = __buildDialog(ui.app.getMainWindow())
   fr_size = wx.Size(450, 300)
   fr.SetSize(fr_size)
   fr.CenterOnParent()

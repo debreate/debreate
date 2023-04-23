@@ -12,7 +12,7 @@
 
 import wx
 
-import dbr.app
+import ui.app
 
 from dbr.language      import GT
 from libdbr.logger     import Logger
@@ -195,9 +195,9 @@ def GetFieldValue(page, field_id, field_type=wx.Window):
 ## Finds the MainWindow instance.
 #
 #  @deprecated
-#    Use `dbr.app.getMainWindow`.
+#    Use `ui.app.getMainWindow`.
 def GetMainWindow():
-  _logger.deprecated(GetMainWindow, alt=dbr.app.getMainWindow)
+  _logger.deprecated(GetMainWindow, alt=ui.app.getMainWindow)
 
   return wx.GetApp().GetMainWindow()
 

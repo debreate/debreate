@@ -12,7 +12,7 @@ import os
 
 import wx
 
-import dbr.app
+import ui.app
 import ui.page
 
 from dbr.functions      import GetLongestLine
@@ -128,7 +128,7 @@ class Page(ui.page.Page):
       warn_msg = GT("This will destroy all license text.")
       warn_msg = "{}\n\n{}".format(warn_msg, GT("Continue?"))
 
-      if ConfirmationDialog(dbr.app.getMainWindow(), text=warn_msg).ShowModal() not in (wx.ID_OK, wx.OK):
+      if ConfirmationDialog(ui.app.getMainWindow(), text=warn_msg).ShowModal() not in (wx.ID_OK, wx.OK):
         return False
 
     return True

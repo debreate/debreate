@@ -14,7 +14,7 @@ import traceback
 
 import wx
 
-import dbr.app
+import ui.app
 import ui.page
 
 from dbr.event         import ChangePageEvent
@@ -174,7 +174,7 @@ class Wizard(wx.Panel):
         ShowErrorDialog(err_msg)
       return
 
-    main_window = dbr.app.getMainWindow()
+    main_window = ui.app.getMainWindow()
 
     lyt_main.Add(page, 1, wx.EXPAND)
     self.Pages.append(page)
@@ -422,7 +422,7 @@ class Wizard(wx.Panel):
     self.ID_FIRST = pages[0].GetId()
     self.ID_LAST = pages[-1].GetId()
 
-    main_window = dbr.app.getMainWindow()
+    main_window = ui.app.getMainWindow()
 
     # Make sure all pages are hidden
     children = self.GetChildren()
@@ -492,7 +492,7 @@ class Wizard(wx.Panel):
       self.btn_next.Enable(True)
 
     self.Layout()
-    wx.PostEvent(dbr.app.getMainWindow(), ChangePageEvent(0))
+    wx.PostEvent(ui.app.getMainWindow(), ChangePageEvent(0))
 
 ## Inherited class for wizard pages
 # ~ class WizardPage(ScrolledPanel):

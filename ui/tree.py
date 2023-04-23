@@ -13,8 +13,8 @@ import traceback
 
 import wx
 
-import dbr.app
 import libdbr.bin
+import ui.app
 
 from dbr.colors        import COLOR_executable
 from dbr.colors        import COLOR_link
@@ -1168,7 +1168,7 @@ class _DirectoryTree(wx.TreeCtrl):
 
     msg_l1 = GT("Move the following items to trash?")
     msg_l2 = "\n".join(path_list)
-    if ConfirmationDialog(dbr.app.getMainWindow(), GT("Delete"),
+    if ConfirmationDialog(ui.app.getMainWindow(), GT("Delete"),
         "{}\n\n{}".format(msg_l1, msg_l2)).Confirmed():
 
       arg_list = list(path_list)

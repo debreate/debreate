@@ -14,7 +14,7 @@ import wx
 
 from wx.adv import OwnerDrawnComboBox
 
-import dbr.app
+import ui.app
 import ui.page
 
 from dbr.language       import GT
@@ -460,7 +460,7 @@ class Page(ui.page.Page):
 
   ## Displays a file open dialog for selecting a text file to read
   def OnBrowse(self, event=None):
-    browse_dialog = GetFileOpenDialog(dbr.app.getMainWindow(), GT("Open File"))
+    browse_dialog = GetFileOpenDialog(ui.app.getMainWindow(), GT("Open File"))
     if ShowDialog(browse_dialog):
       self.ImportFromFile(browse_dialog.GetPath())
 
@@ -478,7 +478,7 @@ class Page(ui.page.Page):
     # Get data to write to control file
     control = self.GetCtrlInfo()
 
-    save_dialog = GetFileSaveDialog(dbr.app.getMainWindow(), GT("Save Control Information"))
+    save_dialog = GetFileSaveDialog(ui.app.getMainWindow(), GT("Save Control Information"))
     save_dialog.SetFilename("control")
 
     if ShowDialog(save_dialog):

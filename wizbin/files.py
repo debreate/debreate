@@ -13,7 +13,7 @@ import traceback
 
 import wx
 
-import dbr.app
+import ui.app
 import ui.page
 
 from dbr.language       import GT
@@ -245,7 +245,7 @@ class Page(ui.page.Page):
     logger.debug("Adding {} files ...".format(fileCount))
 
     if showDialog:
-      progress = ProgressDialog(dbr.app.getMainWindow(), GT("Adding Files"), maximum=fileCount,
+      progress = ProgressDialog(ui.app.getMainWindow(), GT("Adding Files"), maximum=fileCount,
           style=PD_DEFAULT_STYLE|wx.PD_CAN_ABORT)
       progress.Show()
 
@@ -431,7 +431,7 @@ class Page(ui.page.Page):
       self.lst_files.AddFile(source_file, source_dir, T[0], executable=T[2])
 
     if len(missing_files):
-      main_window = dbr.app.getMainWindow()
+      main_window = ui.app.getMainWindow()
 
       err_line1 = GT("The following files/folders are missing from the filesystem.")
       err_line2 = GT("They will be highlighted on the Files page.")
@@ -500,7 +500,7 @@ class Page(ui.page.Page):
     file_list = []
     dir_list = {}
 
-    prep = ProgressDialog(dbr.app.getMainWindow(), GT("Processing Files"), GT("Scanning files ..."),
+    prep = ProgressDialog(ui.app.getMainWindow(), GT("Processing Files"), GT("Scanning files ..."),
         style=wx.PD_APP_MODAL|wx.PD_AUTO_HIDE|wx.PD_CAN_ABORT)
 
     # Only update the gauge every N files (hack until I figure out timer)
@@ -615,7 +615,7 @@ class Page(ui.page.Page):
       count_warnmsg = "{}. {}.".format(count_warnmsg, GT("This could take a VERY long time"))
       count_warnmsg = "{}\n{}".format(count_warnmsg, GT("Are you sure you want to continue?"))
 
-      if not ConfirmationDialog(dbr.app.getMainWindow(), text=count_warnmsg).Confirmed():
+      if not ConfirmationDialog(ui.app.getMainWindow(), text=count_warnmsg).Confirmed():
         return False
 
     return self.AddPaths(dir_list, file_count, showDialog=file_count >= efficiency_threshold)
@@ -624,7 +624,7 @@ class Page(ui.page.Page):
   #
   #  Opens a directory dialog to select a custom output target
   def OnBrowse(self, event=None):
-    dia = GetDirDialog(dbr.app.getMainWindow(), GT("Choose Target Directory"))
+    dia = GetDirDialog(ui.app.getMainWindow(), GT("Choose Target Directory"))
     if ShowDialog(dia):
       self.ti_target.SetValue(dia.GetPath())
 
@@ -635,7 +635,7 @@ class Page(ui.page.Page):
   #  TODO: Rename to OnClearList?
   def OnClearFileList(self, event=None):
     if self.lst_files.GetItemCount():
-      if ConfirmationDialog(dbr.app.getMainWindow(), GT("Confirm"),
+      if ConfirmationDialog(ui.app.getMainWindow(), GT("Confirm"),
             GT("Clear all files?")).Confirmed():
         self.lst_files.DeleteAllItems()
 
@@ -738,7 +738,7 @@ class Page(ui.page.Page):
       progress = None
 
       if files_total >= efficiency_threshold:
-        progress = ProgressDialog(dbr.app.getMainWindow(), GT("Adding Files"), maximum=files_total,
+        progress = ProgressDialog(ui.app.getMainWindow(), GT("Adding Files"), maximum=files_total,
             style=PD_DEFAULT_STYLE|wx.PD_CAN_ABORT)
 
         wx.GetApp().Yield()
@@ -791,7 +791,7 @@ class Page(ui.page.Page):
 
       # If files are missing show a message
       if missing_files:
-        alert = DetailedMessageDialog(dbr.app.getMainWindow(), GT("Missing Files"),
+        alert = DetailedMessageDialog(ui.app.getMainWindow(), GT("Missing Files"),
             ICON_EXCLAMATION, GT("Could not locate the following files:"),
             "\n".join(missing_files))
         alert.ShowModal()

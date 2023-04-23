@@ -6,7 +6,9 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module dbr.app
+## Classes & functions for managing app interface.
+#
+#  @module ui.app
 
 import wx
 
@@ -32,12 +34,12 @@ class DebreateApp(wx.App):
   def getMainWindow(self):
     return self.MainWindow
 
-  ## Alias of `dbr.app.DebreateApp.getMainWindow`.
+  ## Alias of `ui.app.DebreateApp.getMainWindow`.
   #
   #  @return
   #    `ui.main.MainWindow` instance.
   #  @deprecated
-  #    Use `dbr.app.DebreateApp.getMainWindow`.
+  #    Use `ui.app.DebreateApp.getMainWindow`.
   def GetMainWindow(self):
     _logger.deprecated(self.GetMainWindow, alt=self.getMainWindow)
 
@@ -52,12 +54,12 @@ class DebreateApp(wx.App):
       return self.MainWindow.GetWizard()
     return None
 
-  ## Alias of `dbr.app.DebreateApp.getWizard`.
+  ## Alias of `ui.app.DebreateApp.getWizard`.
   #
   #  @return
   #    `wiz.wizard.Wizard` instance.
   #  @deprecated
-  #    Use `dbr.app.DebreateApp.getWizard`.
+  #    Use `ui.app.DebreateApp.getWizard`.
   def GetWizard(self):
     _logger.deprecated(self.GetWizard, alt=self.getWizard)
 
@@ -70,12 +72,12 @@ class DebreateApp(wx.App):
   def setMainWindow(self, window):
     self.MainWindow = window
 
-  ## Alias of `dbr.app.DebreateApp.setMainWindow`.
+  ## Alias of `ui.app.DebreateApp.setMainWindow`.
   #
   #  @param window
   #    `wx.Frame` instance to use for main window.
   #  @deprecated
-  #    Use `dbr.app.DebreateApp.setMainWindow`.
+  #    Use `ui.app.DebreateApp.setMainWindow`.
   def SetMainWindow(self, window):
     _logger.deprecated(self.SetMainWindow, alt=self.setMainWindow)
 
@@ -85,7 +87,7 @@ class DebreateApp(wx.App):
 ## Helper function to get app instance.
 #
 #  @return
-#    `dbr.app.DebreateApp` instance.
+#    `ui.app.DebreateApp` instance.
 def get():
   return wx.GetApp()
 
