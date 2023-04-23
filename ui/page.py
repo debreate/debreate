@@ -23,6 +23,9 @@ class Page(panel.ScrolledPanel, AbstractClass):
     panel.ScrolledPanel.__init__(self, parent, id)
     AbstractClass.__init__(self, Page)
 
+    self.__error_code = 0
+    self.__error_message = None
+
     self.__label = ""
     if id in ident.pgid.Labels:
       self.__label = ident.pgid.Labels[id]
@@ -66,6 +69,28 @@ class Page(panel.ScrolledPanel, AbstractClass):
   ## Alias of `ui.page.Page.getLabel` for backward compatibility.
   def GetName(self):
     return self.getLabel()
+
+  ## Sets error info.
+  #
+  #  @param code
+  #    Error code.
+  #  @param msg
+  #    Text to use for error.
+  def setError(self, code, msg):
+    self.__error_code = int(code)
+    self.__error_message = str(msg)
+
+  ## Retrievies the most recent error information.
+  #
+  #  @return
+  #    Error code & message.
+  def getError(self):
+    code = self.__error_code
+    msg = self.__error_message
+    # reset for sequential result
+    self.__error_code = 0
+    self.__error_message = None
+    return code, msg
 
   ## Directives for loading data from file.
   #
