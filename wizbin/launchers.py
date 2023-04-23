@@ -318,6 +318,10 @@ class Page(ui.page.Page):
     if not strings.isEmpty(encoding):
       desktop_list.append("Encoding={}".format(encoding))
 
+    mime_type = GetField(self, inputid.MIME).GetValue()
+    if not strings.isEmpty(mime_type):
+      desktop_list.append("MimeType={}".format(mime_type))
+
     lst_categories = GetField(self, listid.CAT)
     categories = []
     cat_total = lst_categories.GetItemCount()
@@ -602,6 +606,7 @@ class Page(ui.page.Page):
           ("Icon", GetField(self, inputid.ICON)),
           ("Type", GetField(self, inputid.TYPE)),
           ("Encoding", GetField(self, inputid.ENC)),
+          ("MimeType", GetField(self, inputid.MIME))
           )
 
         for label, control in set_value_fields:
