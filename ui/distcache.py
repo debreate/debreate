@@ -15,6 +15,8 @@ import wx
 
 from wx.adv import OwnerDrawnComboBox
 
+import ui.app
+
 from dbr.event            import EVT_TIMER_STOP
 from dbr.language         import GT
 from dbr.timer            import DebreateTimer
@@ -30,7 +32,6 @@ from ui.dialog            import BaseDialog
 from ui.dialog            import ConfirmationDialog
 from ui.dialog            import ShowErrorDialog
 from ui.dialog            import ShowMessageDialog
-from ui.helper            import GetField
 from ui.layout            import BoxSizer
 from ui.panel             import BorderedPanel
 from ui.progress          import ProgressDialog
@@ -135,9 +136,7 @@ class DistNamesCacheDialog(BaseDialog):
         return True
       os.remove(FILE_distnames)
       # Update list on changelog page
-      distname_input = GetField(pgid.CHANGELOG, inputid.DIST)
-      if isinstance(distname_input, OwnerDrawnComboBox):
-        distname_input.Set(GetOSDistNames())
+      ui.app.getPage(pgid.CHANGELOG).reloadDistNames()
       self.btn_preview.Disable()
     cache_exists = os.path.exists(FILE_distnames)
     self.btn_preview.Enable(cache_exists)
@@ -192,10 +191,7 @@ class DistNamesCacheDialog(BaseDialog):
       cache_updated = os.path.isfile(FILE_distnames)
 
       if cache_updated:
-        distname_input = GetField(pgid.CHANGELOG, inputid.DIST)
-        if isinstance(distname_input, OwnerDrawnComboBox):
-          distname_input.Set(GetOSDistNames())
-        else:
+        if not ui.app.getPage(pgid.CHANGELOG).reloadDistNames():
           ShowMessageDialog(
             GT("The distribution names cache has been updated but Debreate needs to restart to reflect the changes on the changelog page"),
             parent=self, linewrap=410)

@@ -20,8 +20,10 @@ from globals.strings import StringIsVersioned
 from libdbr          import strings
 from libdbr.fileio   import readFile
 from libdbr.fileio   import writeFile
+from libdbr.logger   import Logger
 
 
+_logger = Logger(__name__)
 mimport = import_module
 
 
@@ -381,4 +383,5 @@ def GetOSDistNames():
           # Put Debian names first
           dist_names.insert(0, NAME)
 
+  _logger.debug("parsed distribution names: {}".format(dist_names))
   return tuple(dist_names)

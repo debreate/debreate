@@ -2,7 +2,6 @@
 -- Known Bugs --
 
 required for release:
-- "clear local cache" menu does not refresh changelog dist names
 - can't disable tooltips under Gtk
 
 priority:

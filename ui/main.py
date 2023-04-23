@@ -33,6 +33,7 @@ import wx
 import wx.html2
 
 import globals.paths
+import ui.app
 
 from dbr.config           import GetDefaultConfigValue
 from dbr.event            import EVT_CHANGE_PAGE
@@ -552,6 +553,8 @@ class MainWindow(wx.Frame):
       if dia.ShowModal() != wx.ID_OK:
         return
       shutil.rmtree(dir_cache)
+      # update list of distribution names on changelog page
+      ui.app.getPage(pgid.CHANGELOG).reloadDistNames()
 
   ## Opens web links from the help menu
   def OpenPolicyManual(self, event=None):

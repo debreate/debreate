@@ -289,3 +289,13 @@ class Page(ui.page.Page):
   ## @override ui.page.Page.reset
   def reset(self):
     pass
+
+  ## Updates list of available distribution names.
+  #
+  #  @return
+  #    `True` if interface supports drop down list.
+  def reloadDistNames(self):
+    if isinstance(self.ti_dist, ComboBox):
+      self.ti_dist.Set(GetOSDistNames())
+      return True
+    return False
