@@ -18,7 +18,6 @@ import libdbr
 from dbr.font          import MONOSPACED_MD
 from dbr.functions     import GetContainerItemCount
 from dbr.language      import GT
-from globals.constants import INSTALLED
 from globals.dateinfo  import GetYear
 from globals.system    import PY_VER_STRING
 from globals.system    import WX_VER_STRING
@@ -368,7 +367,7 @@ class AboutDialog(wx.Dialog):
     #   under the applications root directory. The
     #   install script or Makefile should change this
     #   to reflect installed path.
-    if INSTALLED:
+    if not appinfo.isPortable():
       CHANGELOG = os.path.normpath(os.path.join(appinfo.getInstallPrefix(), "share/doc/debreate/changelog.txt"))
     else:
       CHANGELOG = os.path.normpath(os.path.join(paths.getAppDir(), "docs/changelog.txt"))
@@ -408,7 +407,7 @@ class AboutDialog(wx.Dialog):
     #   under the applications root directory. The
     #   install script or Makefile should change this
     #   to reflect installed path.
-    if INSTALLED:
+    if not appinfo.isPortable():
       license_path = os.path.normpath(os.path.join(appinfo.getInstallPrefix(), "share/doc/debreate/LICENSE.txt"))
     else:
       license_path = os.path.normpath(os.path.join(paths.getAppDir(), "LICENSE.txt"))
