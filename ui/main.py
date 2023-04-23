@@ -409,15 +409,12 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
     def SaveIt(path):
         # Gather data from different pages
-        data = (
-          GetPage(pgid.CONTROL).GetSaveData(),
-          GetPage(pgid.FILES).GetSaveData(),
-          GetPage(pgid.SCRIPTS).GetSaveData(),
-          GetPage(pgid.CHANGELOG).GetSaveData(),
-          GetPage(pgid.COPYRIGHT).GetSaveData(),
-          GetPage(pgid.MENU).GetSaveData(),
-          GetPage(pgid.BUILD).GetSaveData(),
-          )
+        data = []
+        for page in self.Wizard.GetAllPages():
+          p_data = page.GetSaveData() if hasattr(page, "GetSaveData") else None
+          logger.debug(page.GetLabel() + ": " + ("<data>" if p_data != None else str(None)))
+          if p_data != None:
+            data.append(p_data)
 
         # Create a backup of the project
         overwrite = False
