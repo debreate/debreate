@@ -36,7 +36,7 @@ from ui.font           import GetMonospacedFont
 from ui.layout         import BoxSizer
 
 
-__logger = Logger(__name__)
+_logger = Logger(__name__)
 
 # How often the log window will be refreshed
 LOG_WINDOW_REFRESH_INTERVAL = 1
@@ -148,7 +148,7 @@ class LogWindow(wx.Dialog):
         self.DspLog.SetFont(GetMonospacedFont(font_sizes[S]))
         self.DspLog.font_size = font_sizes[S]
         return
-    __logger.error(GT("Can't change log window font"))
+    _logger.error(GT("Can't change log window font"))
 
   ## Hides the log window when close event occurs
   def OnClose(self, event=None):
@@ -179,7 +179,7 @@ class LogWindow(wx.Dialog):
       if m_checked != window_shown:
         menu_debug.Check(menuid.LOG, window_shown)
     else:
-      __logger.warn("Log thread still active!")
+      _logger.warn("Log thread still active!")
 
   ## Use an event to show the log window
   #
@@ -230,7 +230,7 @@ class LogWindow(wx.Dialog):
         self.DspLog.ShowPosition(self.DspLog.GetLastPosition())
       except RuntimeError:
         tb_error = strings.toString(traceback.format_exc())
-        __logger.warn("Error refreshing log window. Details below:\n\n{}".format(tb_error))
+        _logger.warn("Error refreshing log window. Details below:\n\n{}".format(tb_error))
 
   ## Changes the file to be loaded & displayed
   #
@@ -253,9 +253,9 @@ class LogWindow(wx.Dialog):
     self.Show(True)
 
     if not self.LogPollThread.IsActive():
-      __logger.debug("Starting log polling thread ...")
+      _logger.debug("Starting log polling thread ...")
 
       self.LogPollThread.Start()
 
     else:
-      __logger.debug("Log polling thread is already started")
+      _logger.debug("Log polling thread is already started")

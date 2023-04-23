@@ -23,7 +23,7 @@ from ui.panel          import ScrolledPanel
 from ui.style          import layout as lyt
 
 
-__logger = Logger(__name__)
+_logger = Logger(__name__)
 
 ## A checkable list
 class CheckList(BorderedPanel):
@@ -74,7 +74,7 @@ class CheckList(BorderedPanel):
     # FIXME: Static lines are counted
     item_index = self.GetItemCount()
 
-    #__logger.debug(GT("Lintian tag: {}; Set checked: {}").format(label, checked))
+    #_logger.debug(GT("Lintian tag: {}; Set checked: {}").format(label, checked))
 
     pnl_bg = GetField(self, pnlid.BACKGROUND)
     lyt_bg = pnl_bg.GetSizer()
@@ -99,7 +99,7 @@ class CheckList(BorderedPanel):
   #    Sets items as checked if True
   def AddItems(self, labels, checked=False):
     for l in labels:
-      __logger.debug("Adding item: {} (checked={})".format(l, checked))
+      _logger.debug("Adding item: {} (checked={})".format(l, checked))
       self.AddItem(l, checked)
 
   ## Sets all item states to 'unchecked'
@@ -148,7 +148,7 @@ class CheckList(BorderedPanel):
     for CHK in self.GetAllItems():
       if CHK.IsChecked():
         label = CHK.GetLabel()
-        __logger.debug(GT("Retrieving checked label: {}").format(label))
+        _logger.debug(GT("Retrieving checked label: {}").format(label))
         checked_list.append(label)
     return tuple(checked_list)
 

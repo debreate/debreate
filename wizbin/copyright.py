@@ -42,7 +42,7 @@ from ui.layout          import BoxSizer
 from ui.style           import layout as lyt
 
 
-__logger = Logger(__name__)
+_logger = Logger(__name__)
 
 # Globals
 copyright_header = GT("Copyright © {} <copyright holder(s)> [<email>]")
@@ -288,7 +288,7 @@ class Page(ui.page.Page):
 
         return
 
-      __logger.debug("Copying license {}".format(template_file))
+      _logger.debug("Copying license {}".format(template_file))
 
       license_text = fileio.readFile(template_file)
 
@@ -311,7 +311,7 @@ class Page(ui.page.Page):
 
         center_header = add_header[template_name][1]
         if center_header:
-          __logger.debug("Centering header...")
+          _logger.debug("Centering header...")
 
           offset = 0
 
@@ -323,14 +323,14 @@ class Page(ui.page.Page):
             # Use the longest line found in the text to center the header
             longest_line = GetLongestLine(license_text)
 
-            __logger.debug("Longest line: {}".format(longest_line))
+            _logger.debug("Longest line: {}".format(longest_line))
 
             header_length = len(header)
             if header_length < longest_line:
               offset = (longest_line - header_length) / 2
 
           if offset:
-            __logger.debug("Offset: {}".format(offset))
+            _logger.debug("Offset: {}".format(offset))
 
             header = "{}{}".format(" " * offset, header)
 
