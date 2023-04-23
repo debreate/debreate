@@ -19,6 +19,10 @@ from wx.richtext import RichTextCtrl
 
 from ui.layout import BoxSizer
 
+from libdbr.logger import Logger
+
+
+_logger = Logger(__name__)
 
 # FIXME: This should use a global manpage file
 #app_man = "{}/man/debreate.1"
@@ -31,7 +35,10 @@ man_section = "1"
 #
 #  @return
 #    RichText help reference.
+#  @deprecated
 def ParseManpage():
+  _logger.deprecated(ParseManpage)
+
   help_text = "ERROR: Could not parse '{}'".format(app_man)
 
   if os.path.isfile(app_man):
