@@ -2,9 +2,10 @@
 -- Known Bugs --
 
 required for release:
+- "clear local cache" menu does not refresh changelog dist names
+- can't disable tooltips under Gtk
 
 priority:
-- can't disable tooltips under Gtk
 
 non-priority:
 - file selection via directory tree broken in wx 4.0 & 4.1
