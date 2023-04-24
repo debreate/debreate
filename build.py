@@ -178,7 +178,7 @@ def getChangesDeb():
   if not os.path.isfile(changelog):
     return
   changes = misc.getLatestChanges(changelog)
-  deb_info = cfg.getKeyedValue("deb_info")
+  deb_info = cfg.getKeyedValue("deb_info", sep=";")
   deb_info["package"] = package_name
   deb_info["version"] = package_version
   if package_version_dev > 0:
