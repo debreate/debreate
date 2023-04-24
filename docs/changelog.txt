@@ -43,6 +43,7 @@ next
 - Added "Provides" option to dependencies & conflicts page
 - added "MIME Type" field to menu
 - build checks for file conflicts
+- unhandled exceptions in main thread causes app to close
 
 0.7.13
 - Fixes:

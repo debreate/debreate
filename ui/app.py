@@ -89,6 +89,15 @@ class DebreateApp(wx.App):
 
     self.setMainWindow(window)
 
+  ## Closes main window to end program.
+  def shutdown(self):
+    if self.MainWindow:
+      if self.MainWindow.GetId() == pnlid.MAIN:
+        self.MainWindow.saveConfigAndShutdown()
+      else:
+        self.MainWindow.Destroy()
+      self.MainWindow = None
+
 
 ## Helper function to get app instance.
 #

@@ -3,7 +3,6 @@
 
 required for release:
 - examine changelog changes before release
-- close progress dialogs on errors so program doesn't freeze
 
 priority:
 - use libdbr.tasks for build tasks
