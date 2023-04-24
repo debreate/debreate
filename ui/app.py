@@ -25,7 +25,8 @@ class DebreateApp(wx.App):
   #    `wx.Window` instance to use as main window.
   def __init__(self, window=None):
     wx.App.__init__(self)
-    self.setMainWindow(window)
+    if window != None:
+      self.setMainWindow(window)
 
   ## Retrieves the main window.
   #
@@ -97,6 +98,15 @@ def get():
 #    `ui.main.MainWindow` instance.
 def getMainWindow():
   return get().getMainWindow()
+
+## Helper function to get menus from main menu.
+#
+#  @param menuId
+#    Menu integer identifier.
+#  @return
+#    `wx.Menu` instance.
+def getMenu(menuId):
+  return getMainWindow().getMenu(menuId)
 
 ## Helper function to get the wizard interface instance.
 #
