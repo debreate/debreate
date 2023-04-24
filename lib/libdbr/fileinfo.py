@@ -13,10 +13,10 @@
 import mimetypes
 import os
 import re
+import subprocess
 import sys
 
-from .    import paths
-from .bin import execute
+from . import paths
 
 
 __default = "application/octet-stream"
@@ -55,8 +55,8 @@ def getMimeType(filepath):
 
   f_exists = os.path.isfile(filepath)
   if f_exists and __mimecmd:
-    code, output = execute(__mimecmd[0], __mimecmd[1:], filepath)
-    f_info = output
+    res = subprocess.run(__mimecmd + [filepath], stdout=subprocess.PIPE)
+    f_info = res.stdout.decode("utf-8").strip() if res.stdout else None
 
   if not f_info:
     # fallback to checking by file extension

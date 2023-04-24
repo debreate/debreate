@@ -68,11 +68,13 @@ __cmd_trash = []
 #    File(s) to be moved.
 #  @return
 #    `True` if ___files___ no longer exist.
+#  @todo
+#    Implement for win32.
 def trash(files):
   if not __cmd_trash:
     if sys.platform == "win32":
       # TODO:
-      pass
+      print("WARNING: sending files to recycle bin not implemented yet on Windows")
     else:
       __cmd_trash.append(paths.getExecutable("gio"))
       __cmd_trash.append("trash")
