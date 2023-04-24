@@ -43,6 +43,7 @@ from dbr.functions        import UsingDevelopmentVersion
 from dbr.icon             import Icon
 from dbr.language         import GT
 from dbr.timer            import DebreateTimer
+from globals              import tooltips
 from globals.bitmaps      import LOGO
 from globals.project      import PROJECT_ext
 from globals.project      import PROJECT_txt
@@ -55,6 +56,7 @@ from libdbr.logger        import Logger
 from libdebreate          import appinfo
 from libdebreate.ident    import menuid
 from libdebreate.ident    import pgid
+from libdebreate.ident    import pnlid
 from startup              import tests
 from ui.about             import AboutDialog
 from ui.dialog            import ConfirmationDialog
@@ -83,7 +85,7 @@ class MainWindow(wx.Frame):
   #  @param size
   #  <b><i>Integer tuple</i></b> or <b><i>wx.Size</i></b> instance indicating the dimensions of the window
   def __init__(self):#, pos, size):
-    wx.Frame.__init__(self, None, wx.ID_ANY)
+    wx.Frame.__init__(self, None, pnlid.MAIN)
     self.error = {}
 
     self.timer = DebreateTimer(self)
@@ -151,6 +153,11 @@ class MainWindow(wx.Frame):
     self.SetAutoLayout(True)
     self.SetSizer(lyt_main)
     self.Layout()
+
+  ## Actions that should be called after the main window has been created & set in the `wx.App`.
+  def onInit(self):
+    logger.debug("calling '{}.{}'".format(self.__class__.__name__, self.onInit.__name__))
+    self.OnToggleToolTips()
 
   ## Retrieves menu by ID
   #
@@ -527,7 +534,8 @@ class MainWindow(wx.Frame):
   ## Shows or hides tooltips
   def OnToggleToolTips(self, event=None): #@UnusedVariable
     enabled = self.opt_tooltips.IsChecked()
-    wx.ToolTip.Enable(enabled)
+    if not tooltips.enable(enabled):
+      logger.error("an error occurred while setting tooltips state")
     cfg_user = config.get("user")
     cfg_user.setValue("tooltips", enabled)
     cfg_user.save()

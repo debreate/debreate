@@ -15,6 +15,7 @@ import wx
 import ui.page
 
 from dbr.language      import GT
+from globals           import tooltips
 from libdebreate.ident import pgid
 from ui.hyperlink      import Hyperlink
 from ui.layout         import BoxSizer
@@ -37,7 +38,7 @@ class Page(ui.page.Page):
 
     lnk_video = Hyperlink(self, wx.ID_ANY, GT("Building a Debian Package with Debreate"),
         "http://www.youtube.com/watch?v=kx4D5eL6HKE")
-    lnk_video.SetToolTip(lnk_video.url)
+    tooltips.register(lnk_video, lnk_video.url)
 
     # *** Layout *** #
 

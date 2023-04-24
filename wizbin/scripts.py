@@ -16,8 +16,8 @@ import ui.app
 import ui.page
 
 from dbr.language      import GT
+from globals           import tooltips
 from globals.fileitem  import FileItem
-from globals.tooltips  import SetPageToolTips
 from input.filelist    import BasicFileList
 from input.markdown    import MarkdownDialog
 from input.pathctrl    import PathCtrl
@@ -79,8 +79,8 @@ class Page(ui.page.Page):
     postrm.SetCheckBox(chk_postrm)
 
     for S in chk_preinst, chk_postinst, chk_prerm, chk_postrm:
-      S.SetToolTip("{} {}".format(S.GetName(), GT("script will be created from text below")))
-
+      tooltips.register(S, "{} {}".format(S.GetName(),
+          GT("script will be created from text below")))
       S.Bind(wx.EVT_CHECKBOX, self.OnToggleScripts)
 
     # Radio buttons for displaying between pre- and post- install scripts
@@ -135,7 +135,7 @@ class Page(ui.page.Page):
     # Initialize script display
     self.ScriptSelect(None)
 
-    SetPageToolTips(self)
+    tooltips.SetPageToolTips(self)
 
     # *** Event Handling *** #
 

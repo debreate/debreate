@@ -9,6 +9,7 @@
 ## Miscellaneous IDs.
 #
 #  @module libdebreate.ident
+#  @todo Refactor & simplify identities.
 
 import wx
 
@@ -311,6 +312,8 @@ class PanelId(FieldId):
     FieldId.__init__(self)
 
     self.BACKGROUND = self.NewId()
+    # main window
+    self.MAIN = self.NewId()
 
 pnlid = PanelId()
 

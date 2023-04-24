@@ -16,6 +16,7 @@ import wx
 
 from dbr.containers    import Contains
 from fields.cmdfield   import CommandField
+from globals           import tooltips
 from globals.paths     import getBitmapsDir
 from globals.strings   import IsString
 from libdbr            import strings
@@ -149,13 +150,13 @@ class ButtonSizer(BoxSizer):
           if isinstance(button, CustomButton):
             static_text = btn_objects[1].GetWindow()
             static_text.SetLabel(newLabel)
-            button.SetToolTip(newLabel)
+            tooltips.register(button, newLabel)
 
             label_set = True
 
           else:
             button.SetLabel(newLabel)
-            button.SetToolTip(newLabel)
+            tooltips.register(button, newLabel)
 
             label_set = True
 
@@ -346,7 +347,7 @@ def CreateButton(parent, btnId=wx.ID_ANY, label=wx.EmptyString, image=None, size
           requireAll=requireAll)
       if not tooltip:
         tooltip = label
-      button.SetToolTip(tooltip)
+      tooltips.register(button, tooltip)
 
   # Use a standard button
   if not button:

@@ -12,7 +12,8 @@
 
 import wx
 
-from libdbr.logger import Logger
+from libdbr.logger     import Logger
+from libdebreate.ident import pnlid
 
 
 _logger = Logger(__name__)
@@ -25,8 +26,7 @@ class DebreateApp(wx.App):
   #    `wx.Window` instance to use as main window.
   def __init__(self, window=None):
     wx.App.__init__(self)
-    if window != None:
-      self.setMainWindow(window)
+    self.setMainWindow(window)
 
   ## Retrieves the main window.
   #
@@ -70,8 +70,13 @@ class DebreateApp(wx.App):
   #
   #  @param window
   #    `wx.Frame` instance to use for main window.
+  #  @todo
+  #    FIXME: move call to `wx.App.SetTopWindow` from `ui.main.MainWindow.__init__`.
   def setMainWindow(self, window):
     self.MainWindow = window
+    # FIXME: can just check for attribute 'onInit'
+    if window != None and window.GetId() == pnlid.MAIN:
+      window.onInit()
 
   ## Alias of `ui.app.DebreateApp.setMainWindow`.
   #

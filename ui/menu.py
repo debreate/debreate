@@ -150,8 +150,6 @@ def createMenuBar(parent):
     else:
       parent.opt_tooltips.Check(GetDefaultConfigValue("tooltips"))
 
-    parent.OnToggleToolTips()
-
   # *** Option Menu: open logs directory *** #
 
   if paths.getExecutable("xdg-open"):

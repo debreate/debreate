@@ -22,9 +22,9 @@ from dbr.templates      import GetLicenseTemplateFile
 from dbr.templates      import GetLocalLicenses
 from dbr.templates      import GetSysLicenses
 from dbr.templates      import sys_licenses_path
+from globals            import tooltips
 from globals.dateinfo   import GetYear
 from globals.errorcodes import dbrerrno
-from globals.tooltips   import SetPageToolTips
 from input.select       import Choice
 from input.text         import TextAreaPanelESS
 from libdbr             import fileio
@@ -80,7 +80,7 @@ class Page(ui.page.Page):
     self.dsp_copyright = TextAreaPanelESS(self, monospace=True, name="license")
     self.dsp_copyright.EnableDropTarget()
 
-    SetPageToolTips(self)
+    tooltips.SetPageToolTips(self)
 
     # Initiate tooltip for drop-down selector
     if self.sel_templates.IsEnabled():
@@ -395,9 +395,7 @@ class Page(ui.page.Page):
   def SetLicenseTooltip(self):
     license_name = self.sel_templates.GetString(self.sel_templates.GetSelection())
     license_path = self.GetLicensePath(license_name)
-
     if license_path:
-      self.sel_templates.SetToolTip(wx.ToolTip(license_path))
-      return
-
-    self.sel_templates.SetToolTip(None)
+      tooltips.register(self.sel_templates, license_path)
+    else:
+      tooltips.unregister(self.sel_templates)

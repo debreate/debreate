@@ -23,7 +23,7 @@ from libdebreate.ident import pgid
 from ui.helper         import FieldEnabled
 
 
-logger = Logger(__name__)
+_logger = Logger(__name__)
 
 # *** wizard buttons *** #
 TT_wiz_prev = wx.ToolTip(GT("Previous page"))
@@ -229,15 +229,13 @@ TT_pages = {
 def SetToolTip(tooltip, control, required=False):
   if isinstance(tooltip, wx.ToolTip):
     tooltip = tooltip.GetTip()
-
   elif isinstance(tooltip, (tuple, list)):
     tooltip = "\n".join(tooltip)
 
   if tooltip:
     if required:
       tooltip = "{}\n\n{}".format(tooltip, GT("Required"))
-
-    control.SetToolTip(tooltip)
+    register(control, tooltip)
 
 
 ## Sets multiple tooltips at once.
@@ -279,7 +277,7 @@ def SetPageToolTips(parent, page_id=None):
             name = FIELD.GetName().lower()
 
           except AttributeError:
-            logger.warn("Object has no name, not setting tooltip: {}".format(type(FIELD)))
+            _logger.warn("Object has no name, not setting tooltip: {}".format(type(FIELD)))
 
             continue
 
@@ -300,3 +298,55 @@ def SetPageToolTips(parent, page_id=None):
 
       if tooltip:
         SetToolTip(tooltip, FIELD, required)
+
+
+__registry = {}
+
+## Registers a tooltip associated with a window.
+#
+#  @param window
+#    `wx.Window` instance.
+#  @param tt
+#    Text to display for tooltip.
+def register(window, tt):
+  # ~ if not isinstance(tt, wx.ToolTip):
+    # ~ tt = wx.ToolTip(tt)
+  if isinstance(tt, wx.ToolTip):
+    tt = tt.GetTip()
+  __registry[window] = tt
+
+## Unregisters a window's tooltip.
+#
+#  @param window
+#    `wx.Window` instance to be unregistered.
+def unregister(window):
+  if window in __registry:
+    del __registry[window]
+
+## Enables or disables tooltips globally.
+#
+#  @param enabled
+#    Flag dertimining if tooltips should be enabled or disabled.
+def enable(enabled=True):
+  wx.ToolTip.Enable(enabled)
+  if areEnabled() == enabled:
+    return True
+  # fallback to manually setting
+  _logger.debug("registered tooltips: {}".format(len(__registry)))
+  for window in __registry:
+    if enabled:
+      window.SetToolTip(wx.ToolTip(__registry[window]))
+    else:
+      window.UnsetToolTip()
+  _logger.debug("tooltip state 'enabled={}' set manually".format(enabled))
+  return areEnabled() == enabled
+
+## Checks registered windows for enabled tooltips.
+#
+#  @return
+#    `True` if global tooltips are recognized as enabled.
+def areEnabled():
+  for window in __registry:
+    if window.GetToolTip() != None:
+      return True
+  return False

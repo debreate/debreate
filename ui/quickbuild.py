@@ -17,6 +17,7 @@ from dbr.event            import EVT_TIMER_STOP
 from dbr.functions        import BuildDebPackage
 from dbr.language         import GT
 from dbr.timer            import DebreateTimer
+from globals              import tooltips
 from globals.errorcodes   import dbrerrno
 from globals.threads      import Thread
 from libdbr.fileio        import readFile
@@ -45,24 +46,24 @@ class QuickBuild(wx.Dialog):
 
     label_stage = wx.StaticText(self, label=GT("Staged directory tree"))
     self.input_stage = wx.TextCtrl(self)
-    self.input_stage.SetToolTip(wx.ToolTip(GT("Root directory of build tree")))
+    tooltips.register(self.input_stage, GT("Root directory of build tree"))
 
     btn_browse_stage = CreateButton(self, btnid.STAGE, image="browse")
     btn_browse_stage.Bind(wx.EVT_BUTTON, self.OnBrowse)
 
     label_target = wx.StaticText(self, label=GT("Target file"))
     self.input_target = wx.TextCtrl(self)
-    self.input_target.SetToolTip(wx.ToolTip(GT("Target output file")))
+    tooltips.register(self.input_target, GT("Target output file"))
 
     btn_browse_target = CreateButton(self, btnid.TARGET, image="browse")
     btn_browse_target.Bind(wx.EVT_BUTTON, self.OnBrowse)
 
     btn_build = CreateButton(self, btnid.BUILD)
-    btn_build.SetToolTip(wx.ToolTip(GT("Start building")))
+    tooltips.register(btn_build, GT("Start building"))
     btn_build.Bind(wx.EVT_BUTTON, self.OnBuild)
 
     btn_cancel = CreateButton(self, btnid.EXIT)
-    btn_cancel.SetToolTip(wx.ToolTip(GT("Close dialog")))
+    tooltips.register(btn_cancel, GT("Close dialog"))
     btn_cancel.Bind(wx.EVT_BUTTON, self.OnClose)
 
     self.gauge = wx.Gauge(self, GAUGE_MAX)

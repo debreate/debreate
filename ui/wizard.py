@@ -19,6 +19,7 @@ import ui.page
 
 from dbr.event         import ChangePageEvent
 from dbr.language      import GT
+from globals           import tooltips
 from globals.system    import mimport
 from globals.tooltips  import TT_wiz_next
 from globals.tooltips  import TT_wiz_prev
@@ -72,7 +73,7 @@ class Wizard(wx.Panel):
     if testing:
       # Help button
       btn_help = CreateButton(self, btnid.HELP)
-      btn_help.SetToolTip(GT("Page help"))
+      tooltips.register(btn_help, GT("Page help"))
 
     # A Header for the wizard
     pnl_title = wx.Panel(self, style=wx.RAISED_BORDER)
@@ -89,9 +90,9 @@ class Wizard(wx.Panel):
 
     # Previous and Next buttons
     self.btn_prev = CreateButton(self, btnid.PREV)
-    self.btn_prev.SetToolTip(TT_wiz_prev)
+    tooltips.register(self.btn_prev, TT_wiz_prev)
     self.btn_next = CreateButton(self, btnid.NEXT)
-    self.btn_next.SetToolTip(TT_wiz_next)
+    tooltips.register(self.btn_next, TT_wiz_next)
 
     # These widgets are put into a list so that they are not automatically hidden
     self.permanent_children = [

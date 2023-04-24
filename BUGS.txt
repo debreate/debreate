@@ -2,7 +2,6 @@
 -- Known Bugs --
 
 required for release:
-- can't disable tooltips under Gtk
 
 priority:
 
