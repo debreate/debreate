@@ -5,6 +5,7 @@ required for release:
 - examine changelog changes before release
 
 priority:
+- 'dist-source' & 'deb-source' build tasks overwrite each other's package
 - fix mime type icon not showing for .dbp project files
 - remove hyphenation from development builds (use "XdevX" instead of "X-devX")
 - use libdbr.tasks for build tasks
