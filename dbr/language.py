@@ -9,6 +9,7 @@
 ## @module dbr.language
 
 import gettext
+import locale
 import os
 
 from libdbr.logger import Logger
@@ -19,6 +20,7 @@ __logger = Logger(__name__)
 
 __domain = appinfo.getName().lower()
 __translator = None
+__native_code = "en_US"
 
 
 ## Formats translatable strings.
@@ -49,8 +51,11 @@ def GetLocaleDir():
 #    Directory to search for gettext locale translations.
 def setTranslator(path):
   global __translator
-  try:
-    __translator = gettext.translation(__domain, path).gettext
-    __logger.debug("locale directory: {}".format(path))
-  except FileNotFoundError:
-    __logger.warn("translation search in '{}' failed".format(path))
+  l_code = locale.getlocale()[0]
+  __logger.debug("locale code: {}".format(l_code))
+  __logger.debug("locale directory: {}".format(path))
+  if l_code != __native_code:
+    try:
+      __translator = gettext.translation(__domain, path).gettext
+    except FileNotFoundError:
+      __logger.warn("translation for locale '{}' unavailable".format(l_code))

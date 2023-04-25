@@ -3,7 +3,6 @@
 
 required for release:
 - examine changelog changes before release
-- change translation search warning show for non-native languages only
 
 priority:
 - 'dist-source' & 'deb-source' build tasks overwrite each other's package
