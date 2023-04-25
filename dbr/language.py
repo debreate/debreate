@@ -9,9 +9,11 @@
 ## @module dbr.language
 
 import gettext
-import locale
 import os
 
+import libdbr.bin
+
+from libdbr        import paths
 from libdbr.logger import Logger
 from libdebreate   import appinfo
 
@@ -21,7 +23,29 @@ __logger = Logger(__name__)
 __domain = appinfo.getName().lower()
 __translator = None
 __native_code = "en_US"
+__current_code = ""
 
+## Stores locale code.
+def __cacheLocale():
+  global __current_code
+  # set to 'None' to fallback to let gettext try to parse locale if user lookup fails
+  __current_code = None
+  cmd_locale = paths.getExecutable("locale")
+  if cmd_locale:
+    # try to parse current user's locale
+    err, msg = libdbr.bin.execute(cmd_locale)
+    if err == 0:
+      for li in msg.split("\n"):
+        if len(li) > 5 and li.startswith("LANG="):
+          __current_code = li[5:].split(".")[0]
+          return
+  __logger.debug("defaulting to system locale")
+
+## Retrieves the current locale code.
+def getLocale():
+  if __current_code == "":
+    __cacheLocale()
+  return __current_code
 
 ## Formats translatable strings.
 #
@@ -51,11 +75,11 @@ def GetLocaleDir():
 #    Directory to search for gettext locale translations.
 def setTranslator(path):
   global __translator
-  l_code = locale.getlocale()[0]
+  l_code = getLocale()
   __logger.debug("locale code: {}".format(l_code))
   __logger.debug("locale directory: {}".format(path))
   if l_code != __native_code:
     try:
-      __translator = gettext.translation(__domain, path).gettext
+      __translator = gettext.translation(__domain, path, [l_code]).gettext
     except FileNotFoundError:
       __logger.warn("translation for locale '{}' unavailable".format(l_code))

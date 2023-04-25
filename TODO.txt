@@ -3,6 +3,8 @@
 
 required for release:
 - examine changelog changes before release
+- examine debian/control for dependencies that should be removed
+- update manpage
 
 priority:
 - 'dist-source' & 'deb-source' build tasks overwrite each other's package
