@@ -110,7 +110,7 @@ class StandardFileDialog(wx.FileDialog):
     self.Extension = defaultExt
 
     if self.WindowStyleFlag & wx.FD_SAVE:
-      wx.EVT_BUTTON(self, self.AffirmativeId, self.OnAccept)
+      self.Bind(wx.EVT_BUTTON, self.OnAccept, id=self.AffirmativeId)
 
       if self.WindowStyleFlag & wx.FD_CHANGE_DIR:
         logger.warn("Found FD_CHANGE_DIR style, could conflict with OnAccept method")
