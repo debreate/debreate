@@ -17,9 +17,9 @@ from dbr.event            import EVT_TIMER_STOP
 from dbr.functions        import BuildDebPackage
 from dbr.language         import GT
 from dbr.timer            import DebreateTimer
+from globals              import threads
 from globals              import tooltips
 from globals.errorcodes   import dbrerrno
-from globals.threads      import Thread
 from libdbr.fileio        import readFile
 from libdbr.logger        import Logger
 from libdebreate.ident    import btnid
@@ -46,6 +46,8 @@ class QuickBuild(wx.Dialog):
 
     # track build status
     self.__status = None
+    # build thread ID
+    self.__thread_id = None
 
     label_stage = wx.StaticText(self, label=GT("Staged directory tree"))
     self.input_stage = wx.TextCtrl(self)
@@ -230,7 +232,7 @@ class QuickBuild(wx.Dialog):
     self.timer.Start(100)
 
     # Start new thread for background process
-    Thread(self.Build, stage, target).Start()
+    self.__thread_id = threads.create(self.Build, stage, target)
 
   ## Closes the Quick Build dialog & destroys instance
   def OnClose(self, event=None):
@@ -244,6 +246,8 @@ class QuickBuild(wx.Dialog):
     else:
       logger.debug(GT("Timer is running"))
 
+    # remove thread ID from active list
+    threads.end(self.__thread_id)
     self.Enable()
     if self.__status:
       self.gauge.SetValue(self.__status[0])

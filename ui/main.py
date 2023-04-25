@@ -43,11 +43,11 @@ from dbr.functions        import UsingDevelopmentVersion
 from dbr.icon             import Icon
 from dbr.language         import GT
 from dbr.timer            import DebreateTimer
+from globals              import threads
 from globals              import tooltips
 from globals.bitmaps      import LOGO
 from globals.project      import PROJECT_ext
 from globals.project      import PROJECT_txt
-from globals.threads      import Thread
 from libdbr               import config
 from libdbr               import fileio
 from libdbr               import paths
@@ -372,7 +372,7 @@ class MainWindow(wx.Frame):
             style=wx.PD_APP_MODAL|wx.PD_AUTO_HIDE)
         self.Disable()
         self.timer.Start(100)
-        Thread(self.__cacheManualFiles, manual_cache).Start()
+        threads.create(self.__cacheManualFiles, manual_cache)
         self.progress.ShowModal()
         self.Enable()
         if self.error:
@@ -512,6 +512,11 @@ class MainWindow(wx.Frame):
 
   ## Stores configuration settings & closes app.
   def saveConfigAndShutdown(self):
+    # check sub-threads
+    for t_id, t in threads.getActive().items():
+      if t.is_alive():
+        logger.warn("found active thread at shutdown: {}".format(t_id))
+
     cfg_user = config.get("user")
     maximized = self.IsMaximized()
     cfg_user.setValue("maximize", maximized)

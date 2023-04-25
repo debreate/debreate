@@ -21,8 +21,8 @@ from dbr.event         import RefreshLogEvent
 from dbr.language      import GT
 from globals           import bitmaps
 from globals           import paths
+from globals           import threads
 from globals.fileitem  import FileItem
-from globals.threads   import Thread
 from input.text        import TextAreaPanel
 from libdbr            import strings
 from libdbr.logger     import Logger
@@ -68,7 +68,7 @@ class LogWindow(wx.Dialog):
     self.LogFile = FileItem(logFile)
     self.SetTitle()
 
-    self.LogPollThread = Thread(self.PollLogFile)
+    self.thread_id = threads.create(self.PollLogFile, start=False)
 
     self.DspLog = TextAreaPanel(self, style=wx.TE_READONLY)
     self.DspLog.font_size = 8
@@ -251,11 +251,8 @@ class LogWindow(wx.Dialog):
   def ShowLog(self):
     self.RefreshLog()
     self.Show(True)
-
-    if not self.LogPollThread.IsActive():
-      _logger.debug("Starting log polling thread ...")
-
-      self.LogPollThread.Start()
-
+    if not threads.isActive(self.thread_id):
+      _logger.debug("starting log polling thread ...")
+      threads.start(self.thread_id)
     else:
       _logger.debug("Log polling thread is already started")

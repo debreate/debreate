@@ -20,10 +20,10 @@ import ui.app
 from dbr.event            import EVT_TIMER_STOP
 from dbr.language         import GT
 from dbr.timer            import DebreateTimer
+from globals              import threads
 from globals.system       import FILE_distnames
 from globals.system       import GetOSDistNames
 from globals.system       import UpdateDistNamesCache
-from globals.threads      import Thread
 from libdbr.fileio        import readFile
 from libdbr.logger        import Logger
 from libdebreate.ident    import inputid
@@ -173,7 +173,7 @@ class DistNamesCacheDialog(BaseDialog):
       self.Disable()
 
       # Start new thread for updating cache in background
-      Thread(self.UpdateCache, None).Start()
+      threads.create(self.UpdateCache)
 
       # Create the progress dialog & start timer
       # NOTE: Progress dialog is reset by timer stop event
@@ -225,7 +225,7 @@ class DistNamesCacheDialog(BaseDialog):
   #
   #  @todo
   #    FIXME: Show error if could not contact 1 or more remote sites???
-  def UpdateCache(self, args=None):
+  def UpdateCache(self):
     logger.debug(GT("Updating cache ..."))
     UpdateDistNamesCache(self.chk_unstable.GetValue(), self.chk_obsolete.GetValue(),
         self.chk_generic.GetValue())
