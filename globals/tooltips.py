@@ -333,7 +333,11 @@ def enable(enabled=True):
     return True
   # fallback to manually setting
   _logger.debug("registered tooltips: {}".format(len(__registry)))
-  for window in __registry:
+  for window in tuple(__registry):
+    if not window:
+      _logger.debug("element deleted: {}".format(window))
+      del __registry[window]
+      continue
     if enabled:
       window.SetToolTip(wx.ToolTip(__registry[window]))
     else:
@@ -343,10 +347,16 @@ def enable(enabled=True):
 
 ## Checks registered windows for enabled tooltips.
 #
+#  Note: Requires at least one tooltip to be registered.
+#
 #  @return
 #    `True` if global tooltips are recognized as enabled.
 def areEnabled():
-  for window in __registry:
+  for window in tuple(__registry):
+    if not window:
+      _logger.debug("element deleted: {}".format(window))
+      del __registry[window]
+      continue
     if window.GetToolTip() != None:
       return True
   return False

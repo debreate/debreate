@@ -2,7 +2,6 @@
 -- Known Bugs --
 
 required for release:
-- error when updating tooltips where element has been destroyed
 
 priority:
 - files page: elements don't resize when narrowing page
