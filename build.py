@@ -161,7 +161,7 @@ def stageMimeInfo(prefix):
 
   dir_conf = paths.join(prefix, "mime/packages")
   # FIXME: need system independent directory
-  dir_icons = paths.join(prefix, "icons/gnome/scalable/mimetype")
+  dir_icons = paths.join(prefix, "icons/hicolor/scalable/mimetypes")
 
   mime_prefix = cfg.getValue("dbp_mime_prefix")
   mime_type = cfg.getValue("dbp_mime")
@@ -264,7 +264,7 @@ def taskUninstall():
   root_mime = paths.join(root_data, "mime/packages")
   root_locale = paths.join(root_data, "locale")
   root_pixmaps = paths.join(root_data, "pixmaps")
-  root_icons = paths.join(root_data, "icons/gnome") # FIXME: need system independed path
+  root_icons = paths.join(root_data, "icons/hicolor")
 
   logger.info("uninstalling app files ...")
 
@@ -273,7 +273,7 @@ def taskUninstall():
     paths.join(root_menu, package_name + ".desktop"),
     paths.join(root_mime, package_name + ".xml"),
     paths.join(root_pixmaps, package_name + ".png"),
-    paths.join(root_icons, "scalable/mimetype/{}-{}.svg"
+    paths.join(root_icons, "scalable/mimetypes/{}-{}.svg"
         .format(cfg.getValue("dbp_mime_prefix"), cfg.getValue("dbp_mime")))
   )
 
