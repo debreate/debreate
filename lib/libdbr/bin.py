@@ -69,7 +69,8 @@ __cmd_trash = []
 #  @return
 #    `True` if ___files___ no longer exist.
 #  @todo
-#    Implement for win32.
+#    - Implement for win32.
+#    - See: https://learn.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-itransfersource-recycleitem
 def trash(files):
   if not __cmd_trash:
     if sys.platform == "win32":
