@@ -44,6 +44,9 @@ class QuickBuild(wx.Dialog):
         size=wx.Size(400,260))
     self.title = self.GetTitle()
 
+    # track build status
+    self.__status = None
+
     label_stage = wx.StaticText(self, label=GT("Staged directory tree"))
     self.input_stage = wx.TextCtrl(self)
     tooltips.register(self.input_stage, GT("Root directory of build tree"))
@@ -123,12 +126,12 @@ class QuickBuild(wx.Dialog):
   #  @param target
   #    Absolute output target filename
   def Build(self, stage, target):
-    completed_status = (0, GT("errors"))
+    self.__status = (0, GT("errors"))
 
     try:
       output = BuildDebPackage(stage, target)
       if output[0] == dbrerrno.SUCCESS:
-        completed_status = (GAUGE_MAX, GT("finished"))
+        self.__status = (GAUGE_MAX, GT("finished"))
 
       else:
         self.build_error = (
@@ -145,9 +148,6 @@ class QuickBuild(wx.Dialog):
         )
 
     self.timer.Stop()
-    self.gauge.SetValue(completed_status[0])
-    self.SetTitle("{} ({})".format(self.title, completed_status[1]))
-    self.Enable()
 
   ## Opens directory stage for target & file save dialog for target
   def OnBrowse(self, event=None):
@@ -239,6 +239,13 @@ class QuickBuild(wx.Dialog):
       logger.debug(GT("Timer is stopped"))
     else:
       logger.debug(GT("Timer is running"))
+
+    self.Enable()
+    if self.__status:
+      self.gauge.SetValue(self.__status[0])
+      self.SetTitle("{} ({})".format(self.title, self.__status[1]))
+      # reset status tracker
+      self.__status = None
 
     if self.build_error:
       error_lines = self.build_error[:-1]
