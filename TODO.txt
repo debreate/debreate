@@ -5,6 +5,7 @@ required for release:
 - examine changelog changes before release
 
 priority:
+- remove hyphenation from development builds (use "XdevX" instead of "X-devX")
 - use libdbr.tasks for build tasks
 - use static size for progress dialogs (prevent 'cancel' button from jumping around)
 - fallback to urllib if wget command not found

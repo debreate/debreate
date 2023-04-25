@@ -11,7 +11,7 @@
 #   msgstr blank
 #, fuzzy
 msgid   ""
-msgstr  "Project-Id-Version: Debreate 0.8.0dev6\n"
+msgstr  "Project-Id-Version: Debreate 0.8-dev6\n"
         "Report-Msgid-Bugs-To: antumdeluge@gmail.com\n"
         "POT-Creation-Date: 2023-04-15 06:25-0700\n"
         "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
