@@ -2,8 +2,10 @@
 -- Known Bugs --
 
 required for release:
+- error when updating tooltips where element has been destroyed
 
 priority:
+- files page: elements don't resize when narrowing page
 
 non-priority:
 - file selection via directory tree broken in wx 4.0 & 4.1
