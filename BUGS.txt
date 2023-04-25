@@ -2,6 +2,7 @@
 -- Known Bugs --
 
 required for release:
+- quickbuild dialog crashes on build
 
 priority:
 
