@@ -199,6 +199,27 @@ def taskStage():
   stageLocale(dir_data)
   stageMimeInfo(dir_data)
 
+def taskStageSource():
+  tasks.run("clean-stage")
+
+  print()
+  logger.info("staging source distribution files ...")
+
+  root_stage = paths.join(dir_app, "build/stage")
+
+  for _dir in cfg.getValue("dirs_dist_py").split(";"):
+    abspath = paths.join(dir_app, _dir)
+    checkError((fileio.copyDir(abspath, paths.join(root_stage, _dir), exclude=r"^(.*\.pyc|__pycache__)$", verbose=options.verbose)))
+  for _dir in cfg.getValue("dirs_dist_data").split(";"):
+    abspath = paths.join(dir_app, _dir)
+    checkError((fileio.copyDir(abspath, paths.join(root_stage, _dir), verbose=options.verbose)))
+  for _file in cfg.getValue("files_dist_data").split(";"):
+    abspath = paths.join(dir_app, _file)
+    checkError((fileio.copyFile(abspath, paths.join(root_stage, _file), verbose=options.verbose)))
+  for _file in cfg.getValue("files_dist_exe").split(";"):
+    abspath = paths.join(dir_app, _file)
+    checkError((fileio.copyExecutable(abspath, paths.join(root_stage, _file), verbose=options.verbose)))
+
 def taskInstall():
   if options.prefix == None:
     exitWithError("'prefix' option is required for 'install' task.", errno.EINVAL, True)
@@ -403,26 +424,13 @@ def taskCleanDist():
   checkError((fileio.deleteDir(dir_dist, verbose=options.verbose)))
 
 def taskDistSource():
-  tasks.run("clean-stage")
+  tasks.run("stage-source")
 
   print()
   logger.info("building source distribution package ...")
 
   root_stage = paths.join(dir_app, "build/stage")
   root_dist = paths.join(dir_app, "build/dist")
-
-  for _dir in cfg.getValue("dirs_dist_py").split(";"):
-    abspath = paths.join(dir_app, _dir)
-    checkError((fileio.copyDir(abspath, paths.join(root_stage, _dir), exclude=r"^(.*\.pyc|__pycache__)$", verbose=options.verbose)))
-  for _dir in cfg.getValue("dirs_dist_data").split(";"):
-    abspath = paths.join(dir_app, _dir)
-    checkError((fileio.copyDir(abspath, paths.join(root_stage, _dir), verbose=options.verbose)))
-  for _file in cfg.getValue("files_dist_data").split(";"):
-    abspath = paths.join(dir_app, _file)
-    checkError((fileio.copyFile(abspath, paths.join(root_stage, _file), verbose=options.verbose)))
-  for _file in cfg.getValue("files_dist_exe").split(";"):
-    abspath = paths.join(dir_app, _file)
-    checkError((fileio.copyExecutable(abspath, paths.join(root_stage, _file), verbose=options.verbose)))
 
   pkg_dist = paths.join(root_dist, package_name + "_" + package_version_full + ".tar.xz")
 
@@ -507,24 +515,39 @@ def taskDistDeb():
 
 def taskDebSource():
   tasks.run("clean-deb")
+  __buildDebChangelog()
+  tasks.run("stage-source")
 
   print()
   logger.info("building Debian source package ...")
 
-  __buildDebChangelog()
+  root_build = paths.join(dir_app, "build")
+  root_stage = paths.join(root_build, "stage")
+  root_dist = paths.join(root_build, "dist")
+
+  # rename stage directory for use with debuild scripts
+  root_target = paths.join(root_build, package_name)
+  if os.path.isdir(root_target):
+    checkError((fileio.deleteDir(root_target, verbose=options.verbose)))
+  checkError((fileio.moveDir(root_stage, root_target, verbose=options.verbose)))
+
+  # move into target directory to run debuild scripts
+  os.chdir(root_target)
+  if options.verbose:
+    logger.info("executing debuild from '{}'".format(os.getcwd()))
   subprocess.run(("debuild", "-S", "-sa"), check=True)
 
-  dir_parent = os.path.dirname(dir_app)
-  dir_dist = paths.join(dir_app, "build/dist")
-  fileio.makeDir(dir_dist)
   pre = package_name + "_" + package_version_full
+  fileio.makeDir(root_dist)
   for suf in (".dsc", ".tar.xz", "_source.build", "_source.buildinfo", "_source.changes"):
+    # move built files to dist directory
     basename = pre + suf
-    source_filename = paths.join(dir_parent, basename)
-    target_filename = paths.join(dir_dist, basename)
+    source_filename = paths.join(root_build, basename)
+    target_filename = paths.join(root_dist, basename)
     if os.path.isfile(target_filename):
       checkError((fileio.deleteFile(target_filename, verbose=options.verbose)))
     checkError((fileio.moveFile(source_filename, target_filename, verbose=options.verbose)))
+  os.chdir(dir_app)
 
 def taskCheckCode():
   print()
@@ -595,6 +618,7 @@ def addTask(name, action, desc):
 
 def initTasks():
   addTask("stage", taskStage, "Prepare files for installation or distribution.")
+  addTask("stage-source", taskStageSource, "Prepare source files for distribution.")
   addTask("install", taskInstall, "Install files to directory specified by `--prefix`" \
       + " argument.")
   addTask("uninstall", taskUninstall, "Uninstall files from directory specified by" \
