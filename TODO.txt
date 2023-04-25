@@ -21,13 +21,14 @@ priority:
 - create manpage dynamically
 - create AppImage standalone installer package
 - add option to export changelog to file
+- support multiple launchers
+- support mimetype configurations (usr/share/mime/packages/*.xml)
+- support manpages creation
 
 non-priority:
 - Create 'zoom' button image (magnifying glass)
 - Set custom images in imagelist.DirectoryImageList dynamically using bitmaps found in MIME directory
 - Add custom field option to Control
-- Use custom buttons for template generation on Copyright page
-- Add option to eject removable drive from directory tree context menu
 - Create timer-based progress dialog class
 - Add PIP build
 - Add wizard to build packages from source
