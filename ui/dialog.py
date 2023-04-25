@@ -143,13 +143,14 @@ class StandardFileDialog(wx.FileDialog):
       if self.Path:
         if os.path.isfile(self.Path):
           overwrite = OverwriteDialog(self, self.Path)
-
-          if not ShowDialog(overwrite):
+          confirmed = overwrite.Confirmed()
+          # ensure dialog does not persist
+          overwrite.Destroy()
+          if not confirmed:
             return
 
           try:
             os.remove(self.Path)
-
           except OSError:
             # File was removed before confirmation
             logger.debug("Item was removed before confirmation: {}".format(self.Path))

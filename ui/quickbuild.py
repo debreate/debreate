@@ -216,7 +216,11 @@ class QuickBuild(wx.Dialog):
 
     # Check for pre-existing file
     if os.path.isfile(target):
-      if not OverwriteDialog(self, target).Confirmed():
+      dia = OverwriteDialog(self, target)
+      res = dia.Confirmed()
+      # ensure dialog does not persist
+      dia.Destroy()
+      if not res:
         return
 
     self.SetTitle("{} ({})".format(self.title, GT("in progress")))
