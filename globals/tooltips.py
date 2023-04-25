@@ -301,6 +301,7 @@ def SetPageToolTips(parent, page_id=None):
 
 
 __registry = {}
+__enabled = False
 
 ## Registers a tooltip associated with a window.
 #
@@ -309,11 +310,11 @@ __registry = {}
 #  @param tt
 #    Text to display for tooltip.
 def register(window, tt):
-  # ~ if not isinstance(tt, wx.ToolTip):
-    # ~ tt = wx.ToolTip(tt)
   if isinstance(tt, wx.ToolTip):
     tt = tt.GetTip()
   __registry[window] = tt
+  if __enabled:
+    window.SetToolTip(wx.ToolTip(tt))
 
 ## Unregisters a window's tooltip.
 #
@@ -328,8 +329,10 @@ def unregister(window):
 #  @param enabled
 #    Flag dertimining if tooltips should be enabled or disabled.
 def enable(enabled=True):
+  global __enabled
+  __enabled = enabled
   wx.ToolTip.Enable(enabled)
-  if areEnabled() == enabled:
+  if __checkEnabled() == enabled:
     return True
   # fallback to manually setting
   _logger.debug("registered tooltips: {}".format(len(__registry)))
@@ -343,7 +346,14 @@ def enable(enabled=True):
     else:
       window.UnsetToolTip()
   _logger.debug("tooltip state 'enabled={}' set manually".format(enabled))
-  return areEnabled() == enabled
+  return __checkEnabled() == enabled
+
+## Gets the cached state.
+#
+#  @return
+#    `True` if state is enabled.
+def areEnabled():
+  return __enabled
 
 ## Checks registered windows for enabled tooltips.
 #
@@ -351,7 +361,7 @@ def enable(enabled=True):
 #
 #  @return
 #    `True` if global tooltips are recognized as enabled.
-def areEnabled():
+def __checkEnabled():
   for window in tuple(__registry):
     if not window:
       _logger.debug("element deleted: {}".format(window))
