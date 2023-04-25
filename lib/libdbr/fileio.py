@@ -343,12 +343,12 @@ def deleteDir(dirpath, verbose=False):
 #  @param name
 #    Optional filename to use (assumes `target` is a directory).
 #  @param mode
-#    File permissions.
+#    File permissions (-1 = copy, None = standard file permissions).
 #  @param verbose
 #    If true, print extra information.
 #  @return
 #    Error code & message.
-def copyFile(source, target, name=None, mode=__perm["f"], verbose=False):
+def copyFile(source, target, name=None, mode=-1, verbose=False):
   if name:
     target = os.path.join(target, name)
   err, msg = __checkFileExists(source, "copy")
@@ -357,6 +357,10 @@ def copyFile(source, target, name=None, mode=__perm["f"], verbose=False):
   err, msg = __checkNotExists(target, "copy file", True)
   if err != 0:
     return err, msg
+  if mode == None:
+    mode = __perm["f"]
+  elif mode == -1:
+    mode = int(oct(os.stat(source).st_mode)[-3:], 8)
   shutil.copyfile(source, target)
   if not os.path.lexists(target):
     return 1, "failed to copy file, an unknown error occurred: {}".format(target)
@@ -382,15 +386,14 @@ def copyExecutable(source, target, name=None, verbose=False):
 
 ## Copies a directory on the filesystem.
 #
-#  # FIXME: copyDir should ignore empty sub-directories by default
-#  # TODO: rename "_filter" parameter to "include"
-#
 #  @param source
 #    Path to directory to be copied.
 #  @param target
 #    Path to copy target.
 #  @param name
 #    Optional directory name to use (assumes `target` is parent directory).
+#  @param mode
+#    File permissions (obsolete/unused).
 #  @param _filter
 #    Optional file filter.
 #  @param exclude
@@ -399,6 +402,11 @@ def copyExecutable(source, target, name=None, verbose=False):
 #    If true, print extra information.
 #  @return
 #    Error code & message.
+#  @todo
+#    - rename "_filter" parameter to "include"
+#    - FIXME:
+#        - copyDir should ignore empty sub-directories by default
+#        - should be able to override default permissions
 def copyDir(source, target, name=None, mode=__perm["d"], _filter="", exclude=None, verbose=False):
   if name:
     target = os.path.join(target, name)
@@ -435,11 +443,14 @@ def copyDir(source, target, name=None, mode=__perm["d"], _filter="", exclude=Non
       continue
     objsource = os.path.join(source, obj)
     objtarget = os.path.join(target, obj)
+    f_mode = int(oct(os.stat(objsource).st_mode)[-3:], 8)
     if not os.path.isdir(objsource):
       if re.search(_filter, obj):
-        err, msg = copyFile(objsource, objtarget, None, mode-0o111, verbose)
+        # ~ err, msg = copyFile(objsource, objtarget, None, mode-0o111, verbose)
+        err, msg = copyFile(objsource, objtarget, name=None, mode=f_mode, verbose=verbose)
     else:
-      err, msg = copyDir(objsource, objtarget, None, mode, _filter, exclude, verbose)
+      # ~ err, msg = copyDir(objsource, objtarget, None, mode, _filter, exclude, verbose)
+      err, msg = copyDir(objsource, objtarget, None, f_mode, _filter, exclude, verbose)
     if err != 0:
       return err, msg
   return 0, None
@@ -453,12 +464,12 @@ def copyDir(source, target, name=None, mode=__perm["d"], _filter="", exclude=Non
 #  @param name
 #    Optional filename to use (assumes `target` is a directory).
 #  @param mode
-#    File permissions.
+#    File permissions (-1 = copy, None = standard file permissions).
 #  @param verbose
 #    If true, print extra information.
 #  @return
 #    Error code & message.
-def moveFile(source, target, name=None, mode=__perm["f"], verbose=False):
+def moveFile(source, target, name=None, mode=-1, verbose=False):
   if name:
     target = os.path.join(target, name)
   err, msg = __checkFileExists(source, "move")
@@ -467,6 +478,10 @@ def moveFile(source, target, name=None, mode=__perm["f"], verbose=False):
   err, msg = __checkNotExists(target, "move file", True)
   if err != 0:
     return err, msg
+  if mode == None:
+    mode = __perm["f"]
+  elif mode == -1:
+    mode = int(oct(os.stat(source).st_mode)[-3:], 8)
   shutil.move(source, target)
   if os.path.lexists(source) or not os.path.lexists(target):
     return 1, "failed to move file, an unknown error occurred: {}".format(target)
@@ -484,11 +499,13 @@ def moveFile(source, target, name=None, mode=__perm["f"], verbose=False):
 #  @param name
 #    Optional directory name to use (assumes `target` is parent directory).
 #  @param mode
-#    Directory permissions.
+#    Directory permissions (obsolete/unused).
 #  @param verbose
 #    If true, print extra information.
 #  @return
 #    Error code & message.
+#  @todo
+#    FIXME: should be able to override default permissions
 def moveDir(source, target, name=None, mode=__perm["d"], verbose=False):
   if name:
     target = os.path.join(target, name)
@@ -513,10 +530,13 @@ def moveDir(source, target, name=None, mode=__perm["d"], verbose=False):
   for obj in contents:
     objsource = os.path.join(source, obj)
     objtarget = os.path.join(target, obj)
+    f_mode = int(oct(os.stat(objsource).st_mode)[-3:], 8)
     if not os.path.isdir(objsource):
-      err, msg = moveFile(objsource, objtarget, None, mode-0o111, verbose)
+      # ~ err, msg = moveFile(objsource, objtarget, None, mode-0o111, verbose)
+      err, msg = moveFile(objsource, objtarget, name=None, mode=f_mode, verbose=verbose)
     else:
-      err, msg = moveDir(objsource, objtarget, None, mode, verbose)
+      # ~ err, msg = moveDir(objsource, objtarget, None, mode, verbose)
+      err, msg = moveDir(objsource, objtarget, name=None, mode=f_mode, verbose=verbose)
     if err != 0:
       return err, msg
   err, msg = deleteDir(source, False)
