@@ -10,8 +10,8 @@
 
 import os
 
+from libdbr        import fileio
 from libdbr        import paths
-from libdbr.fileio import writeFile
 from libdbr.logger import Logger
 from libdbr.misc   import generateMD5Hash
 
@@ -35,7 +35,7 @@ def WriteMD5(stage_dir, parent=None):
     for F in FILES:
       abs_path = paths.join(ROOT, F)
       rel_path = abs_path[len(stage_dir)+1:]
-      md5 = generateMD5Hash(abs_path) + "  " + rel_path
+      md5 = generateMD5Hash(fileio.readFile(abs_path, binary=True)) + "  " + rel_path
       logger.debug("{}: {}".format(WriteMD5.__name__, md5))
       temp_list.append(md5)
 
@@ -49,4 +49,4 @@ def WriteMD5(stage_dir, parent=None):
 
   # Create the md5sums file in the "DEBIAN" directory
   # NOTE: lintian ignores the last character of the file, so should end with newline character (\n)
-  return writeFile("{}/DEBIAN/md5sums".format(stage_dir), "{}\n".format("\n".join(md5_list)))
+  return fileio.writeFile("{}/DEBIAN/md5sums".format(stage_dir), "{}\n".format("\n".join(md5_list)))
