@@ -286,9 +286,26 @@ class Page(ui.page.Page):
       self.pnl_target.SetPath(target)
     self.dsp_changes.SetValue("\n".join(changelog[1:]))
 
-  ## @override ui.page.Page.reset
+  ## Iterates child elements & resets each.
+  #
+  #  @override ui.page.Page.reset
+  #  @todo
+  #    Handle in `ui.page.Page` super class.
   def reset(self):
-    pass
+    logger.debug("resetting changelog page")
+    for child_el in self.GetChildren():
+      self.resetElement(child_el)
+
+  ## Resets an element & its children.
+  #
+  #  @param el
+  #    Element to be reset.
+  def resetElement(self, el):
+    if hasattr(el, "GetChildren"):
+      for child_el in el.GetChildren():
+        self.resetElement(child_el)
+    if hasattr(el, "Reset"):
+      el.Reset()
 
   ## Updates list of available distribution names.
   #

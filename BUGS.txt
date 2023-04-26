@@ -2,7 +2,6 @@
 -- Known Bugs --
 
 required for release:
-- changelog page does not reset
 
 priority:
 - files page: elements don't resize when narrowing page
