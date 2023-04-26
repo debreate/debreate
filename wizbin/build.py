@@ -231,7 +231,7 @@ class Page(ui.page.Page):
           return (dbrerrno.EEXIST, None)
 
       # Actual path to new .deb
-      deb = "\"{}/{}.deb\"".format(build_path, filename)
+      deb = paths.join(build_path, "{}.deb".format(filename))
 
       progress = 0
 
@@ -569,16 +569,20 @@ class Page(ui.page.Page):
 
         # FIXME: Should be set as class member?
         CMD_lintian = paths.getExecutable("lintian")
-        errors = subprocess.run([CMD_lintian, deb], capture_output=True).stdout.decode("utf-8")
+        err, msg = libdbr.bin.execute(CMD_lintian, "--no-tag-display-limit", deb, usestderr=True)
 
-        if errors != wx.EmptyString:
+        if logger.debugging():
+          logger.debug("lintian result: {}".format(err))
+          print(msg)
+
+        if not strings.isEmpty(msg):
           e1 = GT("Lintian found some issues with the package.")
           e2 = GT("Details saved to {}").format(filename)
 
-          writeFile("{}/{}.lintian".format(build_path, filename), errors)
+          writeFile("{}/{}.lintian".format(build_path, filename), msg)
 
           DetailedMessageDialog(build_progress, GT("Lintian Errors"),
-              ICON_INFORMATION, "{}\n{}.lintian".format(e1, e2), errors).ShowModal()
+              ICON_INFORMATION, "{}\n{}.lintian".format(e1, e2), msg).ShowModal()
 
         progress += 1
 
