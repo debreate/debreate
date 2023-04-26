@@ -55,7 +55,7 @@ def execute(cmd, *args, check=False, usestderr=False):
   output = res.stdout
   if not output and usestderr:
     output = res.stderr
-  if output:
+  if output != None:
     output = output.decode("utf-8").rstrip()
   return res.returncode, output
 
