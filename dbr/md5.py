@@ -10,6 +10,7 @@
 
 import os
 
+from libdbr        import paths
 from libdbr.fileio import writeFile
 from libdbr.logger import Logger
 from libdbr.misc   import generateMD5Hash
@@ -23,8 +24,6 @@ logger = Logger(__name__)
 #    Temporary directory to scan files into list.
 #  @param parent
 #    The window to be parent of error messages
-#  @fixme
-#    Should binary files be handled differently?
 def WriteMD5(stage_dir, parent=None):
   temp_list = []
   md5_list = [] # Final list used to write the md5sum file
@@ -34,8 +33,9 @@ def WriteMD5(stage_dir, parent=None):
       continue
 
     for F in FILES:
-      F = "{}/{}".format(ROOT, F)
-      md5 = generateMD5Hash(F)
+      abs_path = paths.join(ROOT, F)
+      rel_path = abs_path[len(stage_dir)+1:]
+      md5 = generateMD5Hash(abs_path) + "  " + rel_path
       logger.debug("{}: {}".format(WriteMD5.__name__, md5))
       temp_list.append(md5)
 

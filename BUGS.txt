@@ -4,7 +4,6 @@
 required for release:
 - changelog page does not reset
 - catching lintian output after build broken
-- md5sums file formatted incorrectly
 - files & directories created with non-standard permissions
 - md5sums are incorrect
 
