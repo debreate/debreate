@@ -6,6 +6,8 @@ required for release:
 - catching lintian output after build broken
 - md5sums file formatted incorrectly
 - files & directories created with non-standard permissions
+- md5sums are incorrect
+- lintian not recognizing package
 
 priority:
 - files page: elements don't resize when narrowing page
