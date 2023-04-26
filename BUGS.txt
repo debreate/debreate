@@ -2,6 +2,10 @@
 -- Known Bugs --
 
 required for release:
+- changelog page does not reset
+- catching lintian output after build broken
+- md5sums file formatted incorrectly
+- files & directories created with non-standard permissions
 
 priority:
 - files page: elements don't resize when narrowing page
@@ -16,6 +20,3 @@ non-priority:
 - Error occurs sometimes after add changelog entries:
   - (init.py:4644) Gtk-CRITICAL **: IA__gtk_main_quit: assertion 'main_loops != NULL' failed
 - Progress dialogs could potentially resize outside of display boundaries
-- Auto-Link Help only re-centers if "check" button is pressed
-- 'Distribution' text input cannot be tabbed out of on changelog page
-  - May be an issue with custom combo box

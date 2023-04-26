@@ -7,6 +7,7 @@ required for release:
 - update manpage
 
 priority:
+- mark development builds in title
 - 'dist-source' & 'deb-source' build tasks overwrite each other's package
 - remove hyphenation from development builds (use "XdevX" instead of "X-devX")
 - use libdbr.tasks for build tasks
