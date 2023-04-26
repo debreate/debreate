@@ -72,7 +72,7 @@ class Page(ui.page.Page):
     pnl_options = BorderedPanel(self)
 
     self.chk_md5 = CheckBoxCFG(pnl_options, chkid.MD5, GT("Create md5sums file"), name="MD5",
-        defaultValue=True, commands="md5sum", cfgKey="md5sums", cfgSect="build")
+        defaultValue=True, cfgKey="md5sums", cfgSect="build")
     # The » character denotes that an alternate tooltip should be shown if the control is disabled
     self.chk_md5.tt_name = "md5»"
     self.chk_md5.col = 0

@@ -5,7 +5,6 @@ required for release:
 - examine changelog changes before release
 - examine debian/control for dependencies that should be removed
 - update manpage
-- check that md5sums checkbox works without `md5sums` command installed
 
 priority:
 - mark development builds in title
