@@ -82,6 +82,10 @@ class Page(ui.page.Page):
         defaultValue=True, commands="strip", cfgKey="strip", cfgSect="build")
     self.chk_strip.col = 0
 
+    self.chk_permiss = CheckBoxCFG(pnl_options, chkid.PERMISS, GT("Standardize file permissions"),
+        name="permiss", defaultValue=True, cfgKey="standard_permissions", cfgSect="build")
+    self.chk_permiss.col = 0
+
     # Deletes the temporary build tree
     self.chk_rmstage = CheckBoxCFG(pnl_options, chkid.DELETE, GT("Delete staged directory"),
         name="RMSTAGE", defaultValue=True, cfgKey="delete_stage", cfgSect="build")
@@ -523,17 +527,19 @@ class Page(ui.page.Page):
       # Move the working directory because dpkg seems to have problems with spaces in path
       os.chdir(working_dir)
 
-      # HACK to fix file/dir permissions
-      for ROOT, DIRS, FILES in os.walk(stage_dir):
-        for D in DIRS:
-          D = "{}/{}".format(ROOT, D)
-          os.chmod(D, 0o0775)
-        for F in FILES:
-          F = "{}/{}".format(ROOT, F)
-          if os.access(F, os.X_OK):
-            os.chmod(F, 0o0775)
-          else:
-            os.chmod(F, 0o0664)
+      if "permiss" in task_list:
+        UpdateProgress(progress, GT("Cleaning up file permissions"))
+        for ROOT, DIRS, FILES in os.walk(stage_dir):
+          for D in DIRS:
+            D = "{}/{}".format(ROOT, D)
+            os.chmod(D, 0o755)
+          for F in FILES:
+            F = "{}/{}".format(ROOT, F)
+            if os.access(F, os.X_OK):
+              os.chmod(F, 0o755)
+            else:
+              os.chmod(F, 0o644)
+        progress += 1
 
       # FIXME: Should check for working fakeroot & dpkg-deb executables
       res = subprocess.run([paths.getExecutable("fakeroot"), paths.getExecutable("dpkg-deb"), "-b", c_tree, deb_package],
@@ -713,6 +719,7 @@ class Page(ui.page.Page):
       other_checks = (
         (self.chk_md5, "md5sums"),
         (self.chk_strip, "strip"),
+        (self.chk_permiss, "permiss"),
         (self.chk_rmstage, "rmstage"),
         (self.chk_lint, "lintian"),
         )

@@ -3,8 +3,6 @@
 
 required for release:
 - changelog page does not reset
-- catching lintian output after build broken
-- files & directories created with non-standard permissions
 
 priority:
 - files page: elements don't resize when narrowing page

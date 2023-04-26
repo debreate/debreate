@@ -250,6 +250,7 @@ class ChkId(FieldId):
     self.LINT = self.NewId()
     self.MD5 = self.NewId()
     self.NOTIFY = self.NewId()
+    self.PERMISS = self.NewId()
     self.REMOVE = self.NewId()
     self.STRIP = self.NewId()
     self.SYMLINK = self.NewId()

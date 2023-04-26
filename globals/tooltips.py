@@ -189,6 +189,7 @@ TT_menu = {
 TT_build = {
   "md5": GT("Creates a checksum for all staged files within the package"),
   "md5_disabled": GT("Install md5sum package for this option"),
+  "permiss": GT("Ensure files & directories use standard permissions"),
   "strip": (
     GT("Discards unneeded symbols from binary files"), "",
     GT("See \"man 1 strip\""),

@@ -44,6 +44,7 @@ next
 - added "MIME Type" field to menu
 - build checks for file conflicts
 - unhandled exceptions in main thread causes app to close
+- added option to clean up file permissions on build page
 
 0.7.13
 - Fixes:
