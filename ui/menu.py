@@ -158,14 +158,18 @@ def createMenuBar(parent):
 
     parent.Bind(wx.EVT_MENU, parent.OnLogDirOpen, id=menuid.OPENLOGS)
 
-  # *** OS distribution names cache *** #
+  # *** app cache *** #
 
-  opt_distname_cache = wx.MenuItem(parent.menu_opt, menuid.DIST, GT("Update dist names cache"),
-      GT("Creates/Updates list of distribution names for changelog page"))
-  parent.menu_opt.Append(opt_distname_cache)
+  menu_cache = wx.Menu()
 
   mitm_ccache = wx.MenuItem(parent.menu_opt, menuid.CCACHE, GT("Clear local cache"))
-  parent.menu_opt.Append(mitm_ccache)
+  opt_distname_cache = wx.MenuItem(parent.menu_opt, menuid.DIST, GT("Update dist names cache"),
+      GT("Creates/Updates list of distribution names for changelog page"))
+
+  menu_cache.Append(mitm_ccache)
+  menu_cache.AppendSeparator()
+  menu_cache.Append(opt_distname_cache)
+  parent.menu_opt.AppendSubMenu(menu_cache, GT("Cache"))
 
   # ----- Help Menu
   menu_help = wx.Menu()
