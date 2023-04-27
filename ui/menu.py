@@ -192,8 +192,6 @@ def createMenuBar(parent):
         "https://www.debian.org/doc/debian-policy/ch-controlfields.html",),
     (refid.DPMLog, GT("Changelog"),
         "https://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog",),
-    (refid.UPM, GT("Ubuntu Policy Manual"),
-        "http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/",),
     (refid.LINT_TAGS, GT("Lintian Tags Explanation"),
         "https://lintian.debian.org/tags-all.html",),
     (refid.LINT_OVERRIDE, GT("Overriding Lintian Tags"),
