@@ -34,7 +34,7 @@ def init():
   err, res1 = libdbr.bin.execute(cmd_md5, file_init)
   res1 = res1[0:res1.index(" ")]
   # Windows version of md5sum command prepends node separator
-  res1 = res1.strip()
+  res1 = res1.strip(os.sep)
   _logger.debug("result 1: {}".format(res1))
   res2 = generateMD5Hash(fileio.readFile(file_init, binary=True))
   _logger.debug("result 2: {}".format(res2))
