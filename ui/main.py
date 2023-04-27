@@ -135,6 +135,7 @@ class MainWindow(wx.Frame):
 
     self.Bind(wx.EVT_MENU, self.OnToggleToolTips, id=menuid.TOOLTIPS)
     self.Bind(wx.EVT_MENU, self.OnUpdateDistNamesCache, id=menuid.DIST)
+    self.Bind(wx.EVT_MENU, self.onCacheLintianTags, id=menuid.LINTTAGS)
 
     self.Bind(wx.EVT_MENU, self.OnCheckUpdate, id=menuid.UPDATE)
     self.Bind(wx.EVT_MENU, self.OnHelp, id=menuid.HELP)
@@ -269,6 +270,10 @@ class MainWindow(wx.Frame):
 
     about.ShowModal()
     about.Destroy()
+
+  ## Downloads list of tags recognized by lintian & stores them in local cache directory.
+  def onCacheLintianTags(self, evt=None):
+    logger.debug("caching lintian tags")
 
   ## Checks for new release availability
   def OnCheckUpdate(self, event=None): #@UnusedVariable

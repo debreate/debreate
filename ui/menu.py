@@ -162,13 +162,18 @@ def createMenuBar(parent):
 
   menu_cache = wx.Menu()
 
-  mitm_ccache = wx.MenuItem(parent.menu_opt, menuid.CCACHE, GT("Clear local cache"))
-  opt_distname_cache = wx.MenuItem(parent.menu_opt, menuid.DIST, GT("Update dist names cache"),
+  mitm_ccache = wx.MenuItem(menu_cache, menuid.CCACHE, GT("Clear local cache"))
+  opt_distname_cache = wx.MenuItem(menu_cache, menuid.DIST, GT("Update dist names cache"),
       GT("Creates/Updates list of distribution names for changelog page"))
+  if testing:
+    cache_lint_tags = wx.MenuItem(menu_cache, menuid.LINTTAGS, GT("Cache lintian tags"),
+        GT("Downloads list of available tags recognized by lintian"))
 
   menu_cache.Append(mitm_ccache)
   menu_cache.AppendSeparator()
   menu_cache.Append(opt_distname_cache)
+  if testing:
+    menu_cache.Append(cache_lint_tags)
   parent.menu_opt.AppendSubMenu(menu_cache, GT("Cache"))
 
   # ----- Help Menu

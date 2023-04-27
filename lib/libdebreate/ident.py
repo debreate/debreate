@@ -289,6 +289,7 @@ class MenuId(FieldId):
     self.EXPAND = self.NewId()
     self.FILE = self.AddStaticId(wx.ID_FILE)
     self.HELP = btnid.HELP
+    self.LINTTAGS = self.NewId()
     self.LOG = self.NewId()
     self.NEW = self.AddStaticId(wx.ID_NEW)
     self.OPEN = self.AddStaticId(wx.ID_OPEN)
