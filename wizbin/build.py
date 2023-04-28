@@ -17,6 +17,7 @@ import wx
 
 import ui.app
 import globals.execute
+import globals.paths
 import libdbr.bin
 import ui.page
 
@@ -31,10 +32,9 @@ from globals.system     import PY_VER_MAJ
 from globals.tooltips   import SetPageToolTips
 from input.toggle       import CheckBox
 from input.toggle       import CheckBoxCFG
+from libdbr             import fileio
 from libdbr             import paths
 from libdbr             import strings
-from libdbr.fileio      import readFile
-from libdbr.fileio      import writeFile
 from libdbr.logger      import Logger
 from libdebreate.ident  import btnid
 from libdebreate.ident  import chkid
@@ -385,7 +385,7 @@ class Page(ui.page.Page):
         if not os.path.isdir(changelog_target):
           os.makedirs(changelog_target)
 
-        writeFile("{}/changelog".format(changelog_target), task_list["changelog"][1])
+        fileio.writeFile("{}/changelog".format(changelog_target), task_list["changelog"][1])
 
         CMD_gzip = paths.getExecutable("gzip")
 
@@ -405,7 +405,7 @@ class Page(ui.page.Page):
       if create_copyright:
         UpdateProgress(progress, GT("Creating copyright"))
 
-        writeFile("{}/usr/share/doc/{}/copyright".format(stage_dir, package), task_list["copyright"])
+        fileio.writeFile("{}/usr/share/doc/{}/copyright".format(stage_dir, package), task_list["copyright"])
 
         progress += 1
 
@@ -432,7 +432,7 @@ class Page(ui.page.Page):
         if not os.path.isdir(menu_dir):
           os.makedirs(menu_dir)
 
-        writeFile("{}/{}.desktop".format(menu_dir, menu_filename), task_list["launcher"])
+        fileio.writeFile("{}/{}.desktop".format(menu_dir, menu_filename), task_list["launcher"])
 
         progress += 1
 
@@ -466,7 +466,7 @@ class Page(ui.page.Page):
 
           script_filename = os.path.join(stage_dir, "DEBIAN", script_name)
 
-          writeFile(script_filename, script_text)
+          fileio.writeFile(script_filename, script_text)
 
           os.chmod(script_filename, 0o0775)
 
@@ -509,7 +509,7 @@ class Page(ui.page.Page):
       # Perhaps because string is not null terminated???
       control_data = "{}\n\n".format(control_data)
 
-      writeFile("{}/DEBIAN/control".format(stage_dir), control_data)
+      fileio.writeFile("{}/DEBIAN/control".format(stage_dir), control_data)
 
       progress += 1
 
@@ -585,7 +585,7 @@ class Page(ui.page.Page):
           e1 = GT("Lintian found some issues with the package.")
           e2 = GT("Details saved to {}").format(filename)
 
-          writeFile("{}/{}.lintian".format(build_path, filename), msg)
+          fileio.writeFile("{}/{}.lintian".format(build_path, filename), msg)
 
           DetailedMessageDialog(build_progress, GT("Lintian Errors"),
               ICON_INFORMATION, "{}\n{}.lintian".format(e1, e2), msg).ShowModal()
@@ -897,11 +897,12 @@ class Page(ui.page.Page):
   def OnSetLintOverrides(self, event=None):
     logger.debug(GT("Setting Lintian overrides..."))
     lintian_tags_file = "{}/data/lintian/tags".format(paths.getAppDir())
-    if not os.path.isfile(lintian_tags_file):
-      logger.error("Lintian tags file is missing: {}".format(lintian_tags_file))
-      return False
+    # ~ if not os.path.isfile(lintian_tags_file):
+      # ~ logger.error("Lintian tags file is missing: {}".format(lintian_tags_file))
+      # ~ return False
 
-    lint_tags = RemoveEmptyLines(readFile(lintian_tags_file).split("\n"))
+    # ~ lint_tags = RemoveEmptyLines(fileio.readFile(lintian_tags_file).split("\n"))
+    lint_tags = self.__getLintianTags()
     if lint_tags:
       logger.debug("Lintian tags set")
 
@@ -1020,3 +1021,13 @@ class Page(ui.page.Page):
   ## @override ui.page.Page.reset
   def reset(self):
     pass
+
+  def __getLintianTags(self):
+    l_tags = []
+    file_tags = paths.join(globals.paths.getCacheDir(), "lintian_tags")
+    if os.path.isfile(file_tags):
+      for tag in fileio.readFile(file_tags).split("\n"):
+        tag = tag.strip()
+        if tag:
+          l_tags.append(tag)
+    return l_tags
