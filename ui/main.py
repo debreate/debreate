@@ -15,6 +15,7 @@ import re
 import shutil
 import subprocess
 import sys
+import time
 import traceback
 import urllib
 import webbrowser
@@ -87,6 +88,8 @@ class MainWindow(wx.Frame):
   def __init__(self):#, pos, size):
     wx.Frame.__init__(self, None, pnlid.MAIN)
     self.error = {}
+
+    self.sub_thread_id = None
 
     self.timer = DebreateTimer(self)
     # placeholder for progress dialog
@@ -271,9 +274,66 @@ class MainWindow(wx.Frame):
     about.ShowModal()
     about.Destroy()
 
-  ## Downloads list of tags recognized by lintian & stores them in local cache directory.
+  ## Starts thread for downloading lintian tags & creates a progress dialog.
+  #
+  #  @todo
+  #    - use custom progress dialog
+  #    - add confirmation dialog
   def onCacheLintianTags(self, evt=None):
-    logger.debug("caching lintian tags")
+    self.sub_thread_id = threads.create(self.cacheLintianTags)
+    progress = wx.ProgressDialog(GT("Lintian Tags"), GT("Caching Lintian tags"), maximum=100,
+        parent=self, style=wx.PD_APP_MODAL|wx.PD_AUTO_HIDE|wx.PD_CAN_ABORT)
+    self.Disable()
+    progress.Show()
+    pulse_time = time.time()
+    while threads.isActive(self.sub_thread_id):
+      if progress.WasCancelled():
+        break
+      iter_time = time.time()
+      # pulse every 50 milliseconds
+      if iter_time - pulse_time >= 0.05:
+        progress.Pulse()
+        pulse_time = iter_time
+    threads.end(self.sub_thread_id)
+    progress.Destroy()
+    self.Enable()
+
+  ## Caches list of tags recognized by lintian & stores them in local cache directory.
+  def cacheLintianTags(self):
+    dir_cache = globals.paths.getCacheDir()
+    if not os.path.isdir(dir_cache):
+      fileio.makeDir(dir_cache)
+    file_tags = paths.join(dir_cache, "lintian_tags")
+    logger.debug("caching lintian tags to '{}'".format(file_tags))
+    res, msg = self.parseLintianTags()
+    if type(res) == int:
+      return res, msg
+    logger.debug("found {} tags".format(len(res)))
+    fileio.writeFile(file_tags, res)
+    return 0, None
+
+  ## Downloads & parses tags information from remote page.
+  #
+  #  @return
+  #    List of available tags.
+  def parseLintianTags(self):
+    l_tags = []
+    contents = None
+    try:
+      req = urllib.request.urlopen("https://lintian.debian.org/tags")
+      contents = req.read().decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
+      req.close()
+    except (HTTPError, URLError):
+      return 1, traceback.format_exc()
+    if contents == None:
+      return 1, "an unknown error occurred when trying to download lintian tags info"
+    for li in contents.split("\n"):
+      li = li.strip()
+      if li.startswith("<a href=\"/tags/"):
+        l_tags.append(li.split(">", 1)[-1].split("</a>", 1)[0])
+    if not l_tags:
+      return 1, "an unknown error occurred when trying to parse lintian tags info"
+    return l_tags, None
 
   ## Checks for new release availability
   def OnCheckUpdate(self, event=None): #@UnusedVariable
