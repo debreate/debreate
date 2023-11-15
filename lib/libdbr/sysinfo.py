@@ -34,7 +34,7 @@ else:
       if line.startswith("DISTRIB_ID") and "=" in line:
         __os_name = line.split("=", 1)[1].strip()
         break
- else:
+  else:
     if os.path.isfile("/etc/os-release"):
       fin = codecs.open("/etc/os-release", "r", "utf-8")
       lines = fin.read().replace("\r\n", "\n").replace("\r", "\n").split("\n")
