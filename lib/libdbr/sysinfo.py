@@ -43,7 +43,7 @@ else:
         if line.startswith("ID") and "=" in line:
           __os_name = line.split("=", 1)[1].strip()
           break
-        
+
 if not __os_name:
   __os_name = "unknown"
 __os_name = __os_name.lower()
