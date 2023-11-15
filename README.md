@@ -85,12 +85,18 @@ build process.
 Debreate requires the following software:
 
 - [Python][home.python] (>=3.10) ([Ubuntu package][pkg.python3])
-- [wxPython][home.wxpython] (>=4.0.7, >=4.2.0 recommended)
+
+- [python3-wxgtk-webview4.0](https://packages.ubuntu.com/search?keywords=python3-wxgtk4.0) **(for newer versions of Debian/Ubuntu)**
+
+- [wxPython][home.wxpython] **(>=4.0.7, >=4.2.0 for older versions of Debian/Ubuntu)**
     - Packaged as [_python3-wxgtk*_][pkg.wxpython] on Debian/Ubuntu.
     - Available via [Pypi][pip.wxpython].
 - [dpkg][home.dpkg] ([Ubuntu package][pkg.dpkg])
     - If you are running a Debian/Ubuntu based system this is most likely already installed.
 - [fakeroot][home.fakeroot] ([Ubuntu package][pkg.fakeroot])
+
+Required for building a Debian distribution package:
+- [devscripts][pkg.devscripts] 
 
 These packages are recommended to enable some features:
 
@@ -188,7 +194,7 @@ variables `prefix` & `DESTDIR` to control the installation target directory.
 <h3><a href="#toc">Building .deb Package</a></h3>
 </a>
 
-If you have [devscripts][pkg.devscripts] installed, you can execute `python3 build.py dist-deb` to
+If you have [devscripts][pkg.devscripts] installed, you can execute `python3 build.py -t dist-deb` to
 build the debian package (.deb). The package will be located in the 'build/dist' directory. To
 install execute `dpkg --install build/dist/debreate_\<version\>_all.deb` with
 [superuser privileges][page.superuser]. Or open the package with a GUI installer such as
